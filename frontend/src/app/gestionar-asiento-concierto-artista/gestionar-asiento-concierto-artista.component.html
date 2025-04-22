@@ -1,0 +1,17 @@
+<div class="conciertos-container">
+  <h2>Mis Conciertos</h2>
+  <div *ngFor="let concierto of conciertos" class="concierto-card">
+    <p><strong>{{ concierto.nombre }}</strong> (ID: {{ concierto.idConcierto }})</p>
+    <button (click)="gestionarAsientos(concierto)">Gestionar Asientos</button>
+  </div>
+</div>
+
+<!-- Modal para gestionar asientos (modo artista) -->
+<app-mapa-asientos 
+  *ngIf="mostrarModal" 
+  [asientos]="asientos" 
+  [concierto]="conciertoSeleccionado"
+  [modo]="'artista'"
+  (asientoSeleccionado)="onAsientoSeleccionado($event)"
+  (cerrarModal)="cerrarModal()">
+</app-mapa-asientos>

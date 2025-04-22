@@ -1,0 +1,27 @@
+<div class="gestionar-zona">
+    <h2>Gestión de Zonas</h2>
+    
+    <!-- Lista de zonas -->
+    <ul>
+      <li *ngFor="let zona of zonas">
+        <strong>{{ zona.nombre }}</strong> - Recinto: {{ zona.recintoId }} - Precio Base: {{ zona.precioBase }} - Precio VIP: {{ zona.precioVIP }}
+        <button (click)="seleccionarZona(zona)">Editar</button>
+        <button (click)="eliminarZona(zona.idZona)">Eliminar</button>
+      </li>
+    </ul>
+    
+    <hr />
+    
+    <!-- Mostrar formulario de edición o de creación según corresponda -->
+    <div *ngIf="zonaSeleccionada; else crear">
+      <app-editar-zona
+        [zona]="zonaSeleccionada"
+        (zonaActualizada)="onZonaActualizada()"
+        (cancelarEdicion)="cancelarEdicion()"
+      ></app-editar-zona>
+    </div>
+    <ng-template #crear>
+      <app-crear-zona (recintoCreado)="onZonaCreada()"></app-crear-zona>
+    </ng-template>
+  </div>
+  

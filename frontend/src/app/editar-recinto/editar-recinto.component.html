@@ -1,0 +1,23 @@
+<div class="form-container">
+    <h2>Editar Recinto</h2>
+    <form (ngSubmit)="actualizarRecinto()">
+      <div>
+        <label for="nombre">Nombre del Recinto:</label>
+        <input type="text" id="nombre" [(ngModel)]="recinto.nombre" name="nombre" required />
+      </div>
+    
+      <div>
+        <label for="ubicacion">Ubicación:</label>
+        <input type="text" id="ubicacion" [(ngModel)]="recinto.ubicacion" name="ubicacion" required />
+      </div>
+    
+      <div>
+        <label for="capacidadTotal">Capacidad Total:</label>
+        <input type="number" id="capacidadTotal" [(ngModel)]="recinto.capacidadTotal" name="capacidadTotal" required />
+      </div>
+    
+      <button type="submit">Actualizar Recinto</button>
+      <button type="button" (click)="cancelar()">Cancelar</button>
+    </form>
+  </div>
+  

@@ -1,0 +1,97 @@
+<div class="perfil-container" *ngIf="usuario">
+  <h2>Mi Perfil</h2>
+  
+  <!-- Formulario de edición -->
+  <form *ngIf="editando; else vistaPerfil" (ngSubmit)="guardarCambios()">
+    <label>
+      Nombre:
+      <input type="text" [(ngModel)]="usuario.nombre" name="nombre" required />
+    </label><br />
+
+    <label>
+      Apellidos:
+      <input type="text" [(ngModel)]="usuario.apellidos" name="apellidos" required />
+    </label><br />
+
+    <label>
+      Username:
+      <input type="text" [(ngModel)]="usuario.username" name="username" required />
+    </label><br />
+
+    <label>
+      Email:
+      <input type="email" [(ngModel)]="usuario.email" name="email" required />
+    </label><br />
+
+    <label>
+      Teléfono:
+      <input type="text" [(ngModel)]="usuario.telefono" name="telefono" />
+    </label><br />
+
+    <label>
+      Activo:
+      <input
+        type="checkbox"
+        [checked]="usuario.activo"
+        (change)="verificarActivo($event)"
+        name="activo"
+      />
+    </label><br />
+
+    <button type="submit">Guardar cambios</button>
+    <button type="button" (click)="cancelarEdicion()">Cancelar</button>
+  </form>
+
+  <!-- Vista de sólo lectura -->
+  <ng-template #vistaPerfil>
+    <p><strong>Nombre:</strong> {{ usuario.nombre }}</p>
+    <p><strong>Apellidos:</strong> {{ usuario.apellidos }}</p>
+    <p><strong>Username:</strong> {{ usuario.username }}</p>
+    <p><strong>Email:</strong> {{ usuario.email }}</p>
+    <p><strong>Teléfono:</strong> {{ usuario.telefono }}</p>
+    <p><strong>Activo:</strong> {{ usuario.activo ? 'Sí' : 'No' }}</p>
+    <button (click)="activarEdicion()">Editar</button>
+  </ng-template>
+
+  <!-- Mensaje de guardado -->
+  <div *ngIf="mensaje" style="margin-top: 10px; color: green;">
+    {{ mensaje }}
+  </div>
+
+  <!-- Sólo muestro las entradas cuando NO estoy editando -->
+  <ng-container *ngIf="!editando">
+    <h3>Mis Entradas</h3>
+    <div *ngIf="entradasPagina.length > 0; else noEntradas">
+      <ul>
+        <li *ngFor="let entrada of entradasPagina">
+          Entrada #{{ entrada.idEntrada }} —
+          Concierto: {{ entrada.concierto?.nombre }} —
+          Asiento: {{ entrada.asiento?.numeracion }}
+          <button (click)="abrirTransferencia(entrada)">Transferir</button>
+        </li>
+      </ul>
+
+      <!-- Controles de paginación -->
+      <div class="pagination">
+        <button (click)="cambiarPagina('anterior')" [disabled]="paginaActual === 1">
+          ‹ Anterior
+        </button>
+        <span>Página {{ paginaActual }} de {{ totalPaginas }}</span>
+        <button (click)="cambiarPagina('siguiente')" [disabled]="paginaActual === totalPaginas">
+          Siguiente ›
+        </button>
+      </div>
+
+      <!-- Modal de transferencia -->
+      <app-transferencia-entrada
+        *ngIf="mostrarTransferencia"
+        [entrada]="entradaSeleccionada"
+        (cerrar)="cerrarTransferencia()">
+      </app-transferencia-entrada>
+    </div>
+
+    <ng-template #noEntradas>
+      <p>No tienes entradas asignadas.</p>
+    </ng-template>
+  </ng-container>
+</div>

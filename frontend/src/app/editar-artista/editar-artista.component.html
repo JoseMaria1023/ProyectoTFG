@@ -1,0 +1,45 @@
+<div class="container">
+    <h2>Editar Artista</h2>
+    <form (ngSubmit)="guardarCambios()">
+      <div>
+        <label>Nombre</label>
+        <input type="text" [(ngModel)]="artista.nombre" name="nombre" placeholder="Nombre" required>
+      </div>
+      <div>
+        <label>Apellidos</label>
+        <input type="text" [(ngModel)]="artista.apellidos" name="apellidos" placeholder="Apellidos" required>
+      </div>
+      <div>
+        <label>Username</label>
+        <input type="text" [(ngModel)]="artista.username" name="username" placeholder="Usuario" required>
+      </div>
+      <div>
+        <label>Password</label>
+        <input type="password" [(ngModel)]="artista.password" name="password" placeholder="Contraseña" required>
+      </div>
+      <div>
+        <label>Descripción</label>
+        <textarea [(ngModel)]="artista.descripcion" name="descripcion" placeholder="Descripción"></textarea>
+      </div>
+      <div>
+        <label>Género Musical</label>
+        <input type="text" [(ngModel)]="artista.generoMusical" name="generoMusical" placeholder="Género musical">
+      </div>
+      <div>
+        <label>Foto</label>
+        <input type="file" (change)="onFileSelected($event)">
+        <!-- Mostrar previsualización: se muestra la nueva si se seleccionó, o la actual -->
+        <div *ngIf="fotoPreview; else mostrarActual">
+          <img [src]="fotoPreview" alt="Previsualización">
+        </div>
+        <ng-template #mostrarActual>
+          <div *ngIf="artista.foto">
+            <img [src]="artista.foto" alt="Foto actual">
+          </div>
+        </ng-template>
+      </div>
+      <button type="submit">Guardar Cambios</button>
+      <button type="button" (click)="cancelar()">Cancelar</button>
+    </form>
+  </div>
+  

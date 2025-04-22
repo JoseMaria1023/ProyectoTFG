@@ -1,0 +1,22 @@
+<div class="gestionar-asientos">
+    <h2>Gestión de Asientos</h2>
+    
+    <!-- Lista de asientos -->
+    <ul>
+      <li *ngFor="let asiento of asientos">
+        <strong>{{ asiento.numeracion }}</strong> (Fila: {{ asiento.fila }} - Columna: {{ asiento.columna }}) - Tipo: {{ asiento.tipo }} - Concierto: {{ asiento.conciertoId }}
+        <button (click)="seleccionarAsiento(asiento)">Editar</button>
+      </li>
+    </ul>
+    
+    <hr />
+    
+    <!-- Mostrar formulario de edición o creación -->
+    <div *ngIf="asientoSeleccionado; else crear">
+      <app-editar-asiento [asiento]="asientoSeleccionado"></app-editar-asiento>
+    </div>
+    <ng-template #crear>
+      <app-crear-asiento></app-crear-asiento>
+    </ng-template>
+  </div>
+  

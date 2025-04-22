@@ -1,0 +1,111 @@
+/* Asegura que el componente cubra toda la pantalla y centre el contenido */
+:host {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #141e30, #243b55); /* Degradado elegante para fondo */
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  /* Contenedor principal de la gestión de artistas */
+  .gestionar-artista {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    border-radius: 12px;
+    padding: 30px;
+    max-width: 800px;
+    width: 100%;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.8s ease-in-out;
+  }
+  
+  /* Animación de entrada */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Título de la sección */
+  .gestionar-artista h2 {
+    text-align: center;
+    color: #00aaff;
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+  
+  /* Estilo para la lista de artistas */
+  .gestionar-artista ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .gestionar-artista li {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    margin-bottom: 15px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #ffffff;
+  }
+  
+  .gestionar-artista li button {
+    background: linear-gradient(90deg, #00aaff, #0066ff);
+    border: none;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 14px;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+  
+  .gestionar-artista li button:hover {
+    transform: scale(1.05);
+    background: linear-gradient(90deg, #0066ff, #0044cc);
+  }
+  
+  /* Estilo para la sección de creación y edición */
+  .gestionar-artista div {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Estilo para la separación entre formularios */
+  hr {
+    border: none;
+    border-top: 2px solid rgba(255, 255, 255, 0.3);
+    width: 100%;
+    margin: 20px 0;
+  }
+  
+  /* Responsividad */
+  @media (max-width: 600px) {
+    .gestionar-artista {
+      margin: 20px;
+      padding: 20px;
+    }
+    .gestionar-artista h2 {
+      font-size: 24px;
+    }
+    .gestionar-artista li {
+      font-size: 12px;
+    }
+    .gestionar-artista li button {
+      font-size: 12px;
+    }
+  }
+  

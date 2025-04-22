@@ -1,0 +1,70 @@
+<div class="form-container">
+  <h2>Comprar Entrada</h2>
+
+  <!-- Concierto -->
+  <label for="concierto">Concierto:</label>
+  <input type="text" id="concierto" [value]="entrada.conciertoId + ' - ' + entrada.conciertoNombre" readonly>
+
+  <!-- Asiento -->
+  <button (click)="abrirMapaAsientos()">Seleccionar Asiento</button>
+  <label for="asiento">Asiento seleccionado:</label>
+  <input type="text" id="asiento" [value]="entrada.asientoId ? (entrada.asientoId + ' - ' + entrada.asientoNombre) : 'Ningún asiento seleccionado'" readonly>
+
+  <!-- Precio -->
+  <label for="precioVenta">Precio de Venta:</label>
+  <input type="number" id="precioVenta" [(ngModel)]="entrada.precioVenta" name="precioVenta" required readonly>
+
+  <!-- Método de Pago -->
+  <label for="metodoPago">Método de Pago:</label>
+  <select id="metodoPago" [(ngModel)]="pago.metodoPago" name="metodoPago" required>
+    <option value="">Seleccionar...</option>
+    <option value="Tarjeta">Tarjeta</option>
+    <option value="PayPal">PayPal</option>
+    <option value="Transferencia">Transferencia</option>
+  </select>
+
+  <!-- Formulario de Pago: Tarjeta -->
+  <div *ngIf="pago.metodoPago === 'Tarjeta'" class="metodo-form tarjeta-form">
+    <h3>Pago con Tarjeta</h3>
+    <label>Número de Tarjeta:</label>
+    <input type="text" [(ngModel)]="datosTarjeta.numero" name="numeroTarjeta" required>
+
+    <label>Nombre del Titular:</label>
+    <input type="text" [(ngModel)]="datosTarjeta.nombre" name="nombreTarjeta" required>
+
+    <label>Fecha de Expiración:</label>
+    <input type="month" [(ngModel)]="datosTarjeta.expiracion" name="expiracionTarjeta" required>
+
+    <label>CVV:</label>
+    <input type="text" [(ngModel)]="datosTarjeta.cvv" name="cvvTarjeta" required>
+  </div>
+
+  <!-- Formulario de Pago: PayPal -->
+  <div *ngIf="pago.metodoPago === 'PayPal'" class="metodo-form paypal-form">
+    <h3>Pago con PayPal</h3>
+    <label>Correo Electrónico:</label>
+    <input type="email" [(ngModel)]="datosPaypal.email" name="paypalEmail" required>
+  </div>
+
+  <!-- Formulario de Pago: Transferencia -->
+  <div *ngIf="pago.metodoPago === 'Transferencia'" class="metodo-form transferencia-form">
+    <h3>Transferencia Bancaria</h3>
+    <label>Nombre del Titular:</label>
+    <input type="text" [(ngModel)]="datosTransferencia.nombre" name="nombreTransferencia" required>
+
+    <label>IBAN:</label>
+    <input type="text" [(ngModel)]="datosTransferencia.iban" name="ibanTransferencia" required>
+  </div>
+
+  <button (click)="comprarEntrada()">Comprar y Pagar</button>
+</div>
+
+<!-- Modal de Asientos -->
+<app-mapa-asientos 
+  *ngIf="mostrarModalAsientos" 
+  [asientos]="asientos" 
+  [concierto]="{ nombre: entrada.conciertoNombre }"
+  [modo]="'cliente'"
+  (asientoSeleccionado)="onAsientoSeleccionado($event)"
+  (cerrarModal)="mostrarModalAsientos = false">
+</app-mapa-asientos>

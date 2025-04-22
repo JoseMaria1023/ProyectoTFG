@@ -1,0 +1,23 @@
+<div class="filtro-container">
+    <h2>Filtrar Conciertos por Artista</h2>
+  
+    <input type="number" [(ngModel)]="artistaId" placeholder="ID del artista" />
+  
+    <button (click)="buscarConciertosPorArtista()">Buscar</button>
+  
+    <div *ngIf="error" class="error">{{ error }}</div>
+  
+    <div *ngIf="conciertos.length > 0">
+      <h3>Conciertos encontrados:</h3>
+      <ul>
+        <li *ngFor="let concierto of conciertos">
+          {{ concierto.nombre }} - {{ concierto.fecha | date }} - Estado: {{ concierto.estado }}
+        </li>
+      </ul>
+    </div>
+  
+    <div *ngIf="!conciertos.length && !error">
+      <p>No hay conciertos para mostrar.</p>
+    </div>
+  </div>
+  

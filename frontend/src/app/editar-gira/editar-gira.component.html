@@ -1,0 +1,25 @@
+<div class="container">
+    <h2>Editar Gira</h2>
+    <form (ngSubmit)="actualizarGira()">
+      <div>
+        <label for="nombre">Nombre de la Gira:</label>
+        <input type="text" [(ngModel)]="gira.nombre" name="nombre" required />
+      </div>
+      <div>
+        <label for="descripcion">Descripción:</label>
+        <textarea [(ngModel)]="gira.descripcion" name="descripcion" required></textarea>
+      </div>
+      <div>
+        <label for="artista">Seleccionar Artista:</label>
+        <select [(ngModel)]="gira.artistaId" name="artista" required>
+          <option [ngValue]="null" disabled>Seleccione un artista</option>
+          <option *ngFor="let artista of artistas" [ngValue]="artista.idArtista">
+            {{ artista.nombre }}
+          </option>
+        </select>
+      </div>
+      <button type="submit">Actualizar Gira</button>
+      <button type="button" (click)="cancelar()">Cancelar</button>
+    </form>
+  </div>
+  

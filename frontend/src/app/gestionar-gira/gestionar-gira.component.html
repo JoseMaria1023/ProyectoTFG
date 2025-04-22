@@ -1,0 +1,28 @@
+<div class="gestionar-gira">
+    <h2>Gestión de Giras</h2>
+  
+    <!-- Lista de giras -->
+    <ul>
+      <li *ngFor="let gira of giras">
+        <strong>{{ gira.nombre }}</strong> - {{ gira.descripcion }}
+        <button (click)="seleccionarGira(gira)">Editar</button>
+        <button (click)="eliminarGira(gira.idGira)">Eliminar</button>
+      </li>
+    </ul>
+  
+    <hr />
+  
+    <!-- Mostrar formulario de edición o de creación -->
+    <div *ngIf="giraSeleccionada; else crear">
+      <app-editar-gira 
+        [gira]="giraSeleccionada" 
+        [artistas]="artistas"
+        (giraActualizada)="onGiraActualizada()"
+        (cancelarEdicion)="cancelarEdicion()"
+      ></app-editar-gira>
+    </div>
+    <ng-template #crear>
+      <app-crear-gira [artistas]="artistas" (giraCreada)="onGiraCreada()"></app-crear-gira>
+    </ng-template>
+  </div>
+  

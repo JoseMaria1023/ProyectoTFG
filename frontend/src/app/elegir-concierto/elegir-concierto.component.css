@@ -1,0 +1,33 @@
+.conciertos-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .concierto-card {
+    background: #f0f0f0;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .concierto-card p {
+    margin: 0 0 10px;
+    font-weight: bold;
+  }
+  
+  .concierto-card button {
+    padding: 8px 16px;
+    background-color: #ff00ff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .concierto-card button:hover {
+    background-color: #00ffff;
+  }
+  

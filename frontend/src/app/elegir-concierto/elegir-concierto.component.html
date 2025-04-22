@@ -1,0 +1,18 @@
+<div class="conciertos-container">
+  <h2>Elegir Concierto</h2>
+
+  <div class="filtro-artista">
+    <label for="artistaSelect">Filtrar por Artista:</label>
+    <select [(ngModel)]="artistaSeleccionado" [ngModelOptions]="{ standalone: true }">
+      <option [ngValue]="null">-- Selecciona un artista --</option>
+      <option *ngFor="let artista of artistas" [ngValue]="artista">{{ artista.nombre }}</option>
+    </select>
+    <button (click)="filtrarPorArtista()">Filtrar</button>
+    <button (click)="cargarTodos()">Mostrar Todos</button>
+  </div>
+
+  <div *ngFor="let concierto of conciertos" class="concierto-card">
+    <p>ID: {{ concierto.idConcierto }} - {{ concierto.nombre }}</p>
+    <button (click)="comprarEntrada(concierto)">Comprar Entrada</button>
+  </div>
+</div>

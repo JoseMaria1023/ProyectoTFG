@@ -1,0 +1,25 @@
+<div class="gestionar-conciertos">
+    <h2>Gestión de Conciertos</h2>
+    
+    <!-- Lista de conciertos -->
+    <ul>
+      <li *ngFor="let concierto of conciertos">
+        <strong>{{ concierto.nombre }}</strong> - Fecha: {{ concierto.fecha }} - Zona: {{ concierto.zonaId }} - Gira: {{ concierto.giraId }} - Estado: {{ concierto.estado }}
+        <button (click)="seleccionarConcierto(concierto)">Editar</button>
+        <button (click)="eliminarConcierto(concierto.idConcierto)">Eliminar</button>
+      </li>
+    </ul>
+    
+    <hr />
+    
+    <!-- Mostrar formulario de edición o creación según corresponda -->
+    <div *ngIf="conciertoSeleccionado; else crear">
+      <app-editar-concierto
+        [concierto]="conciertoSeleccionado"
+      ></app-editar-concierto>
+    </div>
+    <ng-template #crear>
+      <app-crear-concierto></app-crear-concierto>
+    </ng-template>
+  </div>
+  

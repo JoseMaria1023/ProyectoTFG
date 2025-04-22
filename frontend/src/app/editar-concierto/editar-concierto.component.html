@@ -1,0 +1,39 @@
+<div class="form-container">
+    <h2>Editar Concierto</h2>
+    <form (ngSubmit)="actualizarConcierto()">
+      <div>
+        <label for="nombre">Nombre del Concierto:</label>
+        <input type="text" id="nombre" [(ngModel)]="concierto.nombre" name="nombre" required>
+      </div>
+      <div>
+        <label for="fecha">Fecha del Concierto:</label>
+        <input type="datetime-local" id="fecha" [(ngModel)]="concierto.fecha" name="fecha" required>
+      </div>
+      <div>
+        <label for="zona">Selecciona una Zona:</label>
+        <select id="zona" [(ngModel)]="concierto.zonaId" name="zonaId" required>
+          <option *ngFor="let zona of zonas" [value]="zona.idZona">
+            {{ zona.nombre }}
+          </option>
+        </select>
+      </div>
+      <div>
+        <label for="gira">Selecciona una Gira:</label>
+        <select id="gira" [(ngModel)]="concierto.giraId" name="giraId" required>
+          <option *ngFor="let gira of giras" [value]="gira.idGira">
+            {{ gira.nombre }}
+          </option>
+        </select>
+      </div>
+      <div>
+        <label for="estado">Estado:</label>
+        <select id="estado" [(ngModel)]="concierto.estado" name="estado">
+          <option value="Activo">Activo</option>
+          <option value="Cancelado">Cancelado</option>
+          <option value="Pospuesto">Pospuesto</option>
+        </select>
+      </div>
+      <button type="submit">Actualizar Concierto</button>
+    </form>
+  </div>
+  

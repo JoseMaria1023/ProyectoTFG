@@ -1,0 +1,28 @@
+<div class="form-container">
+    <h2>Editar Asiento</h2>
+    <form (ngSubmit)="actualizarAsiento()">
+      <div>
+        <label for="numeracion">Numeración:</label>
+        <input type="text" id="numeracion" [(ngModel)]="asiento.numeracion" name="numeracion" required>
+      </div>
+      <div>
+        <label for="fila">Fila:</label>
+        <input type="number" id="fila" [(ngModel)]="asiento.fila" name="fila" required>
+      </div>
+      <div>
+        <label for="columna">Columna:</label>
+        <input type="number" id="columna" [(ngModel)]="asiento.columna" name="columna" required>
+      </div>
+      <div>
+        <label for="tipo">Tipo:</label>
+        <select id="tipo" [(ngModel)]="asiento.tipo" name="tipo">
+          <option value="Normal">Normal</option>
+          <option value="VIP">VIP</option>
+          <!-- Agrega más opciones si es necesario -->
+        </select>
+      </div>
+      <button type="submit">Actualizar Asiento</button>
+      <button type="button" (click)="eliminarAsiento()">Eliminar Asiento</button>
+    </form>
+  </div>
+  

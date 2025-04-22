@@ -1,0 +1,27 @@
+<div class="gestionar-recintos">
+    <h2>Gestión de Recintos</h2>
+  
+    <!-- Lista de recintos -->
+    <ul>
+      <li *ngFor="let recinto of recintos">
+        <strong>{{ recinto.nombre }}</strong> - {{ recinto.ubicacion }} - {{ recinto.capacidadTotal }}
+        <button (click)="seleccionarRecinto(recinto)">Editar</button>
+        <button (click)="eliminarRecinto(recinto.idRecinto)">Eliminar</button>
+      </li>
+    </ul>
+  
+    <hr />
+  
+    <!-- Mostrar formulario de edición o de creación según corresponda -->
+    <div *ngIf="recintoSeleccionado; else crear">
+      <app-editar-recinto
+        [recinto]="recintoSeleccionado"
+        (recintoActualizado)="onRecintoActualizado()"
+        (cancelarEdicion)="cancelarEdicion()"
+      ></app-editar-recinto>
+    </div>
+    <ng-template #crear>
+      <app-crear-recinto (recintoCreado)="onRecintoCreado()"></app-crear-recinto>
+    </ng-template>
+  </div>
+  

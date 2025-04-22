@@ -1,0 +1,15 @@
+<div class="modal-overlay">  
+  <div class="modal-content">
+    <h3>Selecciona un Asiento para: {{ concierto?.nombre }}</h3>
+    <div class="asientos-grid">
+      <button 
+        *ngFor="let asiento of asientos"
+        (click)="modo === 'artista' ? seleccionarArtista(asiento) : seleccionarCliente(asiento)"
+        [class.ocupado]="asiento.ocupado"
+        [ngStyle]="{'background-color': obtenerEstilo(asiento)}">
+        F{{ asiento.fila }} - C{{ asiento.columna }}
+      </button>
+    </div>
+    <button class="close-btn" (click)="cerrar()">Cerrar</button>
+  </div>
+</div>

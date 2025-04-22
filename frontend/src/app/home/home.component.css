@@ -1,0 +1,191 @@
+/* Fuente elegante */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+.home-container {
+  font-family: 'Montserrat', sans-serif;
+  color: #fff;
+  background-color: #121212;
+  overflow-x: hidden;
+}
+
+/* Hero Banner */
+.hero-banner {
+  position: relative;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(18,18,18,0.9), rgba(18,18,18,0.5));
+  backdrop-filter: blur(2px);
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  padding: 2rem;
+}
+
+.hero-content h1 {
+  font-size: 4.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  animation: fadeInDown 1s ease;
+}
+
+.hero-content p {
+  font-size: 1.5rem;
+  margin-top: 1rem;
+  animation: fadeInUp 1s ease;
+}
+
+.cta-button {
+  margin-top: 2rem;
+  background: linear-gradient(to right, #ff007f, #8e2de2);
+  color: #fff;
+  padding: 1rem 2.5rem;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s;
+}
+
+.cta-button:hover {
+  transform: scale(1.05);
+  box-shadow: none;
+}
+
+/* Próximos Conciertos */
+.concert-section {
+  background-color: #1a1a1a;
+  padding: 5rem 2rem;
+  text-align: center;
+}
+
+.concert-section h2 {
+  font-size: 2.8rem;
+  margin-bottom: 3rem;
+  color: #ff007f;
+}
+
+.concert-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.concert-card {
+  background-color: #2a2a2a;
+  border-radius: 15px;
+  overflow: hidden;
+  transition: transform 0.4s ease;
+  /* box-shadow eliminado */
+}
+
+.concert-card:hover {
+  transform: translateY(-10px);
+}
+
+.concert-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.concert-card h3 {
+  margin: 1rem 0 0.5rem;
+  font-size: 1.3rem;
+  color: #fff;
+}
+
+.concert-card p {
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  color: #ccc;
+}
+
+.concert-card button {
+  margin-bottom: 1.5rem;
+  padding: 0.6rem 1.5rem;
+  background: #ff007f;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.concert-card button:hover {
+  background: #ff338f;
+}
+
+/* Noticias */
+.news-section {
+  background: #101010;
+  padding: 5rem 2rem;
+  text-align: center;
+}
+
+.news-section h2 {
+  font-size: 2.5rem;
+  color: #8e2de2;
+  margin-bottom: 3rem;
+}
+
+.news-cards {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.news-card {
+  background: #1e1e1e;
+  color: #fff;
+  padding: 2rem;
+  border-radius: 15px;
+  max-width: 400px;
+  transition: all 0.3s ease;
+  border-left: 4px solid #ff007f;
+}
+
+.news-card:hover {
+  transform: translateY(-5px);
+  box-shadow: none;
+}
+
+/* Animaciones */
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

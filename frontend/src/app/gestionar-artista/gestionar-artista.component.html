@@ -1,0 +1,28 @@
+<div class="gestionar-artista">
+    <h2>Gestión de Artistas</h2>
+  
+    <!-- Lista de artistas existentes -->
+    <ul>
+      <li *ngFor="let artista of artistas">
+        {{ artista.nombre }} ({{ artista.generoMusical }} - {{ artista.nacionalidad }})
+        <button (click)="seleccionarArtista(artista)">Editar</button>
+        <button (click)="eliminarArtista(artista.idArtista)">Eliminar</button>
+      </li>
+    </ul>
+  
+    <hr />
+  
+    <!-- Mostrar componente correspondiente -->
+    <div *ngIf="artistaSeleccionado">
+      <app-editar-artista
+        [artista]="artistaSeleccionado"
+        (artistaActualizado)="onArtistaActualizado()"
+        (cancelarEdicion)="cancelarEdicion()"
+      ></app-editar-artista>
+    </div>
+  
+    <div *ngIf="!artistaSeleccionado">
+      <app-crear-artista (artistaCreado)="onArtistaCreado()"></app-crear-artista>
+    </div>
+  </div>
+  

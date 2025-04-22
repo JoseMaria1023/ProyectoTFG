@@ -1,0 +1,26 @@
+<div class="form-container">
+  <h2>Crear Zona</h2>
+  <form (ngSubmit)="onSubmit()">
+    <div>
+      <label for="nombre">Nombre de la Zona:</label>
+      <input type="text" id="nombre" [(ngModel)]="nombre" name="nombre" required>
+    </div>
+    <div>
+      <label for="recinto">Selecciona un Recinto:</label>
+      <select id="recinto" [(ngModel)]="recinto_id" name="recinto_id" required>
+        <option *ngFor="let recinto of recintos" [value]="recinto.idRecinto">
+          {{ recinto.nombre }}
+        </option>
+      </select>
+    </div>
+    <div>
+      <label for="precioBase">Precio Base:</label>
+      <input type="number" id="precioBase" [(ngModel)]="precioBase" name="precioBase" required>
+    </div>
+    <div>
+      <label for="precioVIP">Precio VIP (Opcional):</label>
+      <input type="number" id="precioVIP" [(ngModel)]="precioVIP" name="precioVIP">
+    </div>
+    <button type="submit">Crear Zona</button>
+  </form>
+</div>

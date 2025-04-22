@@ -1,0 +1,39 @@
+/* Contenedor de la configuración */
+.configuracion {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .configuracion label {
+    font-weight: bold;
+  }
+  
+  .configuracion input,
+  .configuracion select {
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+    text-align: center;
+  }
+  
+  button {
+    padding: 10px;
+    background-color: #ff00ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  button:hover {
+    background-color: #00ffff;
+  }
+  

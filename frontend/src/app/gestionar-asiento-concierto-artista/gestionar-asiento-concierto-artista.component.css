@@ -1,0 +1,53 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #141e30, #243b55);
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  .conciertos-container {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    border-radius: 12px;
+    padding: 30px;
+    max-width: 800px;
+    width: 100%;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    animation: fadeIn 0.8s ease-in-out;
+    margin-bottom: 20px;
+  }
+  
+  .concierto-card {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    color: #fff;
+  }
+  
+  button {
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(90deg, #00aaff, #0066ff);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s, background 0.3s;
+    margin-top: 10px;
+  }
+  
+  button:hover {
+    transform: scale(1.05);
+    background: linear-gradient(90deg, #0066ff, #0044cc);
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  

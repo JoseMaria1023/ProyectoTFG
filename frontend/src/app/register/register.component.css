@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+    background: radial-gradient(circle at 20% 30%, #1a0023, #0d0010 80%);
+    background-attachment: fixed;
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  ::selection {
+    background-color: #ff007f;
+    color: #fff;
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+.register-container {
+  max-width: 500px;
+  margin: 3rem auto;
+  background: linear-gradient(135deg, #1a1a1a, #2e003e);
+  padding: 2.5rem 3rem;
+  border-radius: 20px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+  font-family: 'Montserrat', sans-serif;
+  color: #ffffff;
+  animation: fadeIn 1s ease-out;
+}
+
+.register-container h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-weight: 700;
+  font-size: 2rem;
+  color: #ff007f;
+  text-shadow: 0 0 10px rgba(255, 0, 127, 0.5);
+}
+
+
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #ffb6e6;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: none;
+  border-radius: 10px;
+  background-color: #2b2b2b;
+  color: #ffffff;
+  font-size: 1rem;
+  outline: none;
+  transition: box-shadow 0.3s, background-color 0.3s;
+}
+
+input:focus {
+  background-color: #3d003d;
+  box-shadow: 0 0 0 2px #ff007f80;
+}
+
+.btn {
+  width: 100%;
+  padding: 0.9rem;
+  background: linear-gradient(90deg, #ff007f, #8e2de2);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.btn:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 600px) {
+  .register-container {
+    margin: 2rem 1rem;
+    padding: 2rem 1.5rem;
+  }
+
+  .btn {
+    font-size: 0.95rem;
+  }
+}

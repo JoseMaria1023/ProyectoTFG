@@ -1,0 +1,56 @@
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  margin: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #0057ff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button.cancelar {
+  background-color: #888;
+}
+
+.mensaje-exito {
+  color: green;
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+.mensaje-error {
+  color: red;
+  margin-top: 1rem;
+  font-weight: bold;
+}

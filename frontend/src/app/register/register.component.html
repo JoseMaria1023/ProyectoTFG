@@ -1,0 +1,34 @@
+<div class="register-container">
+    <h2>Registrar cuenta</h2>
+    <form (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" [(ngModel)]="nombre" name="nombre" required />
+        </div>
+        <div class="form-group">
+            <label for="apellidos">Apellidos</label>
+            <input type="text" id="apellidos" [(ngModel)]="apellidos" name="apellidos" required />
+        </div>
+        <div class="form-group">
+            <label for="username">Nombre de usuario</label>
+            <input type="text" id="username" [(ngModel)]="username" name="username" required />
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" [(ngModel)]="email" name="email" required />
+        </div>
+        <div class="form-group">
+            <label for="telefono">Teléfono (opcional)</label>
+            <input type="text" id="telefono" [(ngModel)]="telefono" name="telefono" />
+        </div>
+        <div class="form-group">
+            <label for="password">Contraseña</label>
+            <input type="password" id="password" [(ngModel)]="password" name="password" required />
+        </div>
+        <div class="form-group">
+            <label for="confirmPassword">Confirmar contraseña</label>
+            <input type="password" id="confirmPassword" [(ngModel)]="confirmPassword" name="confirmPassword" required />
+        </div>
+        <button type="submit" class="btn">Registrar</button>
+    </form>
+</div>

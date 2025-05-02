@@ -3,8 +3,8 @@ package com.jve.proyecto.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.jve.proyecto.dto.AsientoDTO;
 import com.jve.proyecto.entity.Asiento;
@@ -12,17 +12,20 @@ import com.jve.proyecto.entity.Concierto;
 import com.jve.proyecto.repository.AsientoRepository;
 import com.jve.proyecto.repository.ConciertoRepository;
 
+
+import com.jve.proyecto.converter.AsientoConverter;
+
 @Service
 public class AsientoService {
 
     private final AsientoRepository asientoRepository;
     private final ConciertoRepository conciertoRepository;
-    private final ModelMapper modelMapper;
+    private final AsientoConverter asientoConverter;
 
-    public AsientoService(AsientoRepository asientoRepository, ConciertoRepository conciertoRepository, ModelMapper modelMapper) {
+    public AsientoService(AsientoRepository asientoRepository, ConciertoRepository conciertoRepository, AsientoConverter asientoConverter) {
         this.asientoRepository = asientoRepository;
         this.conciertoRepository = conciertoRepository;
-        this.modelMapper = modelMapper;
+        this.asientoConverter = asientoConverter;
     }
 
     public AsientoDTO crearAsiento(AsientoDTO asientoDTO) {
@@ -45,34 +48,49 @@ public class AsientoService {
 
         Asiento asientoGuardado = asientoRepository.save(asiento);
 
-        return modelMapper.map(asientoGuardado, AsientoDTO.class);
+        return asientoConverter.toDto(asientoGuardado);
     }
 
     public AsientoDTO obtenerAsientoPorId(Long id) {
         Asiento asiento = asientoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Asiento no encontrado con ID: " + id));
-        return modelMapper.map(asiento, AsientoDTO.class);
+        return asientoConverter.toDto(asiento);
     }
 
     public List<AsientoDTO> obtenerTodosLosAsientos() {
         return asientoRepository.findAll().stream()
-                .map(asiento -> modelMapper.map(asiento, AsientoDTO.class))
+                .map(asiento -> asientoConverter.toDto(asiento))
                 .collect(Collectors.toList());
     }
 
     public List<AsientoDTO> obtenerAsientosPorConcierto(Long conciertoId) {
         return asientoRepository.findByConciertoIdConcierto(conciertoId)
                 .stream()
-                .map(asiento -> modelMapper.map(asiento, AsientoDTO.class))
+                .map(asiento -> asientoConverter.toDto(asiento))
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public AsientoDTO actualizarAsiento(Long id, AsientoDTO asientoDTO) {
         Asiento asiento = asientoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Asiento no encontrado con ID: " + id));
-        modelMapper.map(asientoDTO, asiento);
-        Asiento asientoActualizado = asientoRepository.save(asiento);
-        return modelMapper.map(asientoActualizado, AsientoDTO.class);
+            .orElseThrow(() -> new RuntimeException("Asiento no encontrado con ID: " + id));
+
+        if (asientoDTO.getNumeracion() != null) {
+            asiento.setNumeracion(asientoDTO.getNumeracion());
+        }
+        if (asientoDTO.getFila() != null) {
+            asiento.setFila(asientoDTO.getFila());
+        }
+        if (asientoDTO.getColumna() != null) {
+            asiento.setColumna(asientoDTO.getColumna());
+        }
+        if (asientoDTO.getTipo() != null) {
+            asiento.setTipo(Asiento.TipoAsiento.valueOf(asientoDTO.getTipo().toUpperCase()));
+        }
+
+        Asiento actualizado = asientoRepository.save(asiento);
+
+        return asientoConverter.toDto(actualizado);
     }
 
     public void eliminarAsiento(Long id) {

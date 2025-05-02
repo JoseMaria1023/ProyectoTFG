@@ -23,36 +23,41 @@ import { EditarConciertoComponent } from './editar-concierto/editar-concierto.co
 import { GestionarConciertosComponent } from './gestionar-concierto/gestionar-concierto.component';
 import { EditarAsientoComponent } from './editar-asiento/editar-asiento.component';
 import { GestionarAsientosComponent } from './gestionar-asiento/gestionar-asiento.component';
-
 import { GestionarAsientoConciertoArtistaComponent } from './gestionar-asiento-concierto-artista/gestionar-asiento-concierto-artista.component';
 import { MiPerfilComponent } from './mi-perfil/mi-perfil.component';
+import { AdminGuard } from './Guards/admin.guard'; 
+import { UserGuard } from './Guards/user.guard';
+import { ArtistaGuard } from './Guards/artista.guard';
+import { CrearRecintoConZonasComponent } from './crear-recinto-con-zonas/crear-recinto-con-zonas.component';
 
 export const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'Crear-gira', component: CrearGiraComponent },
-  { path: 'Crear-artista', component: CrearArtistaComponent },
-  { path: 'Crear-recinto', component: CrearRecintoComponent },
-  { path: 'Editar-recinto', component: EditarRecintoComponent },
-  { path: 'Gestionar-recinto', component: GestionarRecintosComponent},
-  { path: 'Crear-zona', component: CrearZonaComponent },
-  { path: 'Editar-zona', component: EditarZonaComponent },
-  { path: 'Gestionar-zona', component: GestionarZonaComponent },
-  { path: 'Crear-concierto', component: CrearConciertoComponent},
-  { path: 'Editar-concierto', component: EditarConciertoComponent},
-  { path: 'Gestionar-concierto', component: GestionarConciertosComponent},
-  { path: 'Crear-asiento', component: CrearAsientoComponent},
-  { path: 'Editar-asiento', component: EditarAsientoComponent},
-  { path: 'Gestionar-asiento', component: GestionarAsientosComponent},
+  { path: 'Crear-gira', component: CrearGiraComponent,canActivate: [AdminGuard] },
+  { path: 'Crear-artista', component: CrearArtistaComponent,canActivate: [AdminGuard] },
+  { path: 'Crear-recinto', component: CrearRecintoComponent ,canActivate: [AdminGuard]},
+  { path: 'Editar-recinto', component: EditarRecintoComponent,canActivate: [AdminGuard] },
+  { path: 'Gestionar-recinto', component: GestionarRecintosComponent,canActivate: [AdminGuard]},
+  { path: 'Crear-zona', component: CrearZonaComponent,canActivate: [AdminGuard] },
+  { path: 'Editar-zona', component: EditarZonaComponent,canActivate: [AdminGuard] },
+  { path: 'Gestionar-zona', component: GestionarZonaComponent,canActivate: [AdminGuard] },
+  { path: 'Gestionar-zona', component: GestionarZonaComponent,canActivate: [AdminGuard] },
+  { path: 'Crear-zonas-recintos', component: CrearRecintoConZonasComponent,canActivate: [AdminGuard] },
+  { path: 'Crear-concierto', component: CrearConciertoComponent,canActivate: [AdminGuard]},
+  { path: 'Editar-concierto', component: EditarConciertoComponent,canActivate: [AdminGuard]},
+  { path: 'Gestionar-concierto', component: GestionarConciertosComponent,canActivate: [AdminGuard]},
+  { path: 'Crear-asiento', component: CrearAsientoComponent,canActivate: [AdminGuard,ArtistaGuard]},
+  { path: 'Editar-asiento', component: EditarAsientoComponent,canActivate: [AdminGuard, ArtistaGuard]},
+  { path: 'Gestionar-asiento', component: GestionarAsientosComponent,canActivate: [AdminGuard, ArtistaGuard]},
   { path: 'Comprar-entrada', component: ComprarEntradaComponent},
   { path: 'Elegir-concierto', component: ElegirConciertoComponent},
-  { path: 'Gestionar-artista', component: GestionarArtistaComponent},
-  { path: 'Gestionar-gira', component: GestionarGiraComponent},
-  { path: 'Editar-artista', component: EditarArtistaComponent},
-  { path: 'Editar-gira', component: EditarGiraComponent},
+  { path: 'Gestionar-artista', component: GestionarArtistaComponent,canActivate: [AdminGuard]},
+  { path: 'Gestionar-gira', component: GestionarGiraComponent,canActivate: [AdminGuard]},
+  { path: 'Editar-artista', component: EditarArtistaComponent,canActivate: [AdminGuard]},
+  { path: 'Editar-gira', component: EditarGiraComponent,canActivate: [AdminGuard]},
   { path: 'mi-perfil', component: MiPerfilComponent },
-  { path: 'Gestionar-asiento-artista', component: GestionarAsientoConciertoArtistaComponent },
+  { path: 'Gestionar-asiento-artista', component: GestionarAsientoConciertoArtistaComponent,canActivate: [ArtistaGuard] },
 
 
 

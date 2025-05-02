@@ -7,7 +7,6 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,19 +15,20 @@ import org.springframework.web.multipart.MultipartFile;
 import com.jve.proyecto.dto.ArtistaDTO;
 import com.jve.proyecto.entity.Artista;
 import com.jve.proyecto.repository.ArtistaRepository;
+import com.jve.proyecto.converter.ArtistaConverter;
 
 @Service
 public class ArtistaService {
 
     private final ArtistaRepository artistaRepository;
     private final PasswordEncoder passwordEncoder;
-    private final ModelMapper modelMapper;
+    private final ArtistaConverter artistaConverter;
     private static final String UPLOAD_DIR = "uploads/";
 
-    public ArtistaService(ArtistaRepository artistaRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
+    public ArtistaService(ArtistaRepository artistaRepository, PasswordEncoder passwordEncoder, ArtistaConverter artistaConverter) {
         this.artistaRepository = artistaRepository;
         this.passwordEncoder = passwordEncoder;
-        this.modelMapper = modelMapper;
+        this.artistaConverter = artistaConverter;
     }
 
     public ArtistaDTO crearArtistaConFoto(String nombre, String apellidos, String username, String password,
@@ -52,7 +52,7 @@ public class ArtistaService {
 
             Artista artistaGuardado = artistaRepository.save(artista);
 
-            return modelMapper.map(artistaGuardado, ArtistaDTO.class);
+            return artistaConverter.toDto(artistaGuardado);
 
         } catch (IOException e) {
             throw new RuntimeException("Error al subir la imagen: " + e.getMessage());
@@ -62,7 +62,7 @@ public class ArtistaService {
     public ArtistaDTO obtenerArtistaPorId(Long id) {
         Artista artista = artistaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Artista no encontrado con ID: " + id));
-        return modelMapper.map(artista, ArtistaDTO.class);
+        return artistaConverter.toDto(artista);
     }
 
     public Artista getByUsername(String username) {
@@ -72,27 +72,22 @@ public class ArtistaService {
 
     public List<ArtistaDTO> obtenerTodosLosArtistas() {
         return artistaRepository.findAll().stream()
-                .map(artista -> modelMapper.map(artista, ArtistaDTO.class))
+                .map(artista -> artistaConverter.toDto(artista))
                 .collect(Collectors.toList());
     }
 
     public List<ArtistaDTO> obtenerListaArtistas() {
         return artistaRepository.findAll().stream()
-                .map(artista -> {
-                    ArtistaDTO dto = new ArtistaDTO();
-                    dto.setIdArtista(artista.getIdArtista());
-                    dto.setNombre(artista.getNombre());
-                    return dto;
-                })
+                .map(artista -> artistaConverter.toDto(artista))
                 .collect(Collectors.toList());
     }
 
     public ArtistaDTO actualizarArtista(Long id, ArtistaDTO artistaDTO) {
         Artista artista = artistaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Artista no encontrado con ID: " + id));
-        modelMapper.map(artistaDTO, artista);
+        artistaConverter.toEntity(artistaDTO);
         Artista artistaActualizado = artistaRepository.save(artista);
-        return modelMapper.map(artistaActualizado, ArtistaDTO.class);
+        return artistaConverter.toDto(artistaActualizado);
     }
 
     public void eliminarArtista(Long id) {

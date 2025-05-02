@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.jve.proyecto.configuration.ModelMapperConfig;
 import com.jve.proyecto.dto.PagoDTO;
 import com.jve.proyecto.entity.Entrada;
 import com.jve.proyecto.entity.Pago;
@@ -15,23 +14,23 @@ import com.jve.proyecto.entity.Usuario;
 import com.jve.proyecto.repository.EntradaRepository;
 import com.jve.proyecto.repository.PagoRepository;
 import com.jve.proyecto.repository.UsuarioRepository;
-import org.modelmapper.ModelMapper;
+import com.jve.proyecto.converter.PagoConverter;
 
 @Service
 public class PagoService {
 
     private final PagoRepository pagoRepository;
     private final EntradaRepository entradaRepository;
-    private final UsuarioRepository usuarioRepository; // Inyectamos el repositorio de Usuario
-    private final ModelMapper modelMapper;
+    private final UsuarioRepository usuarioRepository;
+    private final PagoConverter pagoConverter; // Inyectamos el PagoConverter
 
     public PagoService(PagoRepository pagoRepository, 
                        EntradaRepository entradaRepository,
-                       UsuarioRepository usuarioRepository, ModelMapperConfig modelMapperConfig) {
+                       UsuarioRepository usuarioRepository, PagoConverter pagoConverter) {
         this.pagoRepository = pagoRepository;
         this.entradaRepository = entradaRepository;
         this.usuarioRepository = usuarioRepository;
-        this.modelMapper = modelMapperConfig.modelMapper();
+        this.pagoConverter = pagoConverter;
     }
 
     public PagoDTO crearPago(PagoDTO pagoDTO) {
@@ -48,44 +47,45 @@ public class PagoService {
         }
 
         // Recuperar la entrada usando el ID del DTO
-        Entrada entrada = entradaRepository.findById(pagoDTO.getEntradaId()).orElseThrow(() ->
+        Entrada entrada = entradaRepository.findById(pagoDTO.getEntradaId()).orElseThrow(() -> 
             new RuntimeException("Entrada no encontrada con ID: " + pagoDTO.getEntradaId())
         );
 
         // Recuperar el usuario usando el ID del DTO
-        Usuario usuario = usuarioRepository.findById(pagoDTO.getUsuarioId()).orElseThrow(() ->
+        Usuario usuario = usuarioRepository.findById(pagoDTO.getUsuarioId()).orElseThrow(() -> 
             new RuntimeException("Usuario no encontrado con ID: " + pagoDTO.getUsuarioId())
         );
 
         // Mapear el DTO a la entidad Pago y asignar la entrada, el usuario y la fecha actual
-        Pago pago = modelMapper.map(pagoDTO, Pago.class);
+        Pago pago = pagoConverter.toEntity(pagoDTO); // Usamos el converter para mapear de DTO a entidad
         pago.setMetodoPago(metodoPago);
         pago.setEntrada(entrada);
         pago.setUsuario(usuario);
         pago.setFechaPago(LocalDateTime.now());
 
         Pago pagoGuardado = pagoRepository.save(pago);
-        return modelMapper.map(pagoGuardado, PagoDTO.class);
+        return pagoConverter.toDto(pagoGuardado); // Usamos el converter para mapear de entidad a DTO
     }
 
     public PagoDTO obtenerPagoPorId(Long id) {
         Pago pago = pagoRepository.findById(id).orElseThrow(() -> 
                 new RuntimeException("Pago no encontrado con ID: " + id));
-        return modelMapper.map(pago, PagoDTO.class);
+        return pagoConverter.toDto(pago); // Usamos el converter
     }
 
     public List<PagoDTO> obtenerTodosLosPagos() {
         return pagoRepository.findAll().stream()
-                .map(pago -> modelMapper.map(pago, PagoDTO.class))
+                .map(pago -> pagoConverter.toDto(pago)) // Usamos el converter
                 .collect(Collectors.toList());
     }
 
     public PagoDTO actualizarPago(Long id, PagoDTO pagoDTO) {
         Pago pago = pagoRepository.findById(id).orElseThrow(() -> 
                 new RuntimeException("Pago no encontrado con ID: " + id));
-        modelMapper.map(pagoDTO, pago);
+        
+        pagoConverter.toEntity(pagoDTO); // Convertimos el DTO a la entidad para actualizarla
         Pago pagoActualizado = pagoRepository.save(pago);
-        return modelMapper.map(pagoActualizado, PagoDTO.class);
+        return pagoConverter.toDto(pagoActualizado); // Usamos el converter para devolver el DTO actualizado
     }
 
     public void eliminarPago(Long id) {

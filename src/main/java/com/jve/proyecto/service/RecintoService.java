@@ -5,47 +5,46 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.jve.proyecto.configuration.ModelMapperConfig;
 import com.jve.proyecto.dto.RecintoDTO;
 import com.jve.proyecto.entity.Recinto;
 import com.jve.proyecto.repository.RecintoRepository;
-import org.modelmapper.ModelMapper;
+import com.jve.proyecto.converter.RecintoConverter;
 
 @Service
 public class RecintoService {
 
     private final RecintoRepository recintoRepository;
-    private final ModelMapper modelMapper;
+    private final RecintoConverter recintoConverter; // Inyectamos el RecintoConverter
 
-    public RecintoService(RecintoRepository recintoRepository, ModelMapperConfig modelMapperConfig) {
+    public RecintoService(RecintoRepository recintoRepository, RecintoConverter recintoConverter) {
         this.recintoRepository = recintoRepository;
-        this.modelMapper = modelMapperConfig.modelMapper();
+        this.recintoConverter = recintoConverter;
     }
 
     public RecintoDTO crearRecinto(RecintoDTO recintoDTO) {
-        Recinto recinto = modelMapper.map(recintoDTO, Recinto.class);
+        Recinto recinto = recintoConverter.toEntity(recintoDTO); // Usamos el converter para mapear de DTO a entidad
         Recinto recintoGuardado = recintoRepository.save(recinto);
-        return modelMapper.map(recintoGuardado, RecintoDTO.class);
+        return recintoConverter.toDto(recintoGuardado); // Usamos el converter para mapear de entidad a DTO
     }
 
     public RecintoDTO obtenerRecintoPorId(Long id) {
         Recinto recinto = recintoRepository.findById(id).orElseThrow(() -> 
                 new RuntimeException("Recinto no encontrado con ID: " + id));
-        return modelMapper.map(recinto, RecintoDTO.class);
+        return recintoConverter.toDto(recinto); // Usamos el converter
     }
 
     public List<RecintoDTO> obtenerTodosLosRecintos() {
         return recintoRepository.findAll().stream()
-                .map(recinto -> modelMapper.map(recinto, RecintoDTO.class))
+                .map(recinto -> recintoConverter.toDto(recinto)) // Usamos el converter
                 .collect(Collectors.toList());
     }
 
     public RecintoDTO actualizarRecinto(Long id, RecintoDTO recintoDTO) {
         Recinto recinto = recintoRepository.findById(id).orElseThrow(() -> 
                 new RuntimeException("Recinto no encontrado con ID: " + id));
-        modelMapper.map(recintoDTO, recinto);
+        recintoConverter.toEntity(recintoDTO); // Convertimos el DTO a la entidad para actualizarla
         Recinto recintoActualizado = recintoRepository.save(recinto);
-        return modelMapper.map(recintoActualizado, RecintoDTO.class);
+        return recintoConverter.toDto(recintoActualizado); // Usamos el converter para devolver el DTO actualizado
     }
 
     public void eliminarRecinto(Long id) {

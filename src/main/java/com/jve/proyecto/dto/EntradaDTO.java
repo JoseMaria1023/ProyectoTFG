@@ -25,6 +25,6 @@ public class EntradaDTO {
     private Long conciertoId;
     private Long asientoId;
     private String estado;
-    private ConciertoDTO concierto; // 👈 necesario para mostrar en frontend
+    private ConciertoDTO concierto; 
     private AsientoDTO asiento;     //
 }

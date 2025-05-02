@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -10,23 +10,35 @@ export class RecintoService {
 
   constructor(private http: HttpClient) {}
 
+  private getAuthHeaders(): HttpHeaders {
+    const token = sessionStorage.getItem('token');
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+  }
+
   // Método para crear un recinto
   crearRecinto(recinto: any): Observable<any> {
-    return this.http.post(this.apiUrl, recinto);
+    const headers = this.getAuthHeaders();
+    return this.http.post(this.apiUrl, recinto, { headers });
   }
 
   // Método para obtener todos los recintos
   obtenerRecintos(): Observable<any> {
-    return this.http.get(this.apiUrl);
+    const headers = this.getAuthHeaders();
+    return this.http.get(this.apiUrl, { headers });
   }
   
   // Método para actualizar un recinto
   actualizarRecinto(id: number, recinto: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, recinto);
+    const headers = this.getAuthHeaders();
+    return this.http.put(`${this.apiUrl}/${id}`, recinto, { headers });
   }
 
   // Método para eliminar un recinto
   eliminarRecinto(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    const headers = this.getAuthHeaders();
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers });
   }
 }

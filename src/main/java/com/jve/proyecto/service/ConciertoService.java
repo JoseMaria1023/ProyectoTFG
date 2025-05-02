@@ -1,19 +1,18 @@
 package com.jve.proyecto.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.jve.proyecto.dto.ConciertoDTO;
 import com.jve.proyecto.entity.Concierto;
-import com.jve.proyecto.entity.Concierto.EstadoConcierto;
-import com.jve.proyecto.entity.Gira;
 import com.jve.proyecto.entity.Zona;
 import com.jve.proyecto.repository.ConciertoRepository;
 import com.jve.proyecto.repository.GiraRepository;
 import com.jve.proyecto.repository.ZonaRepository;
+import com.jve.proyecto.converter.ConciertoConverter;
 
 @Service
 public class ConciertoService {
@@ -21,16 +20,16 @@ public class ConciertoService {
     private final ConciertoRepository conciertoRepository;
     private final ZonaRepository zonaRepository;
     private final GiraRepository giraRepository;
-    private final ModelMapper modelMapper;
+    private final ConciertoConverter conciertoConverter;
 
-    public ConciertoService(ConciertoRepository conciertoRepository, 
-                            ZonaRepository zonaRepository, 
+    public ConciertoService(ConciertoRepository conciertoRepository,
+                            ZonaRepository zonaRepository,
                             GiraRepository giraRepository,
-                            ModelMapper modelMapper) {
+                            ConciertoConverter conciertoConverter) {
         this.conciertoRepository = conciertoRepository;
         this.zonaRepository = zonaRepository;
         this.giraRepository = giraRepository;
-        this.modelMapper = modelMapper;
+        this.conciertoConverter = conciertoConverter;
     }
 
     public ConciertoDTO crearConcierto(ConciertoDTO conciertoDTO) {
@@ -38,64 +37,85 @@ public class ConciertoService {
             .nombre(conciertoDTO.getNombre())
             .fecha(conciertoDTO.getFecha())
             .zona(zonaRepository.findById(conciertoDTO.getZonaId())
-                  .orElseThrow(() -> new RuntimeException("Zona no encontrada")))
+                .orElseThrow(() -> new RuntimeException("Zona no encontrada")))
             .gira(giraRepository.findById(conciertoDTO.getGiraId())
-                  .orElseThrow(() -> new RuntimeException("Gira no encontrada")))
-            .estado(EstadoConcierto.valueOf(conciertoDTO.getEstado().toUpperCase()))
+                .orElseThrow(() -> new RuntimeException("Gira no encontrada")))
+            .estado(Enum.valueOf(Concierto.EstadoConcierto.class, conciertoDTO.getEstado().toUpperCase()))
             .build();
 
-        Concierto conciertoGuardado = conciertoRepository.save(concierto);
-        return modelMapper.map(conciertoGuardado, ConciertoDTO.class);
+        Concierto guardado = conciertoRepository.save(concierto);
+        return conciertoConverter.toDto(guardado);
     }
 
     public ConciertoDTO obtenerConciertoPorId(Long id) {
-        Concierto concierto = conciertoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Concierto no encontrado con ID: " + id));
-        return modelMapper.map(concierto, ConciertoDTO.class);
+        Concierto c = conciertoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Concierto no encontrado con ID: " + id));
+        return conciertoConverter.toDto(c);
     }
 
     public List<ConciertoDTO> obtenerTodosLosConciertos() {
         return conciertoRepository.findAll().stream()
-                .map(concierto -> modelMapper.map(concierto, ConciertoDTO.class))
-                .collect(Collectors.toList());
+            .map(conciertoConverter::toDto)
+            .collect(Collectors.toList());
+    }
+
+    public List<ConciertoDTO> obtenerConciertosEntreFechas(LocalDateTime from, LocalDateTime to) {
+        return conciertoRepository.findByFechaBetween(from, to).stream()
+            .map(conciertoConverter::toDto)
+            .collect(Collectors.toList());
+    }
+
+    public List<ConciertoDTO> filtrarConciertos(Long artistaId, LocalDateTime fechaDesde,
+                                                LocalDateTime fechaHasta, String estado) {
+        return conciertoRepository.findAll().stream()
+            .filter(con -> {
+                boolean ok = true;
+                if (artistaId != null) {
+                    ok &= con.getGira() != null
+                       && con.getGira().getArtista() != null
+                       && con.getGira().getArtista().getIdArtista().equals(artistaId);
+                }
+                if (fechaDesde != null && fechaHasta != null) {
+                    ok &= !con.getFecha().isBefore(fechaDesde)
+                       && !con.getFecha().isAfter(fechaHasta);
+                }
+                if (estado != null && !estado.isEmpty()) {
+                    ok &= con.getEstado().name().equalsIgnoreCase(estado);
+                }
+                return ok;
+            })
+            .map(conciertoConverter::toDto)
+            .collect(Collectors.toList());
     }
 
     public List<ConciertoDTO> obtenerConciertosPorArtista(Long artistaId) {
-        // Filtramos todos los conciertos cuya gira tenga asignado un artista con el id indicado
-        List<Concierto> conciertos = conciertoRepository.findAll().stream()
-            .filter(concierto -> concierto.getGira() != null 
-                    && concierto.getGira().getArtista() != null 
-                    && concierto.getGira().getArtista().getIdArtista().equals(artistaId))
+        return conciertoRepository.findAll().stream()
+            .filter(con -> con.getGira()!=null 
+                        && con.getGira().getArtista()!=null 
+                        && con.getGira().getArtista().getIdArtista().equals(artistaId))
+            .map(conciertoConverter::toDto)
             .collect(Collectors.toList());
-    
-        return conciertos.stream()
-                .map(concierto -> modelMapper.map(concierto, ConciertoDTO.class))
-                .collect(Collectors.toList());
     }
 
-    public ConciertoDTO actualizarConcierto(Long id, ConciertoDTO conciertoDTO) {
-        Concierto concierto = conciertoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Concierto no encontrado con ID: " + id));
-    
-        Zona zona = zonaRepository.findById(conciertoDTO.getZonaId())
-                .orElseThrow(() -> new RuntimeException("Zona no encontrada con ID: " + conciertoDTO.getZonaId()));
-    
-        Gira gira = giraRepository.findById(conciertoDTO.getGiraId())
-                .orElseThrow(() -> new RuntimeException("Gira no encontrada con ID: " + conciertoDTO.getGiraId()));
-    
-        concierto.setNombre(conciertoDTO.getNombre());
-        concierto.setFecha(conciertoDTO.getFecha());
-        concierto.setZona(zona);
-        concierto.setGira(gira);
-        concierto.setEstado(EstadoConcierto.valueOf(conciertoDTO.getEstado().toUpperCase()));
-    
-        Concierto conciertoActualizado = conciertoRepository.save(concierto);
-        return modelMapper.map(conciertoActualizado, ConciertoDTO.class);
+    public ConciertoDTO actualizarConcierto(Long id, ConciertoDTO dto) {
+        Concierto con = conciertoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Concierto no encontrado con ID: " + id));
+
+        Zona zona = zonaRepository.findById(dto.getZonaId())
+            .orElseThrow(() -> new RuntimeException("Zona no encontrada con ID: " + dto.getZonaId()));
+
+        con.setNombre(dto.getNombre());
+        con.setFecha(dto.getFecha());
+        con.setZona(zona);
+        con.setEstado(Enum.valueOf(Concierto.EstadoConcierto.class, dto.getEstado().toUpperCase()));
+
+        Concierto updated = conciertoRepository.save(con);
+        return conciertoConverter.toDto(updated);
     }
 
     public void eliminarConcierto(Long id) {
-        Concierto concierto = conciertoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Concierto no encontrado con ID: " + id));
-        conciertoRepository.delete(concierto);
+        Concierto c = conciertoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Concierto no encontrado con ID: " + id));
+        conciertoRepository.delete(c);
     }
 }

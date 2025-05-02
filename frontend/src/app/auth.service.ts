@@ -51,6 +51,9 @@ export class AuthService {
     return sessionStorage.getItem('token');
   }
 
+  hasRole(role: string): boolean {
+    return this.getRoles().includes(role);
+  }
   getRoles(): string[] {
     try {
       return JSON.parse(sessionStorage.getItem('roles') || '[]');
@@ -76,7 +79,7 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
-    return this.getRoles().includes('ADMIN');
+    return this.getRoles().includes('ROLE_ADMIN');
   }
 
   isUser(): boolean {

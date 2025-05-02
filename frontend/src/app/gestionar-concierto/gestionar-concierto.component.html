@@ -1,25 +1,28 @@
-<div class="gestionar-conciertos">
-    <h2>Gestión de Conciertos</h2>
-    
-    <!-- Lista de conciertos -->
-    <ul>
-      <li *ngFor="let concierto of conciertos">
-        <strong>{{ concierto.nombre }}</strong> - Fecha: {{ concierto.fecha }} - Zona: {{ concierto.zonaId }} - Gira: {{ concierto.giraId }} - Estado: {{ concierto.estado }}
+<div class="form-container">
+  <h2>Gestión de Conciertos</h2>
+
+  <ul class="gira-lista">
+    <li *ngFor="let concierto of conciertos">
+      <strong>{{ concierto.nombre }}</strong> - 
+      Fecha: {{ concierto.fecha }} - 
+      Zona: {{ concierto.zonaId }} - 
+      Gira: {{ concierto.giraId }} - 
+      Estado: {{ concierto.estado }}
+      
+      <div class="botones-acciones">
         <button (click)="seleccionarConcierto(concierto)">Editar</button>
-        <button (click)="eliminarConcierto(concierto.idConcierto)">Eliminar</button>
-      </li>
-    </ul>
-    
-    <hr />
-    
-    <!-- Mostrar formulario de edición o creación según corresponda -->
-    <div *ngIf="conciertoSeleccionado; else crear">
-      <app-editar-concierto
-        [concierto]="conciertoSeleccionado"
-      ></app-editar-concierto>
-    </div>
-    <ng-template #crear>
-      <app-crear-concierto></app-crear-concierto>
-    </ng-template>
+        <button type="button" (click)="eliminarConcierto(concierto.idConcierto)">Eliminar</button>
+      </div>
+    </li>
+  </ul>
+
+  <hr />
+
+  <div *ngIf="conciertoSeleccionado; else crear">
+    <app-editar-concierto [concierto]="conciertoSeleccionado"></app-editar-concierto>
   </div>
-  
+
+  <ng-template #crear>
+    <app-crear-concierto></app-crear-concierto>
+  </ng-template>
+</div>

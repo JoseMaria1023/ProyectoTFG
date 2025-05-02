@@ -21,10 +21,9 @@ export class ComprarEntradaComponent implements OnInit {
   asientos: any[] = [];
   mostrarModalAsientos: boolean = false;
 
-  // Objeto que almacena la información de la entrada a comprar.
   entrada: any = {
-    tipo: 'Normal',           // Valor base (ya no usado para asignar precio)
-    precioVenta: 24,          // Valor por defecto: 24€ para asientos normales
+    tipo: 'Normal',
+    precioVenta: 24,
     usuarioId: null,
     conciertoId: null,
     conciertoNombre: '',
@@ -33,17 +32,18 @@ export class ComprarEntradaComponent implements OnInit {
     estado: 'Disponible'
   };
 
-  // Objeto para el pago.
   pago = {
     cantidad: 0,
     metodoPago: '',
-    estado: '',             // Se establecerá a 'PENDIENTE' en el método realizarPago()
+    estado: '',
     entradaId: null,
     usuarioId: null
   };
+
   datosTarjeta = { numero: '', nombre: '', expiracion: '', cvv: '' };
   datosPaypal = { email: '' };
   datosTransferencia = { nombre: '', iban: '' };
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -92,8 +92,6 @@ export class ComprarEntradaComponent implements OnInit {
     );
   }
 
-  // Método para seleccionar el asiento en el flujo de compra, utilizando el método
-  // "seleccionarCliente" que emite el evento "asientoSeleccionado" en MapaAsientosComponent.
   onAsientoSeleccionado(asiento: any): void {
     if (!asiento.idAsiento) {
       console.error("No se encontró el ID del asiento en el objeto", asiento);
@@ -103,19 +101,19 @@ export class ComprarEntradaComponent implements OnInit {
     this.entrada.asientoNombre = `F${asiento.fila} - C${asiento.columna}`;
     
     if (asiento.tipo === 'VIP') {
-      asiento.vip = true;  // Marcar como VIP
-      this.entrada.precioVenta = 43;  // Asignar precio para asiento VIP
-      asiento.color = 'gold';  // Cambiar el color a dorado
+      asiento.vip = true;
+      this.entrada.precioVenta = 43;
+      asiento.color = 'gold';
     } else {
-      this.entrada.precioVenta = 24;  // Asignar precio para asiento normal
-      asiento.color = 'white';  // Cambiar el color a blanco para asientos normales
+      this.entrada.precioVenta = 24;
+      asiento.color = 'white';
     }
     
     this.mostrarModalAsientos = false;
   }
-  
 
   comprarEntrada(): void {
+    // 1. Validaciones previas
     if (!this.entrada.conciertoId || !this.entrada.asientoId) {
       alert('Debes seleccionar un concierto y un asiento.');
       return;
@@ -126,33 +124,34 @@ export class ComprarEntradaComponent implements OnInit {
       return;
     }
   
-    this.entradaService.crearEntrada(this.entrada).subscribe(
-      response => {
+    // 2. Crear la entrada en el backend
+    this.entradaService.crearEntrada(this.entrada).subscribe({
+      next: response => {
         console.log('Entrada creada:', response);
   
-        // Configuramos datos del pago automáticamente
+        // 3. Configurar datos del pago usando el precio devuelto
         this.pago.entradaId = response.idEntrada;
         this.pago.usuarioId = this.entrada.usuarioId;
-        this.pago.cantidad = response.precioVenta;
+        this.pago.cantidad = response.precioVenta;  // ← precio desde la zona del concierto
         this.pago.estado = 'PENDIENTE';
   
-        // Creamos el pago inmediatamente
-        this.pagoService.crearPago(this.pago).subscribe(
-          pagoResponse => {
+        // 4. Enviar el pago
+        this.pagoService.crearPago(this.pago).subscribe({
+          next: pagoResponse => {
             console.log('Pago realizado:', pagoResponse);
             alert('Compra completada exitosamente');
             this.router.navigate(['/mis-entradas']);
           },
-          error => {
-            console.error('Error al realizar el pago:', error);
+          error: err => {
+            console.error('Error al realizar el pago:', err);
             alert('Error al realizar el pago');
           }
-        );
+        });
       },
-      error => {
-        console.error('Error al comprar la entrada:', error);
+      error: err => {
+        console.error('Error al comprar la entrada:', err);
         alert('Error al comprar la entrada');
       }
-    );
+    });  
   }
 }

@@ -20,5 +20,7 @@ public class ConciertoDTO {
     private Long zonaId;
     private Long giraId;
     private String estado;
+    private String nombreRecinto;
+    private String nombreZona;
 }
 

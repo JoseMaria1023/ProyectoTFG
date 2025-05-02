@@ -1,18 +1,111 @@
-form {
-    display: flex;
-    flex-direction: column;
-    max-width: 400px;
-    margin: auto;
+/* Estilo para el formulario de creación de conciertos */
+.formulario-concierto {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 700px;
+  margin: 50px auto;
+  box-shadow: 0 0 25px rgba(255, 0, 128, 0.4), 0 0 35px rgba(0, 128, 255, 0.3);
+  color: #fff;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.formulario-concierto h2 {
+  text-align: center;
+  font-size: 2em;
+  font-weight: bold;
+  margin-bottom: 40px;
+  color: #ff4081;
+}
+
+.formulario-concierto .form-group {
+  margin-bottom: 20px;
+}
+
+.formulario-concierto label {
+  font-size: 1.1em;
+  margin-bottom: 8px;
+  display: block;
+  color: #ff4081;
+}
+
+.formulario-concierto input,
+.formulario-concierto select {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 1em;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.formulario-concierto input:focus,
+.formulario-concierto select:focus {
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 10px #ff4081;
+  outline: none;
+}
+
+/* Estilo especial para los select */
+.formulario-concierto select {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  transition: background 0.3s, color 0.3s;
+}
+
+.formulario-concierto select:focus {
+  background-color: rgba(255, 255, 255, 0.3);
+  color: #ff4081; /* Cambia el color del texto al seleccionar */
+}
+
+.formulario-concierto select option {
+  background-color: #333; /* Fondo oscuro en las opciones */
+  color: #fff; /* Color de texto de las opciones */
+}
+
+.formulario-concierto select option:checked {
+  background-color: #ff4081; /* Fondo rosado cuando se selecciona una opción */
+  color: #fff; /* Color de texto en las opciones seleccionadas */
+}
+
+.formulario-concierto .btn-crear {
+  background: linear-gradient(45deg, #ff4081, #7c4dff);
+  padding: 12px 25px;
+  border-radius: 30px;
+  color: #fff;
+  font-size: 1.1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.4s, transform 0.3s;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.formulario-concierto .btn-crear:hover {
+  background: linear-gradient(45deg, #7c4dff, #ff4081);
+  transform: scale(1.05);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  
-  label {
-    margin-top: 10px;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  input,
-  select,
-  button {
-    padding: 8px;
-    margin-top: 5px;
+}
+
+@media (max-width: 768px) {
+  .formulario-concierto {
+    margin: 20px;
+    padding: 30px;
   }
-  
+}

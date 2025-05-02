@@ -1,5 +1,6 @@
 package com.jve.proyecto.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,4 +12,8 @@ import com.jve.proyecto.entity.Concierto;
 public interface ConciertoRepository extends JpaRepository<Concierto, Long> {
     List<Concierto> findByGira_IdGira(Long giraId);
     List<Concierto> findByEstado(Concierto.EstadoConcierto estado);
+    List<Concierto> findByFechaBetween(LocalDateTime from, LocalDateTime to);
+
+    
 }
+

@@ -2,14 +2,25 @@ package com.jve.proyecto.converter;
 
 import com.jve.proyecto.dto.EntradaDTO;
 import com.jve.proyecto.entity.Entrada;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class EntradaConverter {
 
-    public static EntradaDTO toDto(Entrada entrada) {
-        return ModelMapperUtils.getMapper().map(entrada, EntradaDTO.class);
+    private final ModelMapper modelMapper;
+
+    @Autowired
+    public EntradaConverter(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
     }
 
-    public static Entrada toEntity(EntradaDTO entradaDTO) {
-        return ModelMapperUtils.getMapper().map(entradaDTO, Entrada.class);
+    public EntradaDTO toDto(Entrada entrada) {
+        return modelMapper.map(entrada, EntradaDTO.class);
+    }
+
+    public Entrada toEntity(EntradaDTO entradaDTO) {
+        return modelMapper.map(entradaDTO, Entrada.class);
     }
 }

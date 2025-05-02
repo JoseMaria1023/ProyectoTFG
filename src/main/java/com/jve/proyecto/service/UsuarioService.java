@@ -4,77 +4,81 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import jakarta.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
+import com.jve.proyecto.converter.UsuarioConverter;
 import com.jve.proyecto.dto.UsuarioDTO;
-import com.jve.proyecto.configuration.ModelMapperConfig;
-import com.jve.proyecto.dto.EntradaDTO;
 import com.jve.proyecto.entity.Entrada;
 import com.jve.proyecto.entity.Usuario;
-import com.jve.proyecto.repository.UsuarioRepository;
 import com.jve.proyecto.repository.EntradaRepository;
-import jakarta.transaction.Transactional;
-import org.modelmapper.ModelMapper;
+import com.jve.proyecto.repository.UsuarioRepository;
 
 @Service
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final EntradaRepository entradaRepository;
-    private final ModelMapper modelMapper;
+    private final UsuarioConverter usuarioConverter;
 
-    public UsuarioService(UsuarioRepository usuarioRepository, EntradaRepository entradaRepository, 
-                          ModelMapperConfig modelMapperConfig) {
+    public UsuarioService(UsuarioRepository usuarioRepository,
+                          EntradaRepository entradaRepository,
+                          UsuarioConverter usuarioConverter) {
         this.usuarioRepository = usuarioRepository;
         this.entradaRepository = entradaRepository;
-        this.modelMapper = modelMapperConfig.modelMapper();
+        this.usuarioConverter = usuarioConverter;
     }
 
     public UsuarioDTO crearUsuario(UsuarioDTO usuarioDTO) {
-        Usuario usuario = modelMapper.map(usuarioDTO, Usuario.class);
-        Usuario usuarioGuardado = usuarioRepository.save(usuario);
-        return modelMapper.map(usuarioGuardado, UsuarioDTO.class);
+        // DTO → entidad
+        Usuario entidad = usuarioConverter.toEntity(usuarioDTO);
+        Usuario guardado = usuarioRepository.save(entidad);
+        // entidad → DTO
+        return usuarioConverter.toDto(guardado);
     }
 
     @Transactional
     public void transferirEntrada(Long idUsuario, Long idEntrada, String telefonoDestino) {
         Entrada entrada = entradaRepository.findById(idEntrada)
             .orElseThrow(() -> new RuntimeException("Entrada no encontrada con ID: " + idEntrada));
-    
+
         if (!entrada.getUsuario().getIdUsuario().equals(idUsuario)) {
             throw new RuntimeException("El usuario no es el propietario de la entrada.");
         }
-    
+
         Usuario nuevoUsuario = usuarioRepository.findByTelefono(telefonoDestino)
             .orElseThrow(() -> new RuntimeException("No se encontró usuario con el teléfono: " + telefonoDestino));
-    
+
         entrada.setUsuario(nuevoUsuario);
         entradaRepository.save(entrada);
     }
 
     public UsuarioDTO obtenerUsuarioPorId(Long id) {
         Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
-        return modelMapper.map(usuario, UsuarioDTO.class);
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
+        return usuarioConverter.toDto(usuario);
     }
 
     public List<UsuarioDTO> obtenerTodosLosUsuarios() {
         return usuarioRepository.findAll().stream()
-                .map(usuario -> modelMapper.map(usuario, UsuarioDTO.class))
-                .collect(Collectors.toList());
+            .map(usuarioConverter::toDto)
+            .collect(Collectors.toList());
     }
 
     public UsuarioDTO actualizarUsuario(Long id, UsuarioDTO usuarioDTO) {
-        Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
-        modelMapper.map(usuarioDTO, usuario);
-        Usuario usuarioActualizado = usuarioRepository.save(usuario);
-        return modelMapper.map(usuarioActualizado, UsuarioDTO.class);
+        Usuario existente = usuarioRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
+        // Mapear propiedades del DTO sobre la entidad existente
+        Usuario actualizado = usuarioConverter.toEntity(usuarioDTO);
+        actualizado.setIdUsuario(existente.getIdUsuario());
+        Usuario guardado = usuarioRepository.save(actualizado);
+        return usuarioConverter.toDto(guardado);
     }
 
     public void eliminarUsuario(Long id) {
         Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
         usuarioRepository.delete(usuario);
     }
 

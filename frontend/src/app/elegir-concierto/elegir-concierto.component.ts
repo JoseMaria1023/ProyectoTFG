@@ -17,6 +17,10 @@ export class ElegirConciertoComponent implements OnInit {
   conciertos: any[] = [];
   artistas: any[] = [];
   artistaSeleccionado: any;
+  fechaDesde: string = '';
+  fechaHasta: string = '';
+  tipoFiltro: string = ''; 
+  estadoSeleccionado: string = ''; 
 
   constructor(
     private conciertoService: ConciertoService,
@@ -32,32 +36,45 @@ export class ElegirConciertoComponent implements OnInit {
   cargarTodos(): void {
     this.conciertoService.obtenerConciertos().subscribe(
       data => this.conciertos = data,
-      error => console.error('Error al obtener conciertos:', error)
-    );
-  }
-
-  obtenerArtistas(): void {
-    this.artistaService.getArtistas().subscribe(
-      data => this.artistas = data,
-      error => console.error('Error al obtener artistas:', error)
+      err  => console.error(err)
     );
   }
 
   filtrarPorArtista(): void {
     if (!this.artistaSeleccionado) return;
-
-    this.conciertoService.obtenerConciertosPorArtista(this.artistaSeleccionado.idArtista).subscribe(
-      data => this.conciertos = data,
-      error => console.error('Error al filtrar conciertos por artista:', error)
-    );
+    this.conciertoService.obtenerConciertosPorArtista(this.artistaSeleccionado.idArtista)
+      .subscribe(data => this.conciertos = data);
   }
 
   comprarEntrada(concierto: any): void {
-    this.router.navigate(['/Comprar-entrada'], { 
-      queryParams: { 
-        conciertoId: concierto.idConcierto, 
-        conciertoNombre: concierto.nombre 
-      } 
+    this.router.navigate(['/Comprar-entrada'], {
+      queryParams: {
+        conciertoId: concierto.idConcierto,
+        conciertoNombre: concierto.nombre
+      }
     });
+  }
+
+  aplicarFiltro() {
+    const filtros: any = {};
+    if (this.tipoFiltro === 'artista' && this.artistaSeleccionado) {
+      filtros.artistaId = this.artistaSeleccionado.idArtista;
+    } else if (this.tipoFiltro === 'fecha') {
+      filtros.fechaDesde = this.fechaDesde;
+      filtros.fechaHasta = this.fechaHasta;
+    } else if (this.tipoFiltro === 'estado') {
+      filtros.estado = this.estadoSeleccionado;
+    }
+
+    this.conciertoService.filtrarConciertos(filtros).subscribe(data => {
+      this.conciertos = data;
+    });
+  }
+
+  obtenerArtistas(): void {
+    this.artistaService.getArtistas().subscribe(
+      data => this.artistas = data,
+      err  => console.error(err)
+    );
   }
 }

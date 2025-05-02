@@ -1,33 +1,156 @@
 .conciertos-container {
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 10px;
-    text-align: center;
-  }
-  
-  .concierto-card {
-    background: #f0f0f0;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-  
-  .concierto-card p {
-    margin: 0 0 10px;
-    font-weight: bold;
-  }
-  
-  .concierto-card button {
-    padding: 8px 16px;
-    background-color: #ff00ff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .concierto-card button:hover {
-    background-color: #00ffff;
-  }
-  
+  max-width: 1700px; /* antes 960px */
+  margin: 3rem auto;
+  padding: 2rem 3rem;
+  background: linear-gradient(135deg, #1e1e2f, #2d2d44);
+  color: #f0f0f0;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+}
+
+
+h2 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: #ff4081;
+}
+
+.filtros-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.filtro-fechas,
+.filtro-artista {
+  flex: 1 1 45%;
+  background: #2a2a3e;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+}
+
+.filtro-fechas label,
+.filtro-artista label {
+  font-size: 1.1rem;
+  margin-right: 0.5rem;
+  color: #ffcccb;
+}
+
+.filtro-fechas input,
+.filtro-artista select {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: none;
+  font-size: 1rem;
+  margin-right: 0.5rem;
+}
+
+.filtro-fechas input[type="date"] {
+  background: #fff;
+  color: #333;
+}
+
+.filtro-fechas .btn-filtrar,
+.filtro-fechas .btn-reset,
+.filtro-buttons .btn-filtrar,
+.filtro-buttons .btn-reset {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filtro-fechas .btn-filtrar {
+  background-color: #29b6f6;
+  color: #fff;
+}
+
+.filtro-fechas .btn-reset {
+  background-color: #ef5350;
+  color: #fff;
+}
+
+.filtro-buttons {
+  margin-top: 1rem;
+}
+
+.btn-filtrar:hover {
+  background-color: #0288d1;
+}
+
+.btn-reset:hover {
+  background-color: #d32f2f;
+}
+
+.concierto-card {
+  background: #3b3b5c;
+  border-radius: 15px;
+  padding: 2rem 3rem;
+  margin-bottom: 2.5rem;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+}
+
+.concierto-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.5);
+}
+
+.concierto-nombre {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #fce38a;
+  flex: 1;
+  text-align: left;
+}
+
+.concierto-id {
+  font-size: 1rem;
+  color: #aaa;
+  margin-left: 2rem;
+  flex: 0 0 auto;
+}
+
+.btn-comprar {
+  padding: 0.8rem 1.8rem;
+  font-size: 1.1rem;
+  background-color: #7c4dff;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  flex: 0 0 auto;
+}
+
+.concierto-recinto {
+  flex: 1;
+  text-align: left;
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  color: #b2ebf2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.concierto-recinto span {
+  background-color: #2a2a3e;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  display: inline-block;
+  width: fit-content;
+}
+.btn-comprar:hover {
+  background-color: #651fff;
+}

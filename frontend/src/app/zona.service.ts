@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -10,23 +10,35 @@ export class ZonaService {
 
   constructor(private http: HttpClient) {}
 
+  private getAuthHeaders(): HttpHeaders {
+    const token = sessionStorage.getItem('token');
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+  }
+
   // Crear zona
   crearZona(zona: any): Observable<any> {
-    return this.http.post(this.apiUrl, zona);
+    const headers = this.getAuthHeaders();
+    return this.http.post(this.apiUrl, zona, { headers });
   }
 
   // Obtener todas las zonas
   obtenerZonas(): Observable<any> {
-    return this.http.get(this.apiUrl);
+    const headers = this.getAuthHeaders();
+    return this.http.get(this.apiUrl, { headers });
   }
 
   // Actualizar zona
   actualizarZona(id: number, zona: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, zona);
+    const headers = this.getAuthHeaders();
+    return this.http.put(`${this.apiUrl}/${id}`, zona, { headers });
   }
 
   // Eliminar zona
   eliminarZona(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    const headers = this.getAuthHeaders();
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers });
   }
 }

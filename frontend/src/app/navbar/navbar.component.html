@@ -1,41 +1,22 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Mi Aplicación</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" 
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-  
-            <li class="nav-item" *ngIf="!isLoggedIn()">
-                <button class="btn btn-link nav-link" (click)="navigateToLogin()">Iniciar sesión</button>
-            </li>
-            <li class="nav-item" *ngIf="!isLoggedIn()">
-                <button class="btn btn-link nav-link" (click)="navigateToRegister()">Registrarse</button>
-            </li>
-  
-            <li class="nav-item" *ngIf="isUser()">
-                <button class="btn btn-link nav-link" (click)="navigateToGira()">Artista</button>
-            </li>
-            <li class="nav-item" *ngIf="isUser()">
-                <button class="btn btn-link nav-link" (click)="navigateToZona()">Concierto</button>
-            </li>
-            <li class="nav-item" *ngIf="isUser()">
-                <button class="btn btn-link nav-link" (click)="navigateToRecinto()">Asiento</button>
-            </li>
-  
-            <li class="nav-item" *ngIf="isLoggedIn()">
-                <button class="btn btn-link nav-link" (click)="navigateToPerfil()">Mi Perfil</button>
-            </li>
-  
-            <li class="nav-item" *ngIf="isLoggedIn()">
-                <button class="btn btn-link nav-link" (click)="logout()">Cerrar sesión</button>
-            </li>
-            <li class="nav-item" *ngIf="isArtista()">
-                <button class="btn btn-link nav-link" (click)="navigateToGestionarAsientos()">Gestionar Asientos</button>
-              </li>
-              
-        </ul>
+<button class="toggle-button" (click)="toggleSidebar()">☰</button>
+<div class="sidebar" [class.open]="isSidebarOpen">
+  <div class="logo">
+      <h1>🎤 CONCERTMANIA</h1>
     </div>
-  </nav>
+    <ul class="nav-links">
+      <li *ngIf="!isLoggedIn()"><a (click)="navigateToLogin()"><i class="fas fa-sign-in-alt"></i> Iniciar sesión</a></li>
+      <li *ngIf="!isLoggedIn()"><a (click)="navigateToRegister()"><i class="fas fa-user-plus"></i> Registrarse</a></li>
+  
+      <li *ngIf="isAdmin()"><a (click)="navigateToArtista()"><i class="fas fa-layer-group"></i> Artista</a></li>
+      <li *ngIf="isAdmin()"><a (click)="navigateToGira()"><i class="fas fa-microphone-alt"></i> Giras</a></li>
+      <li *ngIf="isAdmin()"><a (click)="navigateToZona()"><i class="fas fa-music"></i> Conciertos</a></li>
+      <li *ngIf="isAdmin()"><a (click)="navigateToZonasRecinto()"><i class="fas fa-layer-group"></i> Zonas</a></li>
+  
+      <li *ngIf="isUser()"><a (click)="navigateToComprar()"><i class="fas fa-user-circle"></i> Comprar</a></li>
+      <li *ngIf="isArtista()"><a (click)="navigateToGestionarAsientos()"><i class="fas fa-chair"></i> Asientos</a></li>
+  
+      <li *ngIf="isUser()"><a (click)="navigateToPerfil()"><i class="fas fa-user-circle"></i> Mi Perfil</a></li>
+      <li *ngIf="isLoggedIn()"><a (click)="logout()"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a></li>
+    </ul>
+  </div>
   

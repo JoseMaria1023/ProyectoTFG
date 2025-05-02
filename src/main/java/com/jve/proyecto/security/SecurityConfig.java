@@ -76,32 +76,33 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/api/usuarios/**").permitAll() // Permitir autenticación
                         .requestMatchers(HttpMethod.DELETE, "/api/usuarios/**").permitAll() // Permitir autenticación
                         .requestMatchers(HttpMethod.GET, "/api/usuarios/**").permitAll() // Permitir autenticación
-                        .requestMatchers(HttpMethod.POST, "/api/artistas/**").permitAll() // Permitir POST en artistas
+                        .requestMatchers(HttpMethod.POST, "/api/artistas/**").hasAuthority("ROLE_ADMIN") // Permitir POST en artistas
                         .requestMatchers(HttpMethod.POST, "/api/transferencias/**").permitAll() // Permitir POST en artistas
                         .requestMatchers(HttpMethod.GET, "/api/artistas/**").permitAll() // Permitir POST en artistas
-                        .requestMatchers(HttpMethod.PUT, "/api/artistas/**").permitAll() // Permitir POST en artistas
-                        .requestMatchers(HttpMethod.DELETE, "/api/artistas/**").permitAll() // Permitir POST en artistas
-                        .requestMatchers(HttpMethod.POST, "/api/conciertos/**").permitAll() // Permitir POST en artistas
+                        .requestMatchers(HttpMethod.PUT, "/api/artistas/**").hasAuthority("ROLE_ADMIN") // Permitir POST en artistas
+                        .requestMatchers(HttpMethod.DELETE, "/api/artistas/**").hasAuthority("ROLE_ADMIN") // Permitir POST en artistas
+                        .requestMatchers(HttpMethod.POST, "/api/conciertos/**").hasAuthority("ROLE_ADMIN") // Permitir POST en artistas
                         .requestMatchers(HttpMethod.GET, "/api/conciertos/**").permitAll() // Permitir POST en artistas
-                        .requestMatchers(HttpMethod.PUT, "/api/conciertos/**").permitAll() // Permitir POST en artistas
-                        .requestMatchers(HttpMethod.DELETE, "/api/conciertos/**").permitAll() // Permitir POST en artistas
-                        .requestMatchers(HttpMethod.POST, "/api/giras/**").permitAll() // Permitir POST en artistas
-                        .requestMatchers(HttpMethod.PUT, "/api/giras/**").permitAll() // Permitir POST en artistas
-                        .requestMatchers(HttpMethod.DELETE, "/api/giras/**").permitAll() // Permitir POST en artistas                        .requestMatchers(HttpMethod.POST, "/api/giras/**").permitAll() // Permitir POST en artistas
+                        .requestMatchers(HttpMethod.PUT, "/api/conciertos/**").hasAuthority("ROLE_ADMIN") // Permitir POST en artistas
+                        .requestMatchers(HttpMethod.DELETE, "/api/conciertos/**").hasAuthority("ROLE_ADMIN") // Permitir POST en artistas
+                        .requestMatchers(HttpMethod.POST, "/api/giras/**").hasAuthority("ROLE_ADMIN") // Permitir POST en artistas
+                        .requestMatchers(HttpMethod.PUT, "/api/giras/**").hasAuthority("ROLE_ADMIN") // Permitir POST en artistas
+                        .requestMatchers(HttpMethod.DELETE, "/api/giras/**").hasAuthority("ROLE_ADMIN") // Permitir POST en artistas                        .requestMatchers(HttpMethod.POST, "/api/giras/**").permitAll() // Permitir POST en artistas
                         .requestMatchers(HttpMethod.GET, "/api/giras/**").permitAll() // Permitir POST en artistas
                         .requestMatchers(HttpMethod.POST, "/api/entradas/**").permitAll() // Permitir POST en artistas
+                        .requestMatchers(HttpMethod.PUT, "/api/entradas/**").permitAll() // Permitir POST en artistas
                         .requestMatchers(HttpMethod.POST, "/api/pagos/**").permitAll() // Permitir POST en artistas
-                        .requestMatchers(HttpMethod.POST, "/api/asientos/**").permitAll() // Permitir POST en artistas
-                        .requestMatchers(HttpMethod.GET, "/api/asientos/**").permitAll() // Permitir POST en artistas
-                        .requestMatchers(HttpMethod.DELETE, "/api/asientos/**").permitAll() // Permitir POST en artistas
-                        .requestMatchers(HttpMethod.PUT, "/api/asientos/**").permitAll() // Permitir POST en artistas
-                        .requestMatchers(HttpMethod.POST, "/api/zonas/**").permitAll() // Permitir POST en artista
-                        .requestMatchers(HttpMethod.PUT, "/api/zonas/**").permitAll() // Permitir POST en artistas
-                        .requestMatchers(HttpMethod.DELETE, "/api/zonas/**").permitAll() // Permitir POST en artistas
+                        .requestMatchers(HttpMethod.POST, "/api/asientos/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_ARTISTA")
+                        .requestMatchers(HttpMethod.GET, "/api/asientos/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_ARTISTA")
+                        .requestMatchers(HttpMethod.DELETE, "/api/asientos/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_ARTISTA")
+                        .requestMatchers(HttpMethod.PUT, "/api/asientos/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_ARTISTA")
+                        .requestMatchers(HttpMethod.POST, "/api/zonas/**").hasAuthority("ROLE_ADMIN") // Permitir POST en artista
+                        .requestMatchers(HttpMethod.PUT, "/api/zonas/**").hasAuthority("ROLE_ADMIN") // Permitir POST en artistas
+                        .requestMatchers(HttpMethod.DELETE, "/api/zonas/**").hasAuthority("ROLE_ADMIN") // Permitir POST en artistas
                         .requestMatchers(HttpMethod.GET, "/api/zonas/**").permitAll() // Permitir POST en artista
-                        .requestMatchers(HttpMethod.POST, "/api/recintos/**").permitAll() // Permitir POST en artistas
-                        .requestMatchers(HttpMethod.PUT, "/api/recintos/**").permitAll() // Permitir POST en artistas
-                        .requestMatchers(HttpMethod.DELETE, "/api/recintos/**").permitAll() // Permitir POST en artistas
+                        .requestMatchers(HttpMethod.POST, "/api/recintos/**").hasAuthority("ROLE_ADMIN") // Permitir POST en artistas
+                        .requestMatchers(HttpMethod.PUT, "/api/recintos/**").hasAuthority("ROLE_ADMIN") // Permitir POST en artistas
+                        .requestMatchers(HttpMethod.DELETE, "/api/recintos/**").hasAuthority("ROLE_ADMIN") // Permitir POST en artistas
                         .requestMatchers(HttpMethod.GET, "/api/artistas/**").permitAll() // Permitir GET en artistas
                         .requestMatchers(HttpMethod.GET, "/api/recintos/**").permitAll() // Permitir GET en artistas
                         .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll() // Permitir registro

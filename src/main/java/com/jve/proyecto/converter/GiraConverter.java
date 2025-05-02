@@ -2,14 +2,25 @@ package com.jve.proyecto.converter;
 
 import com.jve.proyecto.dto.GiraDTO;
 import com.jve.proyecto.entity.Gira;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class GiraConverter {
 
-    public static GiraDTO toDto(Gira gira) {
-        return ModelMapperUtils.getMapper().map(gira, GiraDTO.class);
+    private final ModelMapper modelMapper;
+
+    @Autowired
+    public GiraConverter(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
     }
 
-    public static Gira toEntity(GiraDTO giraDTO) {
-        return ModelMapperUtils.getMapper().map(giraDTO, Gira.class);
+    public GiraDTO toDto(Gira gira) {
+        return modelMapper.map(gira, GiraDTO.class);
+    }
+
+    public Gira toEntity(GiraDTO giraDTO) {
+        return modelMapper.map(giraDTO, Gira.class);
     }
 }

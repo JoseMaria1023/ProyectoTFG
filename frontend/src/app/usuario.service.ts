@@ -10,38 +10,36 @@ export class UsuarioService {
 
   constructor(private http: HttpClient) {}
 
-  getUsuarioById(id: number): Observable<any> {
+  private getAuthHeaders(): HttpHeaders {
     const token = sessionStorage.getItem('token');
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
     });
+  }
+
+  getUsuarioById(id: number): Observable<any> {
+    const headers = this.getAuthHeaders();
     return this.http.get<any>(`${this.apiUrl}/${id}`, { headers });
   }
 
   getEntradasByUsuario(id: number): Observable<any[]> {
-    const token = sessionStorage.getItem('token');
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
+    const headers = this.getAuthHeaders();
     return this.http.get<any[]>(`${this.apiUrl}/${id}/entradas`, { headers });
   }
 
   actualizarUsuario(id: number, usuarioActualizado: any): Observable<any> {
-    const token = sessionStorage.getItem('token');
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    });
+    const headers = this.getAuthHeaders();
     return this.http.put(`${this.apiUrl}/${id}`, usuarioActualizado, { headers });
   }
-  transferirEntrada(idEntrada: number, telefonoDestino: string) {
-    return this.http.post(`/api/entradas/${idEntrada}/transferir`, { telefonoDestino });
+
+  transferirEntrada(idEntrada: number, telefonoDestino: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.post(`/api/entradas/${idEntrada}/transferir`, { telefonoDestino }, { headers });
   }
+
   eliminarUsuario(id: number): Observable<any> {
-    const token = sessionStorage.getItem('token');
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
+    const headers = this.getAuthHeaders();
     return this.http.delete(`${this.apiUrl}/${id}`, { headers });
   }
 }

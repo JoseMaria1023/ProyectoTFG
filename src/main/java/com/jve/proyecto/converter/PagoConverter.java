@@ -2,14 +2,25 @@ package com.jve.proyecto.converter;
 
 import com.jve.proyecto.dto.PagoDTO;
 import com.jve.proyecto.entity.Pago;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PagoConverter {
 
-    public static PagoDTO toDto(Pago pago) {
-        return ModelMapperUtils.getMapper().map(pago, PagoDTO.class);
+    private final ModelMapper modelMapper;
+
+    @Autowired
+    public PagoConverter(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
     }
 
-    public static Pago toEntity(PagoDTO pagoDTO) {
-        return ModelMapperUtils.getMapper().map(pagoDTO, Pago.class);
+    public PagoDTO toDto(Pago pago) {
+        return modelMapper.map(pago, PagoDTO.class);
+    }
+
+    public Pago toEntity(PagoDTO pagoDTO) {
+        return modelMapper.map(pagoDTO, Pago.class);
     }
 }

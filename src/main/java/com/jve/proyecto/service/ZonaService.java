@@ -4,84 +4,81 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.jve.proyecto.configuration.ModelMapperConfig;
+import com.jve.proyecto.converter.ZonaConverter;
 import com.jve.proyecto.dto.ZonaDTO;
 import com.jve.proyecto.entity.Recinto;
 import com.jve.proyecto.entity.Zona;
 import com.jve.proyecto.repository.RecintoRepository;
 import com.jve.proyecto.repository.ZonaRepository;
-import org.modelmapper.ModelMapper;
 
 @Service
 public class ZonaService {
 
     private final ZonaRepository zonaRepository;
     private final RecintoRepository recintoRepository;
-    private final ModelMapper modelMapper;
+    private final ZonaConverter zonaConverter;
 
-    public ZonaService(ZonaRepository zonaRepository, RecintoRepository recintoRepository, 
-                       ModelMapperConfig modelMapperConfig) {
+    public ZonaService(ZonaRepository zonaRepository,
+                       RecintoRepository recintoRepository,
+                       ZonaConverter zonaConverter) {
         this.zonaRepository = zonaRepository;
         this.recintoRepository = recintoRepository;
-        this.modelMapper = modelMapperConfig.modelMapper();
+        this.zonaConverter = zonaConverter;
     }
 
     public ZonaDTO crearZona(ZonaDTO zonaDTO) {
         if (zonaDTO.getRecintoId() == null) {
-            throw new RuntimeException("El ID del recinto es obligatorio.");
+            throw new IllegalArgumentException("El ID del recinto es obligatorio.");
         }
 
         Recinto recinto = recintoRepository.findById(zonaDTO.getRecintoId())
                 .orElseThrow(() -> new RuntimeException("Recinto no encontrado con ID: " + zonaDTO.getRecintoId()));
 
-        Zona zona = Zona.builder()
-                .nombre(zonaDTO.getNombre())
-                .recinto(recinto)  
-                .precioBase(zonaDTO.getPrecioBase())
-                .precioVIP(zonaDTO.getPrecioVIP())
-                .build();
+        // Convertir DTO a entidad y asignar el recinto cargado
+        Zona zona = zonaConverter.toEntity(zonaDTO);
+        zona.setRecinto(recinto);
 
-        Zona zonaGuardada = zonaRepository.save(zona);
-
-        return modelMapper.map(zonaGuardada, ZonaDTO.class);
+        Zona guardada = zonaRepository.save(zona);
+        return zonaConverter.toDto(guardada);
     }
 
     public ZonaDTO obtenerZonaPorId(Long id) {
-        Zona zona = zonaRepository.findById(id).orElseThrow(() -> 
-                new RuntimeException("Zona no encontrada con ID: " + id));
-        
-        return modelMapper.map(zona, ZonaDTO.class);
+        Zona zona = zonaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Zona no encontrada con ID: " + id));
+        return zonaConverter.toDto(zona);
     }
 
     public List<ZonaDTO> obtenerTodasLasZonas() {
         return zonaRepository.findAll().stream()
-                .map(zona -> modelMapper.map(zona, ZonaDTO.class))
+                .map(zonaConverter::toDto)
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public ZonaDTO actualizarZona(Long id, ZonaDTO zonaDTO) {
-        Zona zona = zonaRepository.findById(id).orElseThrow(() -> 
-                new RuntimeException("Zona no encontrada con ID: " + id));
+        Zona existente = zonaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Zona no encontrada con ID: " + id));
 
         if (zonaDTO.getRecintoId() != null) {
             Recinto recinto = recintoRepository.findById(zonaDTO.getRecintoId())
                     .orElseThrow(() -> new RuntimeException("Recinto no encontrado con ID: " + zonaDTO.getRecintoId()));
-            zona.setRecinto(recinto);
+            existente.setRecinto(recinto);
         }
 
-        zona.setNombre(zonaDTO.getNombre());
-        zona.setPrecioBase(zonaDTO.getPrecioBase());
-        zona.setPrecioVIP(zonaDTO.getPrecioVIP());
+        // Sobreescribir campos desde el DTO
+        existente.setNombre(zonaDTO.getNombre());
+        existente.setPrecioBase(zonaDTO.getPrecioBase());
+        existente.setPrecioVIP(zonaDTO.getPrecioVIP());
 
-        Zona zonaActualizada = zonaRepository.save(zona);
-
-        return modelMapper.map(zonaActualizada, ZonaDTO.class);
+        Zona actualizada = zonaRepository.save(existente);
+        return zonaConverter.toDto(actualizada);
     }
 
     public void eliminarZona(Long id) {
-        Zona zona = zonaRepository.findById(id).orElseThrow(() -> 
-                new RuntimeException("Zona no encontrada con ID: " + id));
+        Zona zona = zonaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Zona no encontrada con ID: " + id));
         zonaRepository.delete(zona);
     }
 }

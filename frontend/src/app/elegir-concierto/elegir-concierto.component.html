@@ -1,18 +1,70 @@
 <div class="conciertos-container">
-  <h2>Elegir Concierto</h2>
+  <h2>Filtrar conciertos</h2>
 
-  <div class="filtro-artista">
-    <label for="artistaSelect">Filtrar por Artista:</label>
-    <select [(ngModel)]="artistaSeleccionado" [ngModelOptions]="{ standalone: true }">
-      <option [ngValue]="null">-- Selecciona un artista --</option>
-      <option *ngFor="let artista of artistas" [ngValue]="artista">{{ artista.nombre }}</option>
-    </select>
-    <button (click)="filtrarPorArtista()">Filtrar</button>
-    <button (click)="cargarTodos()">Mostrar Todos</button>
+  <div class="filtros-wrapper">
+    <!-- Tipo de filtro -->
+    <div class="filtro-artista">
+      <label for="tipoFiltro">Tipo de filtro:</label>
+      <select [(ngModel)]="tipoFiltro" id="tipoFiltro">
+        <option value="">-- Seleccionar --</option>
+        <option value="artista">Por artista</option>
+        <option value="fecha">Por fecha</option>
+        <option value="estado">Por estado</option>
+      </select>
+    </div>
+
+    <!-- Filtro por artista -->
+    <div *ngIf="tipoFiltro === 'artista'" class="filtro-artista">
+      <label for="artista">Artista:</label>
+      <select [(ngModel)]="artistaSeleccionado" id="artista">
+        <option *ngFor="let artista of artistas" [ngValue]="artista">
+          {{ artista.nombre }} {{ artista.apellidos }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Filtro por fecha -->
+    <div *ngIf="tipoFiltro === 'fecha'" class="filtro-fechas">
+      <label for="fechaDesde">Desde:</label>
+      <input type="date" [(ngModel)]="fechaDesde" id="fechaDesde">
+
+      <label for="fechaHasta">Hasta:</label>
+      <input type="date" [(ngModel)]="fechaHasta" id="fechaHasta">
+    </div>
+
+    <!-- Filtro por estado -->
+    <div *ngIf="tipoFiltro === 'estado'" class="filtro-artista">
+      <label for="estado">Estado:</label>
+      <select [(ngModel)]="estadoSeleccionado" id="estado">
+        <option value="">-- Seleccionar estado --</option>
+        <option value="activo">Activo</option>
+        <option value="cancelado">Cancelado</option>
+        <option value="pospuesto">Pospuesto</option>
+      </select>
+    </div>
   </div>
 
+  <!-- Botones de acción -->
+  <div class="filtro-buttons">
+    <button class="btn-filtrar" (click)="aplicarFiltro()">Aplicar filtro</button>
+    <button class="btn-reset" (click)="cargarTodos()">Mostrar todos</button>
+  </div>
+
+  <h2>Conciertos disponibles</h2>
+  <div *ngIf="conciertos.length === 0">No hay conciertos para mostrar.</div>
+
+  <!-- Lista de conciertos -->
   <div *ngFor="let concierto of conciertos" class="concierto-card">
-    <p>ID: {{ concierto.idConcierto }} - {{ concierto.nombre }}</p>
-    <button (click)="comprarEntrada(concierto)">Comprar Entrada</button>
+    <div class="concierto-nombre">
+      {{ concierto.nombre }}<br>
+      <small>{{ concierto.fecha | date:'short' }}</small>
+    </div>
+    <div class="concierto-recinto">
+      <span>Recinto: {{ concierto.nombreRecinto || 'Desconocido' }}</span>
+      <span>Zona: {{ concierto.nombreZona || 'Desconocida' }}</span>
+    </div>
+    <button class="btn-comprar" (click)="comprarEntrada(concierto)">
+      Comprar entrada
+    </button>
   </div>
 </div>

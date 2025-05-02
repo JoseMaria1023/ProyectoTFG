@@ -2,14 +2,25 @@ package com.jve.proyecto.converter;
 
 import com.jve.proyecto.dto.TransferenciaDTO;
 import com.jve.proyecto.entity.Transferencia;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TransferenciaConverter {
 
-    public static TransferenciaDTO toDto(Transferencia transferencia) {
-        return ModelMapperUtils.getMapper().map(transferencia, TransferenciaDTO.class);
+    private final ModelMapper modelMapper;
+
+    @Autowired
+    public TransferenciaConverter(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
     }
 
-    public static Transferencia toEntity(TransferenciaDTO transferenciaDTO) {
-        return ModelMapperUtils.getMapper().map(transferenciaDTO, Transferencia.class);
+    public TransferenciaDTO toDto(Transferencia transferencia) {
+        return modelMapper.map(transferencia, TransferenciaDTO.class);
+    }
+
+    public Transferencia toEntity(TransferenciaDTO transferenciaDTO) {
+        return modelMapper.map(transferenciaDTO, Transferencia.class);
     }
 }

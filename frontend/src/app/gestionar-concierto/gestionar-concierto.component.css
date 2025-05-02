@@ -1,96 +1,95 @@
-:host {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #141e30, #243b55);
-    padding: 20px;
-    box-sizing: border-box;
-  }
-  
-  .gestionar-conciertos {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(8px);
-    border-radius: 12px;
+body {
+  background: linear-gradient(to right, #1e1e2f, #3a3a5a);
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.form-container {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 40px;
+  max-width: 800px;
+  margin: 50px auto;
+  box-shadow: 0 0 25px rgba(255, 0, 128, 0.4), 0 0 35px rgba(0, 128, 255, 0.3);
+  color: #fff;
+  animation: fadeIn 1s ease-in-out;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: bold;
+  color: #ff4081;
+}
+
+ul.gira-lista {
+  list-style: none;
+  padding: 0;
+}
+
+ul.gira-lista li {
+  background: rgba(255, 255, 255, 0.07);
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(255, 64, 129, 0.2);
+}
+
+strong {
+  color: #03dac6;
+  font-size: 1.2em;
+}
+
+.botones-acciones {
+  display: flex;
+  gap: 10px;
+}
+
+button {
+  background: linear-gradient(45deg, #ff4081, #7c4dff);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 30px;
+  color: #fff;
+  font-size: 0.95em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.4s, transform 0.3s;
+}
+
+button:hover {
+  background: linear-gradient(45deg, #7c4dff, #ff4081);
+  transform: scale(1.05);
+}
+
+button[type="button"] {
+  background: #ff1744;
+}
+
+button[type="button"]:hover {
+  background: #d50000;
+}
+
+hr {
+  margin: 40px 0;
+  border: none;
+  border-top: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .form-container {
+    margin: 20px;
     padding: 30px;
-    max-width: 800px;
-    width: 100%;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    animation: fadeIn 0.8s ease-in-out;
   }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  .gestionar-conciertos h2 {
-    text-align: center;
-    color: #00aaff;
-    font-size: 28px;
-    margin-bottom: 20px;
-  }
-  
-  .gestionar-conciertos ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .gestionar-conciertos li {
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-    margin-bottom: 15px;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #ffffff;
-  }
-  
-  .gestionar-conciertos li button {
-    background: linear-gradient(90deg, #00aaff, #0066ff);
-    border: none;
-    border-radius: 8px;
-    color: #ffffff;
-    font-size: 14px;
-    padding: 6px 12px;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.3s ease;
-  }
-  
-  .gestionar-conciertos li button:hover {
-    transform: scale(1.05);
-    background: linear-gradient(90deg, #0066ff, #0044cc);
-  }
-  
-  hr {
-    border: none;
-    border-top: 2px solid rgba(255, 255, 255, 0.3);
-    width: 100%;
-    margin: 20px 0;
-  }
-  
-  @media (max-width: 600px) {
-    .gestionar-conciertos {
-      margin: 20px;
-      padding: 20px;
-    }
-    .gestionar-conciertos h2 {
-      font-size: 24px;
-    }
-    .gestionar-conciertos li {
-      font-size: 12px;
-    }
-    .gestionar-conciertos li button {
-      font-size: 12px;
-    }
-  }
-  
+}

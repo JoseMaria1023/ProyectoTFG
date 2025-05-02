@@ -14,9 +14,7 @@ import { EditarZonaComponent } from '../editar-zona/editar-zona.component';
 })
 export class GestionarZonaComponent implements OnInit {
   zonas: any[] = [];
-  // Si se selecciona una zona para editar, se guarda aquí
   zonaSeleccionada: any = null;
-  // Se asume que si es necesario se puede cargar también una lista de recintos para el select; de lo contrario se delega a otro componente o se ignora.
   recintos: any[] = [];
 
   constructor(private zonaService: ZonaService) {}

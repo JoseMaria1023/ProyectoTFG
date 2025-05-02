@@ -5,25 +5,24 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.jve.proyecto.configuration.ModelMapperConfig;
 import com.jve.proyecto.dto.GiraDTO;
 import com.jve.proyecto.entity.Artista;
 import com.jve.proyecto.entity.Gira;
 import com.jve.proyecto.repository.ArtistaRepository;
 import com.jve.proyecto.repository.GiraRepository;
-import org.modelmapper.ModelMapper;
+import com.jve.proyecto.converter.GiraConverter;
 
 @Service
 public class GiraService {
 
     private final GiraRepository giraRepository;
     private final ArtistaRepository artistaRepository;
-    private final ModelMapper modelMapper;
+    private final GiraConverter giraConverter;
 
-    public GiraService(GiraRepository giraRepository, ArtistaRepository artistaRepository, ModelMapperConfig modelMapperConfig) {
+    public GiraService(GiraRepository giraRepository, ArtistaRepository artistaRepository, GiraConverter giraConverter) {
         this.giraRepository = giraRepository;
         this.artistaRepository = artistaRepository;
-        this.modelMapper = modelMapperConfig.modelMapper();
+        this.giraConverter = giraConverter;
     }
 
     public GiraDTO crearGira(GiraDTO giraDTO) {
@@ -40,13 +39,13 @@ public class GiraService {
                 .build();
 
         Gira giraGuardada = giraRepository.save(gira);
-        return modelMapper.map(giraGuardada, GiraDTO.class);
+        return giraConverter.toDto(giraGuardada);
     }
 
     public GiraDTO obtenerGiraPorId(Long id) {
         Gira gira = giraRepository.findById(id).orElseThrow(() -> 
                 new RuntimeException("Gira no encontrada con ID: " + id));
-        GiraDTO dto = modelMapper.map(gira, GiraDTO.class);
+        GiraDTO dto = giraConverter.toDto(gira);
         dto.setArtistaId(gira.getArtista().getIdArtista());
         return dto;
     }
@@ -54,7 +53,7 @@ public class GiraService {
     public List<GiraDTO> obtenerTodasLasGiras() {
         return giraRepository.findAll().stream()
                 .map(gira -> {
-                    GiraDTO dto = modelMapper.map(gira, GiraDTO.class);
+                    GiraDTO dto = giraConverter.toDto(gira);
                     dto.setArtistaId(gira.getArtista().getIdArtista());
                     return dto;
                 })
@@ -75,7 +74,7 @@ public class GiraService {
         gira.setDescripcion(giraDTO.getDescripcion());
 
         Gira giraActualizada = giraRepository.save(gira);
-        GiraDTO dto = modelMapper.map(giraActualizada, GiraDTO.class);
+        GiraDTO dto = giraConverter.toDto(giraActualizada);
         dto.setArtistaId(giraActualizada.getArtista().getIdArtista());
         return dto;
     }

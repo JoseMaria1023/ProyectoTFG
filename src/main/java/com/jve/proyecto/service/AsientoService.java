@@ -59,6 +59,7 @@ public class AsientoService {
         return asientoConverter.toDto(asiento);
     }
 
+    
     public List<AsientoDTO> obtenerTodosLosAsientos() {
         return asientoRepository.findAll().stream()
                 .map(asiento -> asientoConverter.toDto(asiento))

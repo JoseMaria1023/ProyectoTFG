@@ -1,7 +1,12 @@
 <div class="modal-overlay">
-  <div class="modal-content">
-    <h3>Selecciona un Asiento para: {{ concierto?.nombre }}</h3>
+  <div
+    class="modal-content"
+    [style.height.px]="modalHeight"
+    [class.many-rows]="filas.length > maxRows">
+    
+    <h3>Selecciona un Asiento para: {{ concierto.nombre }}</h3>
     <div class="escenario"><span>ESCENARIO</span></div>
+
     <div class="asientos-container">
       <div class="fila" *ngFor="let fila of filas">
         <div
@@ -10,10 +15,11 @@
           (click)="onClick(asiento)"
           [class.ocupado]="asiento.ocupado"
           [class.vip]="asiento.tipo === 'VIP'">
-          F{{ asiento.fila }}-C{{ asiento.columna }}
+          F{{ asiento.fila }}‑C{{ asiento.columna }}
         </div>
       </div>
     </div>
+
     <button class="close-btn" (click)="cerrar()">Cerrar</button>
   </div>
 </div>

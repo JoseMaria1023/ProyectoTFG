@@ -1,7 +1,8 @@
+// gestionar-zona.component.ts
 import { Component, OnInit } from '@angular/core';
-import { ZonaService } from '../zona.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ZonaService } from '../zona.service';
 import { CrearZonaComponent } from '../crear-zona/crear-zona.component';
 import { EditarZonaComponent } from '../editar-zona/editar-zona.component';
 
@@ -14,8 +15,7 @@ import { EditarZonaComponent } from '../editar-zona/editar-zona.component';
 })
 export class GestionarZonaComponent implements OnInit {
   zonas: any[] = [];
-  zonaSeleccionada: any = null;
-  recintos: any[] = [];
+  editarVisible = false;
 
   constructor(private zonaService: ZonaService) {}
 
@@ -24,33 +24,23 @@ export class GestionarZonaComponent implements OnInit {
   }
 
   cargarZonas(): void {
-    this.zonaService.obtenerZonas().subscribe(data => {
-      this.zonas = data;
-    });
+    this.zonaService.obtenerZonas().subscribe(data => this.zonas = data);
   }
 
-  seleccionarZona(zona: any): void {
-    this.zonaSeleccionada = { ...zona };
-  }
-
-  onZonaCreada(): void {
-    this.cargarZonas();
-  }
-
-  onZonaActualizada(): void {
-    this.cargarZonas();
-    this.zonaSeleccionada = null;
+  seleccionarZona(idZona: number): void {
+    // Guardamos el ID para que EditarZonaComponent lo cargue desde sessionStorage
+    sessionStorage.setItem('zonaSeleccionadaId', idZona.toString());
+    this.editarVisible = true;
   }
 
   cancelarEdicion(): void {
-    this.zonaSeleccionada = null;
+    sessionStorage.removeItem('zonaSeleccionadaId');
+    this.editarVisible = false;
+    this.cargarZonas();
   }
 
   eliminarZona(id: number): void {
-    if (confirm('¿Estás seguro de eliminar esta zona?')) {
-      this.zonaService.eliminarZona(id).subscribe(() => {
-        this.cargarZonas();
-      });
-    }
+    if (!confirm('¿Estás seguro de eliminar esta zona?')) return;
+    this.zonaService.eliminarZona(id).subscribe(() => this.cargarZonas());
   }
 }

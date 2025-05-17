@@ -10,6 +10,8 @@ import com.jve.proyecto.converter.ZonaConverter;
 import com.jve.proyecto.dto.ZonaDTO;
 import com.jve.proyecto.entity.Recinto;
 import com.jve.proyecto.entity.Zona;
+import com.jve.proyecto.exceptions.RecintoNoEncontradoException;
+import com.jve.proyecto.exceptions.ZonaNoEncontradaException;
 import com.jve.proyecto.repository.RecintoRepository;
 import com.jve.proyecto.repository.ZonaRepository;
 
@@ -34,7 +36,7 @@ public class ZonaService {
         }
 
         Recinto recinto = recintoRepository.findById(zonaDTO.getRecintoId())
-                .orElseThrow(() -> new RuntimeException("Recinto no encontrado con ID: " + zonaDTO.getRecintoId()));
+                .orElseThrow(() -> new RecintoNoEncontradoException());
 
         // Convertir DTO a entidad y asignar el recinto cargado
         Zona zona = zonaConverter.toEntity(zonaDTO);
@@ -46,7 +48,7 @@ public class ZonaService {
 
     public ZonaDTO obtenerZonaPorId(Long id) {
         Zona zona = zonaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Zona no encontrada con ID: " + id));
+                .orElseThrow(() -> new ZonaNoEncontradaException());
         return zonaConverter.toDto(zona);
     }
 
@@ -59,11 +61,11 @@ public class ZonaService {
     @Transactional
     public ZonaDTO actualizarZona(Long id, ZonaDTO zonaDTO) {
         Zona existente = zonaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Zona no encontrada con ID: " + id));
+                .orElseThrow(() -> new ZonaNoEncontradaException());
 
         if (zonaDTO.getRecintoId() != null) {
             Recinto recinto = recintoRepository.findById(zonaDTO.getRecintoId())
-                    .orElseThrow(() -> new RuntimeException("Recinto no encontrado con ID: " + zonaDTO.getRecintoId()));
+                    .orElseThrow(() -> new RecintoNoEncontradoException());
             existente.setRecinto(recinto);
         }
 
@@ -78,7 +80,7 @@ public class ZonaService {
 
     public void eliminarZona(Long id) {
         Zona zona = zonaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Zona no encontrada con ID: " + id));
+                .orElseThrow(() -> new ZonaNoEncontradaException());
         zonaRepository.delete(zona);
     }
 }

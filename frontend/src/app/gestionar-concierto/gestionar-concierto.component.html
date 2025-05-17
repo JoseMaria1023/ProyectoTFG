@@ -19,10 +19,10 @@
   <hr />
 
   <div *ngIf="conciertoSeleccionado; else crear">
-    <app-editar-concierto [concierto]="conciertoSeleccionado"></app-editar-concierto>
+    <app-editar-concierto></app-editar-concierto>
   </div>
 
   <ng-template #crear>
-    <app-crear-concierto></app-crear-concierto>
+    <app-crear-concierto (conciertoCreado)="onConciertoCreado()"></app-crear-concierto>
   </ng-template>
 </div>

@@ -36,6 +36,10 @@ export class RecintoService {
     return this.http.put(`${this.apiUrl}/${id}`, recinto, { headers });
   }
 
+   obtenerRecintoPorId(id: number): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<any>(`${this.apiUrl}/${id}`, { headers });
+  }
   // Método para eliminar un recinto
   eliminarRecinto(id: number): Observable<void> {
     const headers = this.getAuthHeaders();

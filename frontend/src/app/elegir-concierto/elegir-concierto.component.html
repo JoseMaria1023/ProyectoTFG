@@ -54,17 +54,19 @@
   <div *ngIf="conciertos.length === 0">No hay conciertos para mostrar.</div>
 
   <!-- Lista de conciertos -->
-  <div *ngFor="let concierto of conciertos" class="concierto-card">
-    <div class="concierto-nombre">
-      {{ concierto.nombre }}<br>
-      <small>{{ concierto.fecha | date:'short' }}</small>
+  <div class="conciertos-grid">
+    <div *ngFor="let concierto of conciertos" class="concierto-card">
+      <div class="concierto-nombre">
+        {{ concierto.nombre }}<br>
+        <small>{{ concierto.fecha | date:'short' }}</small>
+      </div>
+      <div class="concierto-recinto">
+        <span>Recinto: {{ concierto.nombreRecinto || 'Desconocido' }}</span>
+        <span>Zona: {{ concierto.nombreZona || 'Desconocida' }}</span>
+      </div>
+      <button class="btn-comprar" (click)="comprarEntrada(concierto)">
+        Comprar entrada
+      </button>
     </div>
-    <div class="concierto-recinto">
-      <span>Recinto: {{ concierto.nombreRecinto || 'Desconocido' }}</span>
-      <span>Zona: {{ concierto.nombreZona || 'Desconocida' }}</span>
-    </div>
-    <button class="btn-comprar" (click)="comprarEntrada(concierto)">
-      Comprar entrada
-    </button>
   </div>
 </div>

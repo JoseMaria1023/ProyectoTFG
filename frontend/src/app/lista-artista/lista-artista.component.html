@@ -1,0 +1,13 @@
+<div class="artistas-container">
+  <h2>Listado de Artistas</h2>
+
+  <div class="artista-card" *ngFor="let artista of artistas">
+    <img [src]="artista.fotoUrl" 
+         [alt]="'Foto de ' + artista.nombre" 
+         class="artista-img" />
+    <div class="artista-info">
+      <h3>{{ artista.nombre }} {{ artista.apellidos }}</h3>
+      <p>{{ artista.descripcion }}</p>
+    </div>
+  </div>
+</div>

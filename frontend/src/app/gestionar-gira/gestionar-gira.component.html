@@ -5,7 +5,7 @@
     <li *ngFor="let gira of giras">
       <strong>{{ gira.nombre }}</strong> - {{ gira.descripcion }}
       <div class="botones-acciones">
-        <button (click)="seleccionarGira(gira)">Editar</button>
+        <button (click)="editarGira(gira.idGira)">Editar</button>
         <button type="button" (click)="eliminarGira(gira.idGira)">Eliminar</button>
       </div>
     </li>
@@ -13,16 +13,5 @@
 
   <hr />
 
-  <div *ngIf="giraSeleccionada; else crear">
-    <app-editar-gira 
-      [gira]="giraSeleccionada" 
-      [artistas]="artistas"
-      (giraActualizada)="onGiraActualizada()"
-      (cancelarEdicion)="cancelarEdicion()"
-    ></app-editar-gira>
-  </div>
-
-  <ng-template #crear>
-    <app-crear-gira [artistas]="artistas" (giraCreada)="onGiraCreada()"></app-crear-gira>
-  </ng-template>
+  <app-crear-gira (giraCreada)="onGiraCreada()"></app-crear-gira>
 </div>

@@ -14,7 +14,7 @@ import { EditarConciertoComponent } from '../editar-concierto/editar-concierto.c
 })
 export class GestionarConciertosComponent implements OnInit {
   conciertos: any[] = [];
-  conciertoSeleccionado: any = null;
+  conciertoSeleccionado: boolean = false;
 
   constructor(private conciertoService: ConciertoService) {}
 
@@ -29,9 +29,9 @@ export class GestionarConciertosComponent implements OnInit {
   }
 
   seleccionarConcierto(concierto: any): void {
-    // Clonar el concierto para evitar modificar directamente la lista
-    this.conciertoSeleccionado = { ...concierto };
-  }
+  sessionStorage.setItem('conciertoAEditar', concierto.idConcierto.toString());
+  this.conciertoSeleccionado = true; // Cambia de null a booleano
+}
 
   onConciertoCreado(): void {
     this.cargarConciertos();
@@ -39,7 +39,7 @@ export class GestionarConciertosComponent implements OnInit {
 
   onConciertoActualizado(): void {
     this.cargarConciertos();
-    this.conciertoSeleccionado = null;
+    this.conciertoSeleccionado = false;
   }
 
   eliminarConcierto(id: number): void {

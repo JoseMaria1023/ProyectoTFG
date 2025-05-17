@@ -33,6 +33,10 @@ export class GiraService {
     return this.http.post<any>(this.apiUrl, body, { headers });
   }
 
+  getGiraById(id: number): Observable<any> {
+  const headers = this.getAuthHeaders();
+  return this.http.get<any>(`${this.apiUrl}/${id}`, { headers });
+}
   deleteGira(id: number): Observable<void> {
     const headers = this.getAuthHeaders();
     return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers });

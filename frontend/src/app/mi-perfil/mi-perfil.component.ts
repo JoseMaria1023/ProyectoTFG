@@ -72,7 +72,7 @@ export class MiPerfilComponent implements OnInit {
   verificarActivo(event: Event) {
     const checkbox = (event.target as HTMLInputElement);
     if (!checkbox.checked) {
-      if (confirm('¿Deseas eliminar tu cuenta permanentemente?')) {
+      if (confirm('Si desactivas tu cuenta la eliminaras permanentemente. Puedes darte un respiro desactivandola temporalmente')) {
         const userId = this.authService.getUserId();
         if (!userId) return;
         this.usuarioService.eliminarUsuario(userId).subscribe({
@@ -94,10 +94,10 @@ export class MiPerfilComponent implements OnInit {
     }
   }
 
-  abrirTransferencia(entrada: any) {
-    this.entradaSeleccionada = entrada;
-    this.mostrarTransferencia = true;
-  }
+ abrirTransferencia(entrada: any): void {
+  sessionStorage.setItem('entradaSeleccionada', JSON.stringify(entrada));
+  this.mostrarTransferencia = true;
+}
 
   cerrarTransferenciaYRefrescar() {
     this.mostrarTransferencia = false;
@@ -144,6 +144,23 @@ export class MiPerfilComponent implements OnInit {
       this.totalPaginas = Math.ceil(this.entradas.length / this.entradasPorPagina);
       this.actualizarEntradasPagina();
     });
+  }
+  desactivarTemporalmente() {
+    if (confirm('¿Estás seguro de que deseas desactivar tu cuenta temporalmente? No podrás comprar entradas mientras esté desactivada.')) {
+      const userId = this.authService.getUserId();
+      if (!userId) return;
+  
+      const usuarioActualizado = { ...this.usuario, activo: false };
+      this.usuarioService.actualizarUsuario(userId, usuarioActualizado).subscribe({
+        next: () => {
+          this.usuario.activo = false;
+          this.mensaje = 'Tu cuenta ha sido desactivada temporalmente.';
+        },
+        error: () => {
+          alert('Error al desactivar la cuenta.');
+        }
+      });
+    }
   }
 
   private actualizarEntradasPagina() {

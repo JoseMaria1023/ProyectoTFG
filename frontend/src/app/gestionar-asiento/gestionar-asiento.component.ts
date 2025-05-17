@@ -1,23 +1,32 @@
 import { Component, OnInit } from '@angular/core';
-import { AsientoService } from '../asiento.service';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
+import { AsientoService } from '../asiento.service';
 import { CrearAsientoComponent } from '../crear-asiento/crear-asiento.component';
 import { EditarAsientoComponent } from '../editar-asiento/editar-asiento.component';
 
 @Component({
   selector: 'app-gestionar-asientos',
   standalone: true,
-  imports: [CommonModule, FormsModule, CrearAsientoComponent, EditarAsientoComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    CrearAsientoComponent,
+    EditarAsientoComponent
+  ],
   templateUrl: './gestionar-asiento.component.html',
   styleUrls: ['./gestionar-asiento.component.css']
 })
 export class GestionarAsientosComponent implements OnInit {
   asientos: any[] = [];
-  asientoSeleccionado: any = null;
-  // Si es necesario, se puede filtrar por concierto; en este ejemplo listamos todos.
-  
-  constructor(private asientoService: AsientoService) {}
+  mostrandoEditor = false;
+
+  constructor(
+    private asientoService: AsientoService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.cargarAsientos();
@@ -30,13 +39,13 @@ export class GestionarAsientosComponent implements OnInit {
   }
 
   seleccionarAsiento(asiento: any): void {
-    // Clonar para evitar mutaciones directas de la lista
-    this.asientoSeleccionado = { ...asiento };
+    // guardamos el ID para que EditarAsientoComponent lo lea
+    sessionStorage.setItem('asientoAEditar', asiento.idAsiento.toString());
+    this.mostrandoEditor = true;
   }
 
-  // Si se actualiza o se elimina, se recarga la lista y se limpia el asiento seleccionado
   refrescar(): void {
     this.cargarAsientos();
-    this.asientoSeleccionado = null;
+    this.mostrandoEditor = false;
   }
 }

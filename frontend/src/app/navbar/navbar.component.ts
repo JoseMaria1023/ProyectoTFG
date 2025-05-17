@@ -29,8 +29,17 @@ export class NavbarComponent {
     this.toggleSidebar();
   }
 
+  navigateListarArtista(): void {
+    this.router.navigate(['/Listar-artista']);
+    this.toggleSidebar();
+  }
+
   navigateToComprar(): void {
     this.router.navigate(['/Elegir-concierto']);
+    this.toggleSidebar();
+  }
+  navigateToAsientos(): void {
+    this.router.navigate(['/Gestionar-asiento']);
     this.toggleSidebar();
   }
   navigateToPerfil(): void {

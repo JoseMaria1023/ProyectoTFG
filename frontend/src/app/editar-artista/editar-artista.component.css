@@ -1,123 +1,114 @@
-/* Asegura que el componente cubra toda la pantalla y centre el contenido */
-:host {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #141e30, #243b55);
-    padding: 20px;
-    box-sizing: border-box;
-  }
-  
-  /* Contenedor del formulario */
-  .container {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(8px);
-    border-radius: 12px;
-    padding: 30px;
-    max-width: 500px;
-    width: 100%;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    animation: fadeIn 0.8s ease-in-out;
-  }
-  
-  /* Animación de entrada */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  /* Título del formulario */
-  h2 {
-    text-align: center;
-    color: #00aaff;
-    font-size: 28px;
-    margin-bottom: 20px;
-  }
-  
-  /* Estilos para cada campo del formulario */
-  .container div {
-    margin-bottom: 15px;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  label {
-    color: #ffffff;
-    font-weight: 600;
-    margin-bottom: 5px;
-  }
-  
-  /* Campos de entrada y textarea */
-  input[type="text"],
-  input[type="password"],
-  textarea {
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.2);
-    color: #ffffff;
-    font-size: 14px;
-    transition: background 0.3s ease;
-  }
-  
-  input:focus,
-  textarea:focus {
-    background: rgba(255, 255, 255, 0.3);
-    outline: none;
-  }
-  
-  /* Input de tipo archivo */
-  input[type="file"] {
-    background: transparent;
-    color: #ffffff;
-    padding: 8px 0;
-  }
-  
-  /* Previsualización de la imagen */
-  img {
-    margin-top: 10px;
-    max-width: 120px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  }
-  
-  /* Botón de registro y edición */
-  button {
-    width: 100%;
-    padding: 14px;
-    background: linear-gradient(90deg, #00aaff, #0066ff);
-    border: none;
-    border-radius: 8px;
-    color: #ffffff;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: transform 0.3s ease, background 0.3s ease;
-  }
-  
-  button:hover {
-    transform: scale(1.05);
-    background: linear-gradient(90deg, #0066ff, #0044cc);
-  }
-  
-  /* Responsividad */
-  @media (max-width: 600px) {
-    .container {
-      margin: 20px;
-      padding: 20px;
-    }
-    h2 {
-      font-size: 24px;
-    }
-    button {
-      font-size: 14px;
-    }
-  }
-  
+.container-editar-artista {
+  max-width: 700px;
+  margin: 50px auto;
+  background: linear-gradient(135deg, #1e1e2f, #2c2c54);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 0 30px rgba(255, 0, 128, 0.3);
+  color: #f0f0f0;
+  font-family: 'Orbitron', sans-serif;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.container-editar-artista h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  color: #ff4081;
+  letter-spacing: 2px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #ff79c6;
+}
+
+input[type="text"],
+input[type="password"],
+textarea {
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background-color: #2f2f46;
+  color: white;
+  outline: none;
+  transition: 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+textarea:focus {
+  background-color: #3d3d5c;
+  box-shadow: 0 0 10px #ff4081;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+input[type="file"] {
+  color: #ccc;
+}
+
+.preview {
+  margin-top: 10px;
+}
+
+.preview img {
+  max-width: 100%;
+  border-radius: 12px;
+  border: 2px solid #ff4081;
+  box-shadow: 0 0 15px rgba(255, 64, 129, 0.5);
+}
+
+.botones {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+button {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  letter-spacing: 1px;
+  transition: all 0.3s ease-in-out;
+}
+
+.btn-guardar {
+  background-color: #ff4081;
+  color: white;
+}
+
+.btn-guardar:hover {
+  background-color: #ff1c65;
+  box-shadow: 0 0 15px #ff4081;
+}
+
+.btn-cancelar {
+  background-color: transparent;
+  color: #f0f0f0;
+  border: 2px solid #ff4081;
+}
+
+.btn-cancelar:hover {
+  background-color: #ff4081;
+  color: white;
+  box-shadow: 0 0 10px #ff4081;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

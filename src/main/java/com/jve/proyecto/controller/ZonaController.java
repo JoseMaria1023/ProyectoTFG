@@ -20,18 +20,21 @@ public class ZonaController {
         return zonaService.obtenerTodasLasZonas();
     }
 
+    @GetMapping("/{id}")
+    public ZonaDTO obtenerZonaPorId(@PathVariable Long id) {
+        return zonaService.obtenerZonaPorId(id);
+    }
+
     @PostMapping
     public ZonaDTO crearZona(@RequestBody ZonaDTO zonaDTO) {
         return zonaService.crearZona(zonaDTO);
     }
     
-    // Endpoint para actualizar zona
     @PutMapping("/{id}")
     public ZonaDTO actualizarZona(@PathVariable Long id, @RequestBody ZonaDTO zonaDTO) {
         return zonaService.actualizarZona(id, zonaDTO);
     }
     
-    // Endpoint para eliminar zona
     @DeleteMapping("/{id}")
     public void eliminarZona(@PathVariable Long id) {
         zonaService.eliminarZona(id);

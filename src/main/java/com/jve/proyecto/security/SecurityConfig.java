@@ -22,8 +22,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.jve.proyecto.service.CombinedUserDetailsService;
-import com.jve.proyecto.service.CustomUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
@@ -31,28 +29,26 @@ public class SecurityConfig {
 
     private final JWTFilter jwtFilter;
     private final PasswordEncoder passwordEncoder;
+    private final UserDetailsService userDetailsService; // Inyectado automáticamente
 
-    // Usamos @Lazy si es necesario para evitar referencias circulares.
-    public SecurityConfig(@Lazy JWTFilter jwtFilter, PasswordEncoder passwordEncoder) {
+    // Inyección de dependencias
+    @Autowired
+    public SecurityConfig(@Lazy JWTFilter jwtFilter, PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) {
         this.jwtFilter = jwtFilter;
         this.passwordEncoder = passwordEncoder;
+        this.userDetailsService = userDetailsService;
     }
 
-    // Registro del servicio combinado
+    // Registro de AuthenticationManager
     @Bean
-    public UserDetailsService userDetailsService(CombinedUserDetailsService combinedUserDetailsService) {
-        // Al tener la anotación @Service en CombinedUserDetailsService, se inyecta aquí.
-        return combinedUserDetailsService;
-    }
-
-    @Bean
-    public AuthenticationManager authManager(HttpSecurity http, UserDetailsService userDetailsService) throws Exception {
+    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
         return http.getSharedObject(AuthenticationManagerBuilder.class)
-                .userDetailsService(userDetailsService) // Se usa el servicio combinado
+                .userDetailsService(userDetailsService) // Usamos el servicio combinado
                 .passwordEncoder(passwordEncoder)
                 .and()
                 .build();
     }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -68,6 +64,8 @@ public class SecurityConfig {
                                 "/swagger-resources/**",
                                 "/webjars/**"
                         ).permitAll()
+                        .requestMatchers("/uploads/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/artistas/listar").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll() // Permitir autenticación
                         .requestMatchers(HttpMethod.GET, "/api/auth/**").permitAll() // Permitir autenticación
                         .requestMatchers(HttpMethod.DELETE, "/api/auth/**").permitAll() // Permitir autenticación
@@ -78,7 +76,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/usuarios/**").permitAll() // Permitir autenticación
                         .requestMatchers(HttpMethod.POST, "/api/artistas/**").hasAuthority("ROLE_ADMIN") // Permitir POST en artistas
                         .requestMatchers(HttpMethod.POST, "/api/transferencias/**").permitAll() // Permitir POST en artistas
-                        .requestMatchers(HttpMethod.GET, "/api/artistas/**").permitAll() // Permitir POST en artistas
                         .requestMatchers(HttpMethod.PUT, "/api/artistas/**").hasAuthority("ROLE_ADMIN") // Permitir POST en artistas
                         .requestMatchers(HttpMethod.DELETE, "/api/artistas/**").hasAuthority("ROLE_ADMIN") // Permitir POST en artistas
                         .requestMatchers(HttpMethod.POST, "/api/conciertos/**").hasAuthority("ROLE_ADMIN") // Permitir POST en artistas
@@ -87,13 +84,13 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/conciertos/**").hasAuthority("ROLE_ADMIN") // Permitir POST en artistas
                         .requestMatchers(HttpMethod.POST, "/api/giras/**").hasAuthority("ROLE_ADMIN") // Permitir POST en artistas
                         .requestMatchers(HttpMethod.PUT, "/api/giras/**").hasAuthority("ROLE_ADMIN") // Permitir POST en artistas
-                        .requestMatchers(HttpMethod.DELETE, "/api/giras/**").hasAuthority("ROLE_ADMIN") // Permitir POST en artistas                        .requestMatchers(HttpMethod.POST, "/api/giras/**").permitAll() // Permitir POST en artistas
+                        .requestMatchers(HttpMethod.DELETE, "/api/giras/**").hasAuthority("ROLE_ADMIN") // Permitir POST en artistas
                         .requestMatchers(HttpMethod.GET, "/api/giras/**").permitAll() // Permitir POST en artistas
                         .requestMatchers(HttpMethod.POST, "/api/entradas/**").permitAll() // Permitir POST en artistas
                         .requestMatchers(HttpMethod.PUT, "/api/entradas/**").permitAll() // Permitir POST en artistas
                         .requestMatchers(HttpMethod.POST, "/api/pagos/**").permitAll() // Permitir POST en artistas
                         .requestMatchers(HttpMethod.POST, "/api/asientos/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_ARTISTA")
-                        .requestMatchers(HttpMethod.GET, "/api/asientos/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_ARTISTA")
+                        .requestMatchers(HttpMethod.GET, "/api/asientos/**").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/api/asientos/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_ARTISTA")
                         .requestMatchers(HttpMethod.PUT, "/api/asientos/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_ARTISTA")
                         .requestMatchers(HttpMethod.POST, "/api/zonas/**").hasAuthority("ROLE_ADMIN") // Permitir POST en artista
@@ -117,7 +114,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://localhost:80"));; // Origen permitido
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://localhost:80")); // Origen permitido
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Métodos HTTP permitidos
         configuration.setAllowedHeaders(Arrays.asList("*")); // Permitir cualquier cabecera
         configuration.setAllowCredentials(true); // Permitir credenciales

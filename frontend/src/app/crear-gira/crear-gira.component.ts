@@ -1,7 +1,8 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { GiraService } from '../gira.service'; 
+import { GiraService } from '../gira.service';
+import { ArtistaService } from '../artista.service';
 
 @Component({
   selector: 'app-crear-gira',
@@ -10,25 +11,37 @@ import { GiraService } from '../gira.service';
   templateUrl: './crear-gira.component.html',
   styleUrls: ['./crear-gira.component.css']
 })
-export class CrearGiraComponent {
-  // Se recibe la lista de artistas para el select
-  @Input() artistas: any[] = [];
-  // Emitirá un evento para notificar que se creó una gira
-  @Output() giraCreada = new EventEmitter<void>();
-
-  // Objeto gira inicial
+export class CrearGiraComponent implements OnInit {
+  artistas: any[] = [];
   gira: any = { nombre: '', descripcion: '', artistaId: null };
 
-  constructor(private giraService: GiraService) {}
+  constructor(
+    private giraService: GiraService,
+    private artistaService: ArtistaService
+  ) {}
+
+  ngOnInit(): void {
+    this.cargarArtistas();
+  }
+
+  cargarArtistas(): void {
+    this.artistaService.getArtistas().subscribe(
+      (data) => {
+        this.artistas = data;
+      },
+      (error) => {
+        console.error('Error al cargar artistas:', error);
+        alert('Error al cargar la lista de artistas');
+      }
+    );
+  }
 
   crearGira(): void {
-    // Se llama al servicio para crear la gira
     this.giraService.createGira(this.gira).subscribe(
       (response) => {
         console.log('Gira creada:', response);
         alert('Gira creada con éxito');
         this.resetForm();
-        this.giraCreada.emit();
       },
       (error) => {
         console.error('Error al crear gira:', error);

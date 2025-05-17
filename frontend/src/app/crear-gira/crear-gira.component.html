@@ -1,23 +1,56 @@
 <div class="container">
   <h2>Añadir Gira</h2>
-  <form (ngSubmit)="crearGira()">
-    <div>
+  <form #giraForm="ngForm" (ngSubmit)="crearGira()" novalidate>
+    <div class="form-group">
       <label for="nombre">Nombre de la Gira:</label>
-      <input type="text" [(ngModel)]="gira.nombre" name="nombre" required />
+      <input
+        type="text"
+        id="nombre"
+        [(ngModel)]="gira.nombre"
+        name="nombre"
+        required
+        #nombre="ngModel"
+      />
+      <small class="error" *ngIf="nombre.invalid && nombre.touched">
+        El nombre es obligatorio.
+      </small>
     </div>
-    <div>
+
+    <div class="form-group">
       <label for="descripcion">Descripción:</label>
-      <textarea [(ngModel)]="gira.descripcion" name="descripcion" required></textarea>
+      <textarea
+        id="descripcion"
+        [(ngModel)]="gira.descripcion"
+        name="descripcion"
+        required
+        #descripcion="ngModel"
+      ></textarea>
+      <small class="error" *ngIf="descripcion.invalid && descripcion.touched">
+        La descripción es obligatoria.
+      </small>
     </div>
-    <div>
+
+    <div class="form-group">
       <label for="artista">Seleccionar Artista:</label>
-      <select [(ngModel)]="gira.artistaId" name="artista" required>
-        <option [ngValue]="null" disabled selected>Seleccione un artista</option>
+      <select
+        id="artista"
+        [(ngModel)]="gira.artistaId"
+        name="artista"
+        required
+        #artista="ngModel"
+      >
+        <option [ngValue]="null" disabled>Seleccione un artista</option>
         <option *ngFor="let artista of artistas" [ngValue]="artista.idArtista">
-          {{ artista.nombre }}
+          {{ artista.nombre }} {{ artista.apellidos }}
         </option>
       </select>
+      <small class="error" *ngIf="artista.invalid && artista.touched">
+        Debe seleccionar un artista.
+      </small>
     </div>
-    <button type="submit">Añadir Gira</button>
+
+    <button type="submit" [disabled]="giraForm.invalid">
+      Añadir Gira
+    </button>
   </form>
 </div>

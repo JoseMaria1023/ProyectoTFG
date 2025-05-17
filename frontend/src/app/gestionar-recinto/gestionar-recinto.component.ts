@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { RecintoService } from '../recinto.service'; 
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RecintoService } from '../recinto.service';
 import { CrearRecintoComponent } from '../crear-recinto/crear-recinto.component';
 import { EditarRecintoComponent } from '../editar-recinto/editar-recinto.component';
 
@@ -14,12 +14,16 @@ import { EditarRecintoComponent } from '../editar-recinto/editar-recinto.compone
 })
 export class GestionarRecintosComponent implements OnInit {
   recintos: any[] = [];
-  recintoSeleccionado: any = null;
+  editarVisible = false;
 
   constructor(private recintoService: RecintoService) {}
 
   ngOnInit(): void {
     this.cargarRecintos();
+
+    window.addEventListener('recintoActualizado', () => {
+    this.refrescarYCancelar();
+  });
   }
 
   cargarRecintos(): void {
@@ -28,29 +32,29 @@ export class GestionarRecintosComponent implements OnInit {
     });
   }
 
-  seleccionarRecinto(recinto: any): void {
-    // Clonamos el recinto para evitar modificar directamente la lista
-    this.recintoSeleccionado = { ...recinto };
+  seleccionarRecinto(idRecinto: number): void {
+    sessionStorage.setItem('recintoSeleccionadoId', idRecinto.toString());
+    this.editarVisible = true;
   }
 
-  onRecintoCreado(): void {
+  // Se llama desde EditarRecintoComponent tras guardar
+  refrescarYCancelar(): void {
+    sessionStorage.removeItem('recintoSeleccionadoId');
+    this.editarVisible = false;
     this.cargarRecintos();
-  }
-
-  onRecintoActualizado(): void {
-    this.cargarRecintos();
-    this.recintoSeleccionado = null;
   }
 
   cancelarEdicion(): void {
-    this.recintoSeleccionado = null;
+    sessionStorage.removeItem('recintoSeleccionadoId');
+    this.editarVisible = false;
   }
 
   eliminarRecinto(id: number): void {
-    if (confirm('¿Estás seguro de eliminar este recinto?')) {
-      this.recintoService.eliminarRecinto(id).subscribe(() => {
-        this.cargarRecintos();
-      });
+    if (!confirm('¿Estás seguro de eliminar este recinto?')) {
+      return;
     }
+    this.recintoService.eliminarRecinto(id).subscribe(() => {
+      this.cargarRecintos();
+    });
   }
 }

@@ -12,6 +12,9 @@ import com.jve.proyecto.converter.UsuarioConverter;
 import com.jve.proyecto.dto.UsuarioDTO;
 import com.jve.proyecto.entity.Entrada;
 import com.jve.proyecto.entity.Usuario;
+import com.jve.proyecto.exceptions.EntradaEnPetenenciaException;
+import com.jve.proyecto.exceptions.EntradaNoEncontradaException;
+import com.jve.proyecto.exceptions.UsuarioNoEncontradoException;
 import com.jve.proyecto.repository.EntradaRepository;
 import com.jve.proyecto.repository.UsuarioRepository;
 
@@ -41,14 +44,14 @@ public class UsuarioService {
     @Transactional
     public void transferirEntrada(Long idUsuario, Long idEntrada, String telefonoDestino) {
         Entrada entrada = entradaRepository.findById(idEntrada)
-            .orElseThrow(() -> new RuntimeException("Entrada no encontrada con ID: " + idEntrada));
+            .orElseThrow(() -> new EntradaNoEncontradaException());
 
         if (!entrada.getUsuario().getIdUsuario().equals(idUsuario)) {
-            throw new RuntimeException("El usuario no es el propietario de la entrada.");
+            throw new EntradaEnPetenenciaException();
         }
 
         Usuario nuevoUsuario = usuarioRepository.findByTelefono(telefonoDestino)
-            .orElseThrow(() -> new RuntimeException("No se encontró usuario con el teléfono: " + telefonoDestino));
+            .orElseThrow(() -> new UsuarioNoEncontradoException());
 
         entrada.setUsuario(nuevoUsuario);
         entradaRepository.save(entrada);
@@ -56,7 +59,7 @@ public class UsuarioService {
 
     public UsuarioDTO obtenerUsuarioPorId(Long id) {
         Usuario usuario = usuarioRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
+            .orElseThrow(() -> new UsuarioNoEncontradoException());
         return usuarioConverter.toDto(usuario);
     }
 
@@ -68,7 +71,7 @@ public class UsuarioService {
 
     public UsuarioDTO actualizarUsuario(Long id, UsuarioDTO usuarioDTO) {
         Usuario existente = usuarioRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
+            .orElseThrow(() -> new UsuarioNoEncontradoException());
         // Mapear propiedades del DTO sobre la entidad existente
         Usuario actualizado = usuarioConverter.toEntity(usuarioDTO);
         actualizado.setIdUsuario(existente.getIdUsuario());
@@ -78,7 +81,7 @@ public class UsuarioService {
 
     public void eliminarUsuario(Long id) {
         Usuario usuario = usuarioRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
+            .orElseThrow(() -> new UsuarioNoEncontradoException());
         usuarioRepository.delete(usuario);
     }
 

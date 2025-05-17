@@ -17,13 +17,12 @@ export class CrearArtistaComponent {
 
   constructor(private fb: FormBuilder, private artistaService: ArtistaService) {
     this.artistaForm = this.fb.group({
-      nombre: ['', Validators.required],
-      apellidos: ['', Validators.required],
-      username: ['', Validators.required],
-      password: ['', Validators.required],
-      descripcion: [''],
-      generoMusical: ['']
-      // La foto se gestionará a través de "selectedFile"
+      nombre: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      apellidos: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      username: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20)]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      descripcion: ['', [Validators.maxLength(300)]],
+      generoMusical: ['', [Validators.maxLength(50)]]
     });
   }
 
@@ -32,7 +31,6 @@ export class CrearArtistaComponent {
     if (input.files && input.files.length) {
       this.selectedFile = input.files[0];
 
-      // Previsualización de la imagen
       const reader = new FileReader();
       reader.onload = () => {
         this.fotoPreview = reader.result;

@@ -1,36 +1,47 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../auth.service'; 
+import { AuthService } from '../auth.service';
 import { Router, RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 
 @Component({
   standalone: true,
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  imports: [FormsModule, HttpClientModule, RouterModule]
+  imports: [ReactiveFormsModule, HttpClientModule, RouterModule, CommonModule]
 })
 export class LoginComponent {
-  username: string = '';
-  password: string = '';
+  loginForm: FormGroup;
+  loginError: string = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+    this.loginForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required]
+    });
+  }
 
   onSubmit() {
-    const credentials = {
-      username: this.username,
-      password: this.password
-    };
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
+      return;
+    }
+
+    const credentials = this.loginForm.value;
 
     this.authService.login(credentials).subscribe({
       next: (response) => {
-        this.authService.setSession(response);  // Guarda datos en sessionStorage
+        this.authService.setSession(response);
         this.router.navigate(['/']);
       },
       error: (err) => {
-        alert('Error en el inicio de sesión: ' + err.error.message);
+        this.loginError = err.error?.message || 'Usuario o contraseña incorrectos.';
       }
     });
   }
+
+  get username() { return this.loginForm.get('username'); }
+  get password() { return this.loginForm.get('password'); }
 }

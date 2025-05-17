@@ -19,8 +19,7 @@ export class EntradaService {
   }
 
   crearEntrada(entrada: any): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.post<any>(this.apiUrl, entrada, { headers });
+    return this.http.post<any>(this.apiUrl, entrada);
   }
 
   obtenerEntradas(): Observable<any[]> {

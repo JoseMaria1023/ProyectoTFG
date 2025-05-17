@@ -1,37 +1,78 @@
-<div class="container">
+<div class="crear-artista-container">
   <h2>Crear Artista</h2>
   <form [formGroup]="artistaForm" (ngSubmit)="crearArtista()">
-    <div>
+    
+    <!-- Nombre -->
+    <div class="form-group">
       <label>Nombre</label>
       <input type="text" formControlName="nombre" placeholder="Nombre" required>
+      <div *ngIf="artistaForm.get('nombre')?.touched && artistaForm.get('nombre')?.invalid" class="error">
+        <small *ngIf="artistaForm.get('nombre')?.errors?.['required']">El nombre es obligatorio.</small>
+        <small *ngIf="artistaForm.get('nombre')?.errors?.['minlength']">Debe tener al menos 2 caracteres.</small>
+        <small *ngIf="artistaForm.get('nombre')?.errors?.['maxlength']">Máximo 50 caracteres permitidos.</small>
+      </div>
     </div>
-    <div>
+
+    <!-- Apellidos -->
+    <div class="form-group">
       <label>Apellidos</label>
       <input type="text" formControlName="apellidos" placeholder="Apellidos" required>
+      <div *ngIf="artistaForm.get('apellidos')?.touched && artistaForm.get('apellidos')?.invalid" class="error">
+        <small *ngIf="artistaForm.get('apellidos')?.errors?.['required']">Los apellidos son obligatorios.</small>
+        <small *ngIf="artistaForm.get('apellidos')?.errors?.['minlength']">Debe tener al menos 2 caracteres.</small>
+        <small *ngIf="artistaForm.get('apellidos')?.errors?.['maxlength']">Máximo 50 caracteres permitidos.</small>
+      </div>
     </div>
-    <div>
+
+    <!-- Username -->
+    <div class="form-group">
       <label>Username</label>
       <input type="text" formControlName="username" placeholder="Usuario" required>
+      <div *ngIf="artistaForm.get('username')?.touched && artistaForm.get('username')?.invalid" class="error">
+        <small *ngIf="artistaForm.get('username')?.errors?.['required']">El nombre de usuario es obligatorio.</small>
+        <small *ngIf="artistaForm.get('username')?.errors?.['minlength']">Debe tener al menos 4 caracteres.</small>
+        <small *ngIf="artistaForm.get('username')?.errors?.['maxlength']">Máximo 20 caracteres permitidos.</small>
+      </div>
     </div>
-    <div>
+
+    <!-- Password -->
+    <div class="form-group">
       <label>Password</label>
       <input type="password" formControlName="password" placeholder="Contraseña" required>
+      <div *ngIf="artistaForm.get('password')?.touched && artistaForm.get('password')?.invalid" class="error">
+        <small *ngIf="artistaForm.get('password')?.errors?.['required']">La contraseña es obligatoria.</small>
+        <small *ngIf="artistaForm.get('password')?.errors?.['minlength']">Debe tener al menos 6 caracteres.</small>
+      </div>
     </div>
-    <div>
+
+    <!-- Descripción -->
+    <div class="form-group">
       <label>Descripción</label>
       <textarea formControlName="descripcion" placeholder="Descripción"></textarea>
+      <div *ngIf="artistaForm.get('descripcion')?.touched && artistaForm.get('descripcion')?.errors?.['maxlength']" class="error">
+        <small>Máximo 300 caracteres permitidos.</small>
+      </div>
     </div>
-    <div>
+
+    <!-- Género Musical -->
+    <div class="form-group">
       <label>Género Musical</label>
       <input type="text" formControlName="generoMusical" placeholder="Género musical">
+      <div *ngIf="artistaForm.get('generoMusical')?.touched && artistaForm.get('generoMusical')?.errors?.['maxlength']" class="error">
+        <small>Máximo 50 caracteres permitidos.</small>
+      </div>
     </div>
-    <div>
+
+    <!-- Foto -->
+    <div class="form-group">
       <label>Foto</label>
       <input type="file" (change)="onFileSelected($event)" required>
-      <div *ngIf="fotoPreview">
+      <div class="preview-img" *ngIf="fotoPreview">
         <img [src]="fotoPreview" alt="Previsualización">
       </div>
     </div>
+
+    <!-- Botón -->
     <button type="submit" [disabled]="artistaForm.invalid">Crear Artista</button>
   </form>
 </div>

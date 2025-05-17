@@ -1,0 +1,46 @@
+.artistas-container {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 20px;
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+    background: linear-gradient(to right, #1e1e2f, #3a3a5a);
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(255, 0, 128, 0.3);
+  }
+  
+  h2 {
+    text-align: center;
+    color: #ff4081;
+    margin-bottom: 30px;
+  }
+  
+  .artista-card {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 128, 255, 0.3);
+  }
+  
+  .artista-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 20px;
+    border: 3px solid #ff4081;
+  }
+  
+  .artista-info h3 {
+    margin: 0;
+    color: #03dac6;
+  }
+  
+  .artista-info p {
+    margin-top: 8px;
+  }
+  

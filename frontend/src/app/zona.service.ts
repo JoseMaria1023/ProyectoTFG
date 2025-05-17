@@ -36,6 +36,10 @@ export class ZonaService {
     return this.http.put(`${this.apiUrl}/${id}`, zona, { headers });
   }
 
+  obtenerZonaPorId(id: number): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<any>(`${this.apiUrl}/${id}`, { headers });
+  }
   // Eliminar zona
   eliminarZona(id: number): Observable<void> {
     const headers = this.getAuthHeaders();

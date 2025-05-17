@@ -29,6 +29,7 @@ import { AdminGuard } from './Guards/admin.guard';
 import { UserGuard } from './Guards/user.guard';
 import { ArtistaGuard } from './Guards/artista.guard';
 import { CrearRecintoConZonasComponent } from './crear-recinto-con-zonas/crear-recinto-con-zonas.component';
+import { ListaArtistaComponent } from './lista-artista/lista-artista.component';
 
 export const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -47,14 +48,15 @@ export const appRoutes: Routes = [
   { path: 'Crear-concierto', component: CrearConciertoComponent,canActivate: [AdminGuard]},
   { path: 'Editar-concierto', component: EditarConciertoComponent,canActivate: [AdminGuard]},
   { path: 'Gestionar-concierto', component: GestionarConciertosComponent,canActivate: [AdminGuard]},
-  { path: 'Crear-asiento', component: CrearAsientoComponent,canActivate: [AdminGuard,ArtistaGuard]},
-  { path: 'Editar-asiento', component: EditarAsientoComponent,canActivate: [AdminGuard, ArtistaGuard]},
-  { path: 'Gestionar-asiento', component: GestionarAsientosComponent,canActivate: [AdminGuard, ArtistaGuard]},
+  { path: 'Crear-asiento', component: CrearAsientoComponent,canActivate: [AdminGuard]},
+  { path: 'Editar-asiento', component: EditarAsientoComponent,canActivate: [AdminGuard]},
+  { path: 'Gestionar-asiento', component: GestionarAsientosComponent,canActivate: [AdminGuard]},
   { path: 'Comprar-entrada', component: ComprarEntradaComponent},
   { path: 'Elegir-concierto', component: ElegirConciertoComponent},
   { path: 'Gestionar-artista', component: GestionarArtistaComponent,canActivate: [AdminGuard]},
   { path: 'Gestionar-gira', component: GestionarGiraComponent,canActivate: [AdminGuard]},
   { path: 'Editar-artista', component: EditarArtistaComponent,canActivate: [AdminGuard]},
+  { path: 'Listar-artista', component: ListaArtistaComponent},
   { path: 'Editar-gira', component: EditarGiraComponent,canActivate: [AdminGuard]},
   { path: 'mi-perfil', component: MiPerfilComponent },
   { path: 'Gestionar-asiento-artista', component: GestionarAsientoConciertoArtistaComponent,canActivate: [ArtistaGuard] },

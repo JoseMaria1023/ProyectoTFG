@@ -10,31 +10,39 @@ export class ArtistaService {
 
   constructor(private http: HttpClient) {}
 
-  private getAuthHeaders(): HttpHeaders {
+  private getAuthHeaders(isJson: boolean = true): HttpHeaders {
     const token = sessionStorage.getItem('token');
-    return new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    });
+    let headersConfig: any = {
+      'Authorization': `Bearer ${token}`
+    };
+    if (isJson) {
+      headersConfig['Content-Type'] = 'application/json';
+    }
+    return new HttpHeaders(headersConfig);
   }
 
   registrarArtista(artista: FormData): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.post(`${this.apiUrl}/crear`, artista, { headers });
+    const headers = this.getAuthHeaders(false);
+    return this.http.post( `${this.apiUrl}/crear`,artista,{ headers });
   }
 
   getArtistas(): Observable<any[]> {
-    const headers = this.getAuthHeaders();
-    return this.http.get<any[]>(`${this.apiUrl}/listar`, { headers });
+    return this.http.get<any[]>(`${this.apiUrl}/listar`);
   }
 
-  actualizarArtista(id: number, artista: FormData): Observable<any> {
-    const headers = this.getAuthHeaders();
+   actualizarArtista(id: number, artista: FormData): Observable<any> {
+    const token = sessionStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
     return this.http.put(`${this.apiUrl}/actualizar/${id}`, artista, { headers });
   }
   
   eliminarArtista(id: number): Observable<void> {
     const headers = this.getAuthHeaders();
     return this.http.delete<void>(`${this.apiUrl}/eliminar/${id}`, { headers });
+  }
+   getArtistaPorId(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 }

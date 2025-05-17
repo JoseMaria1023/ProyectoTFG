@@ -1,7 +1,9 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+// editar-artista.component.ts
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ArtistaService } from '../artista.service'; 
+import { ArtistaService } from '../artista.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-editar-artista',
@@ -10,8 +12,8 @@ import { ArtistaService } from '../artista.service';
   templateUrl: './editar-artista.component.html',
   styleUrls: ['./editar-artista.component.css']
 })
-export class EditarArtistaComponent {
-  @Input() artista: any = {
+export class EditarArtistaComponent implements OnInit {
+  artista: any = {
     idArtista: 0,
     nombre: '',
     apellidos: '',
@@ -21,24 +23,37 @@ export class EditarArtistaComponent {
     generoMusical: '',
     foto: ''
   };
-  @Output() artistaActualizado = new EventEmitter<void>();
-  @Output() cancelarEdicion = new EventEmitter<void>();
-
   selectedFile: File | null = null;
   fotoPreview: string | ArrayBuffer | null = null;
 
-  constructor(private artistaService: ArtistaService) {}
+  constructor(
+    private artistaService: ArtistaService,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    const idStr = sessionStorage.getItem('artistaAEditar');
+    if (!idStr) {
+      // si no hay ID, volvemos al listado
+      this.router.navigate(['/Gestionar-artista']);
+      return;
+    }
+    const id = +idStr;
+    this.artistaService.getArtistaPorId(id).subscribe(
+      data => this.artista = data,
+      err => {
+        console.error('No se pudo cargar artista', err);
+        this.router.navigate(['/Gestionar-artista']);
+      }
+    );
+  }
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length) {
       this.selectedFile = input.files[0];
-
-      // Previsualizar la nueva imagen
       const reader = new FileReader();
-      reader.onload = () => {
-        this.fotoPreview = reader.result;
-      };
+      reader.onload = () => this.fotoPreview = reader.result;
       reader.readAsDataURL(this.selectedFile);
     }
   }
@@ -51,28 +66,26 @@ export class EditarArtistaComponent {
     formData.append('password', this.artista.password);
     formData.append('descripcion', this.artista.descripcion);
     formData.append('generoMusical', this.artista.generoMusical);
-
-    // Se adjunta la nueva foto si se seleccionó; de lo contrario se envía el valor actual
     if (this.selectedFile) {
       formData.append('foto', this.selectedFile);
-    } else {
-      formData.append('foto', this.artista.foto);
-    }
+    } 
 
-    this.artistaService.actualizarArtista(this.artista.idArtista, formData).subscribe(
-      (response) => {
-        console.log('Artista actualizado:', response);
-        alert('Artista actualizado con éxito');
-        this.artistaActualizado.emit();
-      },
-      (error) => {
-        console.error('Error al actualizar artista:', error);
-        alert('Error al actualizar el artista');
-      }
-    );
+    this.artistaService.actualizarArtista(this.artista.idArtista, formData)
+      .subscribe(
+        () => {
+          alert('Artista actualizado con éxito');
+          sessionStorage.removeItem('artistaAEditar');
+          this.router.navigate(['/Gestionar-artista']);
+        },
+        error => {
+          console.error('Error al actualizar artista:', error);
+          alert('Error al actualizar el artista');
+        }
+      );
   }
 
   cancelar(): void {
-    this.cancelarEdicion.emit();
+    sessionStorage.removeItem('artistaAEditar');
+    this.router.navigate(['/Gestionar-artista']);
   }
 }

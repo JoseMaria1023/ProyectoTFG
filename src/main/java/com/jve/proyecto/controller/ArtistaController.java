@@ -78,7 +78,10 @@ public class ArtistaController {
         // Llama al servicio para actualizar el artista
         return artistaService.actualizarArtista(id, artistaDTO);
     }
-    
+     @GetMapping("/{id}")
+    public ArtistaDTO getArtistaPorId(@PathVariable Long id) {
+        return artistaService.obtenerArtistaPorId(id);
+    }
     // Endpoint para eliminar artista
     @DeleteMapping("/eliminar/{id}")
     public void eliminarArtista(@PathVariable Long id) {

@@ -21,6 +21,9 @@ import com.jve.proyecto.entity.Concierto;
 import com.jve.proyecto.entity.Entrada;
 import com.jve.proyecto.entity.Usuario;
 import com.jve.proyecto.entity.Zona;
+import com.jve.proyecto.exceptions.EntradaNoEncontradaException;
+import com.jve.proyecto.exceptions.EntradasDisponiblesException;
+import com.jve.proyecto.exceptions.PrecioEntradaException;
 import com.jve.proyecto.entity.Entrada.EstadoEntrada;
 import com.jve.proyecto.repository.AsientoRepository;
 import com.jve.proyecto.repository.ConciertoRepository;
@@ -168,16 +171,16 @@ public class EntradaService {
     public void eliminarEntrada(Long id) {
         entradaRepository.delete(
             entradaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Entrada no encontrada: " + id))
+                .orElseThrow(() -> new EntradaNoEncontradaException())
         );
     }
 
     public EntradaDTO revenderEntrada(Long idEntrada, BigDecimal precioReventa) {
         Entrada e = entradaRepository.findById(idEntrada)
-            .orElseThrow(() -> new RuntimeException("Entrada no encontrada: " + idEntrada));
+            .orElseThrow(() -> new EntradaNoEncontradaException());
 
         if (e.getEstado() != Entrada.EstadoEntrada.DISPONIBLE) {
-            throw new RuntimeException("Solo entradas disponibles pueden ponerse en reventa.");
+            throw new EntradasDisponiblesException();
         }
 
         BigDecimal max = e.getPrecioVenta()
@@ -186,7 +189,7 @@ public class EntradaService {
 
         BigDecimal pr = precioReventa.setScale(2, RoundingMode.HALF_UP);
         if (pr.compareTo(max) > 0) {
-            throw new RuntimeException("El precio de reventa supera el 10% permitido.");
+            throw new PrecioEntradaException();
         }
 
         e.setPrecioReventa(pr);

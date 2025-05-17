@@ -1,10 +1,6 @@
-/* Estilos para la capa de fondo */
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
@@ -12,114 +8,106 @@
   z-index: 1000;
 }
 
-/* Estilo de la ventana modal */
 .modal-content {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(8px);
-  padding: 2rem;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 700px;
-  text-align: center;
-  color: #fff;
-}
-
-/* Estilo del escenario */
-.escenario {
-  background-color: #333;
-  color: #fff;
-  font-weight: bold;
   padding: 1rem;
-  margin-bottom: 1.5rem;
-  border-radius: 5px;
-}
-
-/* Contenedor de asientos */
-.asientos-container {
-  margin-top: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 800px;
+  color: #fff;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 15px;
 }
 
-/* Filas de asientos */
+.ocupado {
+  background-color: red;
+  color: white;
+  cursor: not-allowed;
+}
+
+.modal-content.many-rows .asiento {
+  width: 32px;
+  height: 32px;
+  font-size: 0.8rem;
+}
+
+.escenario {
+  background: #222;
+  padding: 0.5rem;
+  border-radius: 4px;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.asiento:not(.ocupado):not(.vip) {
+  background: #2ecc71; /* verde para asiento libre */
+  color: #fff;
+}
+
+.asientos-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* espacio vertical entre filas */
+  padding: 0.5rem;
+  overflow-y: auto; /* Permitir desplazamiento si el contenedor tiene muchas filas */
+}
+
 .fila {
   display: flex;
+  flex-wrap: wrap; /* Esto asegura que los asientos se ajusten en varias filas si es necesario */
   justify-content: center;
-  gap: 10px;
+  gap: 0.75rem; /* espacio horizontal entre butacas */
 }
 
-/* Estilo de los asientos */
 .asiento {
   width: 50px;
   height: 50px;
-  border-radius: 5px;
-  background: #fff;
-  color: #000;
+  margin: 0.25rem; /* pequeño margen adicional */
+  border-radius: 4px;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   cursor: pointer;
-  transition: transform 0.3s, background-color 0.3s;
-  font-weight: bold;
+  transition: transform 0.2s;
 }
 
-.asiento:hover {
+.modal-content.many-rows {
+  max-height: 70vh; /* Deja espacio para muchas filas */
+  overflow-y: auto;
+}
+
+.asiento:hover:not(.ocupado) {
   transform: scale(1.1);
 }
 
 .asiento.ocupado {
-  background-color: #e74c3c;
+  background: #e74c3c;
   color: #fff;
-}
-
-.asiento.vip {
-  background-color: gold;
-  color: #000;
-}
-
-/* Botón de cierre */
-.close-btn {
-  background: linear-gradient(90deg, #00aaff, #0066ff);
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  color: #fff;
-  cursor: pointer;
-  transition: transform 0.3s, background 0.3s;
-}
-
-.close-btn:hover {
-  transform: scale(1.05);
-  background: linear-gradient(90deg, #0066ff, #0044cc);
-}
-/* mapa-asientos.component.css */
-.asiento {
-  /* estilos generales de cada butaca */
-  width: 40px;
-  height: 40px;
-  margin: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  border: 1px solid #666;
-  background-color: #fff;
-  transition: background-color 0.3s;
-}
-
-.asiento.ocupado {
-  background-color: #ccc;
   cursor: not-allowed;
 }
+
 .asiento.vip {
-  background-color: gold;
-  color: black;
-  font-weight: bold;
+  background: gold;
+  color: #000;
   border: 2px solid #b8860b;
 }
 
-.asiento.vip {
-  background-color: gold;  /* color dorado para VIP */
+.close-btn {
+  margin-top: auto;
+  align-self: center;
+  padding: 0.5rem 1.5rem;
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+  border: none;
+  border-radius: 20px;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
 }
 
+.close-btn:hover {
+  background: linear-gradient(90deg, #0072ff, #004bb5);
+}

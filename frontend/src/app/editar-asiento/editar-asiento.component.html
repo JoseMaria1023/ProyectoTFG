@@ -1,5 +1,7 @@
 <div class="form-container">
-    <h2>Editar Asiento</h2>
+  <h2>Editar Asiento</h2>
+
+  <div *ngIf="asiento; else cargando">
     <form (ngSubmit)="actualizarAsiento()">
       <div>
         <label for="numeracion">Numeración:</label>
@@ -18,11 +20,14 @@
         <select id="tipo" [(ngModel)]="asiento.tipo" name="tipo">
           <option value="Normal">Normal</option>
           <option value="VIP">VIP</option>
-          <!-- Agrega más opciones si es necesario -->
         </select>
       </div>
       <button type="submit">Actualizar Asiento</button>
       <button type="button" (click)="eliminarAsiento()">Eliminar Asiento</button>
     </form>
   </div>
-  
+
+  <ng-template #cargando>
+    <p>Cargando asiento...</p>
+  </ng-template>
+</div>

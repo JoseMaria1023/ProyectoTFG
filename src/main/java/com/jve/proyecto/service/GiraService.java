@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.jve.proyecto.dto.GiraDTO;
 import com.jve.proyecto.entity.Artista;
 import com.jve.proyecto.entity.Gira;
+import com.jve.proyecto.exceptions.ArtistaNoEncontradoException;
+import com.jve.proyecto.exceptions.GiraNoEncontradaException;
 import com.jve.proyecto.repository.ArtistaRepository;
 import com.jve.proyecto.repository.GiraRepository;
 import com.jve.proyecto.converter.GiraConverter;
@@ -30,7 +32,7 @@ public class GiraService {
             throw new RuntimeException("El ID del artista es obligatorio.");
         }
         Artista artista = artistaRepository.findById(giraDTO.getArtistaId())
-                .orElseThrow(() -> new RuntimeException("Artista no encontrado con ID: " + giraDTO.getArtistaId()));
+                .orElseThrow(() -> new ArtistaNoEncontradoException()) ;
         
         Gira gira = Gira.builder()
                 .nombre(giraDTO.getNombre())
@@ -44,7 +46,7 @@ public class GiraService {
 
     public GiraDTO obtenerGiraPorId(Long id) {
         Gira gira = giraRepository.findById(id).orElseThrow(() -> 
-                new RuntimeException("Gira no encontrada con ID: " + id));
+                new GiraNoEncontradaException());
         GiraDTO dto = giraConverter.toDto(gira);
         dto.setArtistaId(gira.getArtista().getIdArtista());
         return dto;
@@ -62,7 +64,7 @@ public class GiraService {
 
     public GiraDTO actualizarGira(Long id, GiraDTO giraDTO) {
         Gira gira = giraRepository.findById(id).orElseThrow(() -> 
-                new RuntimeException("Gira no encontrada con ID: " + id));
+                new GiraNoEncontradaException());
         
         if (giraDTO.getArtistaId() != null) {
             Artista artista = artistaRepository.findById(giraDTO.getArtistaId())
@@ -81,7 +83,7 @@ public class GiraService {
 
     public void eliminarGira(Long id) {
         Gira gira = giraRepository.findById(id).orElseThrow(() -> 
-            new RuntimeException("Gira no encontrada con ID: " + id));
+            new GiraNoEncontradaException());
         giraRepository.delete(gira);
     }
 }

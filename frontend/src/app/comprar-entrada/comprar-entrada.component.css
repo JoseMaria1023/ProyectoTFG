@@ -1,44 +1,138 @@
-.form-container {
-  max-width: 400px;
-  margin: 20px auto;
-  padding: 20px;
-  background: #333;
-  border-radius: 8px;
-  color: white;
-  text-align: left;
+/* Container principal */
+.conciertos-container {
+  padding: 2rem;
+  background: linear-gradient(to right, #1e1e2f, #3f2b96);
+  color: #fff;
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
 }
 
-.form-container h2 {
+/* Título principal */
+h2 {
   text-align: center;
-  margin-bottom: 15px;
+  margin-bottom: 1.5rem;
+  color: #ffcb05;
+  text-shadow: 0 0 8px #ffcb05aa;
+  font-size: 2.5rem;
 }
 
-.form-container label {
-  display: block;
-  margin: 10px 0 5px;
-  font-weight: bold;
-}
-
-.form-container input,
-.form-container select {
+/* Wrapper de filtros */
+.filtros-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
   width: 100%;
-  padding: 10px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  margin-bottom: 10px;
+  align-items: center; /* centra los filtros */
 }
 
-.form-container button {
+/* Cada filtro con ancho máximo */
+.filtro-artista {
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  padding: 10px;
-  background: #ff00ff;
-  color: white;
+  max-width: 360px; /* aquí decides el ancho máximo */
+}
+.filtro-artista .btn-comprar {
+  margin-top: 0.75rem; /* ajusta este valor según el espaciado que quieras */
+}
+label {
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+  color: #ffed8a;
+  text-transform: uppercase;
+}
+
+/* Inputs y selects */
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="month"],
+select {
+  width: 100%;
+  padding: 0.5rem;
   border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-bottom: 10px;
+  border-radius: 6px;
+  background-color: #f0f0f0;
+  color: #333;
+  font-size: 0.95rem;
+  box-shadow: inset 0 0 4px #00000020;
+  transition: box-shadow 0.2s ease;
 }
 
-.form-container button:hover {
-  background: #00ffff;
+input:focus,
+select:focus {
+  outline: none;
+  box-shadow: 0 0 6px #ffcb05;
+}
+
+/* Botones de acción */
+.filtro-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.btn-filtrar,
+.btn-comprar {
+  background-color: #ffcb05;
+  color: #1e1e2f;
+  font-weight: bold;
+  border: none;
+  padding: 0.7rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  text-transform: uppercase;
+}
+
+.btn-filtrar:hover,
+.btn-comprar:hover {
+  background-color: #ffc400;
+  transform: translateY(-2px);
+}
+
+/* Tarjetas de pago y secciones condicionales */
+.concierto-card {
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid #ffcb05;
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+}
+
+.concierto-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px #ffcb05aa;
+}
+
+.concierto-nombre {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #ffcb05;
+}
+
+/* Botón de seleccionar asiento */
+.btn-comprar {
+  margin-top: auto;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .conciertos-container {
+    padding: 1.5rem;
+  }
 }

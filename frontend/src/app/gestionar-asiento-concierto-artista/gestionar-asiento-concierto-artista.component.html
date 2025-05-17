@@ -10,7 +10,7 @@
   *ngIf="mostrarModal"
   [asientos]="asientos"
   [concierto]="conciertoSeleccionado"
-  [modo]="isArtista() ? 'artista' : 'cliente'"
+  [modo]="isArtista() ? 'artista' : 'user'"
   (asientoSeleccionado)="onAsientoSeleccionado($event)"
   (cerrarModal)="cerrarModal()">
 </app-mapa-asientos>

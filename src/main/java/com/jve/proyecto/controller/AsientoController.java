@@ -35,6 +35,11 @@ public class AsientoController {
     public AsientoDTO actualizarAsiento(@PathVariable Long id, @RequestBody AsientoDTO asientoDTO) {
         return asientoService.actualizarAsiento(id, asientoDTO);
     }
+    @GetMapping("/{id}")
+    public AsientoDTO obtenerAsientoPorId(@PathVariable Long id) {
+    return asientoService.obtenerAsientoPorId(id);
+}
+
     
     @DeleteMapping("/{id}")
     public void eliminarAsiento(@PathVariable Long id) {

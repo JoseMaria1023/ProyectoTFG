@@ -69,6 +69,7 @@ export class AuthService {
     const roles = this.getRoles();
     return roles.length > 0 ? roles[0] : null;
   }
+  
   getUserId(): number | null {
     const userId = sessionStorage.getItem('userId');
     return userId ? Number(userId) : null;

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.jve.proyecto.dto.RecintoDTO;
 import com.jve.proyecto.entity.Recinto;
+import com.jve.proyecto.exceptions.RecintoNoEncontradoException;
 import com.jve.proyecto.repository.RecintoRepository;
 import com.jve.proyecto.converter.RecintoConverter;
 
@@ -29,7 +30,7 @@ public class RecintoService {
 
     public RecintoDTO obtenerRecintoPorId(Long id) {
         Recinto recinto = recintoRepository.findById(id).orElseThrow(() -> 
-                new RuntimeException("Recinto no encontrado con ID: " + id));
+                new RecintoNoEncontradoException());
         return recintoConverter.toDto(recinto); // Usamos el converter
     }
 
@@ -39,17 +40,21 @@ public class RecintoService {
                 .collect(Collectors.toList());
     }
 
-    public RecintoDTO actualizarRecinto(Long id, RecintoDTO recintoDTO) {
-        Recinto recinto = recintoRepository.findById(id).orElseThrow(() -> 
-                new RuntimeException("Recinto no encontrado con ID: " + id));
-        recintoConverter.toEntity(recintoDTO); // Convertimos el DTO a la entidad para actualizarla
-        Recinto recintoActualizado = recintoRepository.save(recinto);
-        return recintoConverter.toDto(recintoActualizado); // Usamos el converter para devolver el DTO actualizado
-    }
+   public RecintoDTO actualizarRecinto(Long id, RecintoDTO recintoDTO) {
+    Recinto recinto = recintoRepository.findById(id).orElseThrow(() -> 
+            new RecintoNoEncontradoException());
+
+    recinto.setNombre(recintoDTO.getNombre());
+    recinto.setUbicacion(recintoDTO.getUbicacion());
+    recinto.setCapacidadTotal(recintoDTO.getCapacidadTotal());
+
+    Recinto recintoActualizado = recintoRepository.save(recinto);
+    return recintoConverter.toDto(recintoActualizado);
+}
 
     public void eliminarRecinto(Long id) {
         Recinto recinto = recintoRepository.findById(id).orElseThrow(() -> 
-                new RuntimeException("Recinto no encontrado con ID: " + id));
+                new RecintoNoEncontradoException());
         recintoRepository.delete(recinto);
     }
 }

@@ -1,3 +1,4 @@
+<!-- Modal principal si se carga la entrada -->
 <div class="modal">
   <div class="modal-content">
     <h2>Transferir Entrada</h2>
@@ -16,12 +17,8 @@
     <button (click)="transferirEntrada()">Transferir</button>
     <button class="cancelar" (click)="cerrarModal()">Cancelar</button>
 
-    <div *ngIf="mensaje" class="mensaje-exito">
-      {{ mensaje }}
-    </div>
-
-    <div *ngIf="error" class="mensaje-error">
-      {{ error }}
-    </div>
+    <div *ngIf="mensaje" class="mensaje-exito">{{ mensaje }}</div>
+    <div *ngIf="error" class="mensaje-error">{{ error }}</div>
   </div>
 </div>
+

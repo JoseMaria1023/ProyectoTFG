@@ -1,40 +1,54 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../auth.service'; 
+import { AuthService } from '../auth.service';
 import { Router, RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   standalone: true,
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
-  imports: [FormsModule, RouterModule]
+  imports: [ReactiveFormsModule, RouterModule, CommonModule, HttpClientModule]
 })
 export class RegisterComponent {
-  nombre: string = '';
-  apellidos: string = '';
-  username: string = '';
-  email: string = '';
-  telefono: string = '';
-  password: string = '';
-  confirmPassword: string = '';
+  registerForm: FormGroup;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+    this.registerForm = this.fb.group({
+      nombre: ['', Validators.required],
+      apellidos: ['', Validators.required],
+      username: ['', [Validators.required, Validators.minLength(4)]],
+      email: ['', [Validators.required, Validators.email]],
+      telefono: [''],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', Validators.required]
+    }, { validators: this.passwordsMatchValidator });
+  }
+
+  passwordsMatchValidator(form: FormGroup) {
+    const password = form.get('password')?.value;
+    const confirmPassword = form.get('confirmPassword')?.value;
+    return password === confirmPassword ? null : { passwordsMismatch: true };
+  }
 
   onSubmit() {
-    if (this.password !== this.confirmPassword) {
-      alert('Las contraseñas no coinciden');
+    if (this.registerForm.invalid) {
+      this.registerForm.markAllAsTouched();
       return;
     }
 
+    const formValues = this.registerForm.value;
+
     const user = {
-      nombre: this.nombre,
-      apellidos: this.apellidos,
-      username: this.username,
-      email: this.email,
-      telefono: this.telefono,
-      password: this.password,
-      role: 'USER',  
+      nombre: formValues.nombre,
+      apellidos: formValues.apellidos,
+      username: formValues.username,
+      email: formValues.email,
+      telefono: formValues.telefono,
+      password: formValues.password,
+      role: 'USER',
       activo: true
     };
 
@@ -47,5 +61,9 @@ export class RegisterComponent {
         alert('Error en el registro: ' + err.error.message);
       }
     });
+  }
+
+  get f() {
+    return this.registerForm.controls;
   }
 }

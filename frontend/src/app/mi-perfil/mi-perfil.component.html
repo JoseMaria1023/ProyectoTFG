@@ -21,6 +21,11 @@
     <label>Activo:
       <input type="checkbox" [checked]="usuario.activo" (change)="verificarActivo($event)" name="activo">
     </label><br>
+
+  <!-- Botón corregido: visible solo si el usuario está activo y en edición -->
+  <button type="button" (click)="desactivarTemporalmente()" *ngIf="editando && usuario?.activo">
+    Desactivar temporalmente
+  </button><br>
     <button type="submit">Guardar cambios</button>
     <button type="button" (click)="cancelarEdicion()">Cancelar</button>
   </form>
@@ -71,11 +76,8 @@
       </div>
 
       <!-- Modal transferencia -->
-      <app-transferencia-entrada
-        *ngIf="mostrarTransferencia"
-        [entrada]="entradaSeleccionada"
-        (cerrar)="cerrarTransferenciaYRefrescar()"
-      ></app-transferencia-entrada>
+     <app-transferencia-entrada *ngIf="mostrarTransferencia"></app-transferencia-entrada>
+
     </div>
 
     <ng-template #noEntradas>

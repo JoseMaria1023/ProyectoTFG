@@ -18,4 +18,6 @@ public class AsientoDTO {
     private Integer fila;
     private Integer columna;
     private String tipo;
+    private boolean ocupado;
+
 }

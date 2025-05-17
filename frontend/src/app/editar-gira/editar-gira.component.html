@@ -14,7 +14,7 @@
         <select [(ngModel)]="gira.artistaId" name="artista" required>
           <option [ngValue]="null" disabled>Seleccione un artista</option>
           <option *ngFor="let artista of artistas" [ngValue]="artista.idArtista">
-            {{ artista.nombre }}
+            {{ artista.nombre }} {{ artista.apellidos }}
           </option>
         </select>
       </div>

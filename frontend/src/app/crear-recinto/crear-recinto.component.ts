@@ -16,7 +16,6 @@ export class CrearRecintoComponent {
   ubicacion: string = '';
   capacidadTotal: number = 0;
 
-  // Evento para notificar al componente padre que se creó un recinto
   @Output() recintoCreado = new EventEmitter<void>();
 
   constructor(private recintoService: RecintoService) {}

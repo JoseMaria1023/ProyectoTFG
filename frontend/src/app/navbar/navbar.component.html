@@ -10,8 +10,10 @@
       <li *ngIf="isAdmin()"><a (click)="navigateToArtista()"><i class="fas fa-layer-group"></i> Artista</a></li>
       <li *ngIf="isAdmin()"><a (click)="navigateToGira()"><i class="fas fa-microphone-alt"></i> Giras</a></li>
       <li *ngIf="isAdmin()"><a (click)="navigateToZona()"><i class="fas fa-music"></i> Conciertos</a></li>
+      <li *ngIf="isAdmin()"><a (click)="navigateToAsientos()"><i class="fas fa-music"></i> Asientos</a></li>
       <li *ngIf="isAdmin()"><a (click)="navigateToZonasRecinto()"><i class="fas fa-layer-group"></i> Zonas</a></li>
   
+      <li *ngIf="isUser()"><a (click)="navigateListarArtista()"><i class="fas fa-user-circle"></i> Artistas disponibles</a></li>
       <li *ngIf="isUser()"><a (click)="navigateToComprar()"><i class="fas fa-user-circle"></i> Comprar</a></li>
       <li *ngIf="isArtista()"><a (click)="navigateToGestionarAsientos()"><i class="fas fa-chair"></i> Asientos</a></li>
   

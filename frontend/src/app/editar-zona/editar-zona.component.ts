@@ -1,7 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ZonaService } from '../zona.service'; 
+import { ZonaService } from '../zona.service';
 import { RecintoService } from '../recinto.service';
 
 @Component({
@@ -12,15 +12,14 @@ import { RecintoService } from '../recinto.service';
   styleUrls: ['./editar-zona.component.css']
 })
 export class EditarZonaComponent implements OnInit {
-  @Input() zona: any = {
+  zona: any = {
     idZona: 0,
     nombre: '',
     recintoId: null,
     precioBase: 0,
     precioVIP: null
   };
-
-  recintos: any[] = []; // Aquí se almacenará la lista de recintos obtenida desde el servicio
+  recintos: any[] = [];
 
   constructor(
     private zonaService: ZonaService,
@@ -28,25 +27,36 @@ export class EditarZonaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Llama al servicio de recintos para obtener la lista
+    // 1) Cargamos lista de recintos
     this.recintoService.obtenerRecintos().subscribe(
-      data => {
-        this.recintos = data;
-      },
-      error => {
-        console.error('Error al obtener la lista de recintos', error);
-      }
+      data => this.recintos = data,
+      err => console.error('Error al obtener recintos', err)
     );
+
+    // 2) Cargamos la zona a editar:
+    const idZonaStr = sessionStorage.getItem('zonaSeleccionadaId');
+    if (idZonaStr) {
+      const idZona = Number(idZonaStr);
+      this.zonaService.obtenerZonaPorId(idZona).subscribe(
+        zona => this.zona = zona,
+        err => {
+          console.error('Error al cargar zona', err);
+          alert('No se pudo cargar la zona para editar.');
+        }
+      );
+    } else {
+      console.warn('No hay zonaSeleccionadaId en sessionStorage');
+    }
   }
 
   actualizarZona(): void {
     this.zonaService.actualizarZona(this.zona.idZona, this.zona).subscribe(
-      response => {
-        console.log('Zona actualizada:', response);
+      resp => {
+        console.log('Zona actualizada:', resp);
         alert('Zona actualizada con éxito');
       },
-      error => {
-        console.error('Error al actualizar la zona:', error);
+      err => {
+        console.error('Error al actualizar zona:', err);
         alert('Error al actualizar la zona');
       }
     );

@@ -20,18 +20,21 @@ public class RecintoController {
         return recintoService.obtenerTodosLosRecintos();
     }
 
+    @GetMapping("/{id}")
+    public RecintoDTO obtenerRecintoPorId(@PathVariable Long id) {
+        return recintoService.obtenerRecintoPorId(id);
+    }
+
     @PostMapping
     public RecintoDTO crearRecinto(@RequestBody RecintoDTO recintoDTO) {
         return recintoService.crearRecinto(recintoDTO);
     }
-    
-    // Endpoint para actualizar recinto
+
     @PutMapping("/{id}")
     public RecintoDTO actualizarRecinto(@PathVariable Long id, @RequestBody RecintoDTO recintoDTO) {
         return recintoService.actualizarRecinto(id, recintoDTO);
     }
-    
-    // Endpoint para eliminar recinto
+
     @DeleteMapping("/{id}")
     public void eliminarRecinto(@PathVariable Long id) {
         recintoService.eliminarRecinto(id);

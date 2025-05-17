@@ -14,6 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.jve.proyecto.dto.ArtistaDTO;
 import com.jve.proyecto.entity.Artista;
+import com.jve.proyecto.exceptions.ArtistaNoEncontradoException;
+import com.jve.proyecto.exceptions.SubirImagenException;
+import com.jve.proyecto.exceptions.UsuarioNoEncontradoException;
 import com.jve.proyecto.repository.ArtistaRepository;
 import com.jve.proyecto.converter.ArtistaConverter;
 
@@ -55,19 +58,19 @@ public class ArtistaService {
             return artistaConverter.toDto(artistaGuardado);
 
         } catch (IOException e) {
-            throw new RuntimeException("Error al subir la imagen: " + e.getMessage());
+            throw new SubirImagenException();
         }
     }
 
     public ArtistaDTO obtenerArtistaPorId(Long id) {
         Artista artista = artistaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Artista no encontrado con ID: " + id));
+                .orElseThrow(() -> new ArtistaNoEncontradoException());
         return artistaConverter.toDto(artista);
     }
 
     public Artista getByUsername(String username) {
         return artistaRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Artista no encontrado"));
+                .orElseThrow(() -> new UsuarioNoEncontradoException());
     }
 
     public List<ArtistaDTO> obtenerTodosLosArtistas() {
@@ -82,17 +85,32 @@ public class ArtistaService {
                 .collect(Collectors.toList());
     }
 
-    public ArtistaDTO actualizarArtista(Long id, ArtistaDTO artistaDTO) {
-        Artista artista = artistaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Artista no encontrado con ID: " + id));
-        artistaConverter.toEntity(artistaDTO);
-        Artista artistaActualizado = artistaRepository.save(artista);
-        return artistaConverter.toDto(artistaActualizado);
+ public ArtistaDTO actualizarArtista(Long id, ArtistaDTO artistaDTO) {
+    Artista artista = artistaRepository.findById(id)
+            .orElseThrow(() -> new ArtistaNoEncontradoException());
+
+    artista.setNombre(artistaDTO.getNombre());
+    artista.setApellidos(artistaDTO.getApellidos());
+    artista.setUsername(artistaDTO.getUsername());
+
+    if (artistaDTO.getPassword() != null && !artistaDTO.getPassword().isEmpty()) {
+        artista.setPassword(passwordEncoder.encode(artistaDTO.getPassword()));
     }
+
+    artista.setDescripcion(artistaDTO.getDescripcion());
+    artista.setGeneroMusical(artistaDTO.getGeneroMusical());
+
+    if (artistaDTO.getFoto() != null && !artistaDTO.getFoto().isEmpty()) {
+        artista.setFoto(artistaDTO.getFoto());
+    }
+
+    Artista artistaActualizado = artistaRepository.save(artista);
+    return artistaConverter.toDto(artistaActualizado);
+}
 
     public void eliminarArtista(Long id) {
         Artista artista = artistaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Artista no encontrado con ID: " + id));
+                .orElseThrow(() -> new ArtistaNoEncontradoException());
         artistaRepository.delete(artista);
     }
 }

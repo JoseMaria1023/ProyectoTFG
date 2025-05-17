@@ -19,10 +19,14 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody AuthRequest authRequest) {
+public ResponseEntity<?> login(@RequestBody AuthRequest authRequest) {
+    try {
         LoginResponse response = authService.login(authRequest);
         return ResponseEntity.ok(response);
+    } catch (RuntimeException ex) {
+        return ResponseEntity.status(401).body("Usuario o contraseña incorrectos.");
     }
+}
 
     @PostMapping("/register")
     public ResponseEntity<UsuarioDTO> register(@RequestBody UsuarioDTO usuarioDTO) {

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ConciertoService } from '../concierto.service';
@@ -12,8 +12,8 @@ import { GiraService } from '../gira.service';
   templateUrl: './editar-concierto.component.html',
   styleUrls: ['./editar-concierto.component.css']
 })
-export class EditarConciertoComponent {
-  @Input() concierto: any = {
+export class EditarConciertoComponent implements OnInit {
+  concierto: any = {
     idConcierto: 0,
     nombre: '',
     fecha: '',
@@ -32,7 +32,16 @@ export class EditarConciertoComponent {
   ) {}
 
   ngOnInit(): void {
-    // Cargar las listas de zonas y giras para los select
+    const id = sessionStorage.getItem('conciertoAEditar');
+    if (id) {
+      this.conciertoService.obtenerConciertos().subscribe(data => {
+        const encontrado = data.find(c => c.idConcierto == +id);
+        if (encontrado) {
+          this.concierto = encontrado;
+        }
+      });
+    }
+
     this.zonaService.obtenerZonas().subscribe(data => {
       this.zonas = data;
     });
@@ -47,6 +56,7 @@ export class EditarConciertoComponent {
         response => {
           console.log('Concierto actualizado:', response);
           alert('Concierto actualizado con éxito');
+          sessionStorage.removeItem('conciertoAEditar');
         },
         error => {
           console.error('Error al actualizar el concierto:', error);

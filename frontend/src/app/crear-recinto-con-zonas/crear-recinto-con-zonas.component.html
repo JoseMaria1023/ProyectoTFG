@@ -1,50 +1,54 @@
-<!-- crear-recinto-con-zonas.component.html -->
 <div class="form-container">
-    <h2>Crear Recinto y sus Zonas</h2>
-  
-    <!-- Formulario de Recinto -->
-    <form (ngSubmit)="crearRecintoConZonas()">
-      <div>
-        <label for="nombreRecinto">Nombre del Recinto:</label>
-        <input type="text" id="nombreRecinto" [(ngModel)]="nombreRecinto" name="nombreRecinto" required />
-      </div>
-      <div>
-        <label for="ubicacion">Ubicación:</label>
-        <input type="text" id="ubicacion" [(ngModel)]="ubicacion" name="ubicacion" required />
-      </div>
-      <div>
-        <label for="capacidadTotal">Capacidad Total:</label>
-        <input type="number" id="capacidadTotal" [(ngModel)]="capacidadTotal" name="capacidadTotal" required />
-      </div>
-  
-      <hr>
-  
-      <!-- Añadir Zonas -->
-      <h3>Añadir Zonas</h3>
-      <div *ngFor="let zona of zonas; let i = index">
-        <strong>Zona {{ i + 1 }}:</strong> {{ zona.nombre }} - {{ zona.precioBase }}€ Base - {{ zona.precioVIP || 'Sin VIP' }}€ VIP
-        <button type="button" (click)="eliminarZona(i)">Eliminar</button>
-      </div>
-  
-      <div>
-        <label for="nombreZona">Nombre de la Zona:</label>
-        <input type="text" id="nombreZona" [(ngModel)]="nombreZona" name="nombreZona" />
-      </div>
-      <div>
-        <label for="precioBaseZona">Precio Base:</label>
-        <input type="number" id="precioBaseZona" [(ngModel)]="precioBaseZona" name="precioBaseZona" />
-      </div>
-      <div>
-        <label for="precioVIPZona">Precio VIP (Opcional):</label>
-        <input type="number" id="precioVIPZona" [(ngModel)]="precioVIPZona" name="precioVIPZona" />
-      </div>
-  
-      <button type="button" (click)="anadirZona()">Añadir Zona</button>
-  
-      <hr>
-  
-      <!-- Botón final -->
-      <button type="submit">Crear Recinto y Zonas</button>
-    </form>
+  <h2>Crear Recinto y sus Zonas</h2>
+
+  <!-- Botones de gestión -->
+  <div class="gestion-botones">
+    <button type="button" (click)="irAGestionarZonas()">Gestionar Zonas</button>
+    <button type="button" (click)="irAGestionarRecintos()">Gestionar Recintos</button>
   </div>
-  
+
+  <!-- Formulario de Recinto -->
+  <form (ngSubmit)="crearRecintoConZonas()">
+    <div>
+      <label for="nombreRecinto">Nombre del Recinto:</label>
+      <input type="text" id="nombreRecinto" [(ngModel)]="nombreRecinto" name="nombreRecinto" required />
+    </div>
+    <div>
+      <label for="ubicacion">Ubicación:</label>
+      <input type="text" id="ubicacion" [(ngModel)]="ubicacion" name="ubicacion" required />
+    </div>
+    <div>
+      <label for="capacidadTotal">Capacidad Total:</label>
+      <input type="number" id="capacidadTotal" [(ngModel)]="capacidadTotal" name="capacidadTotal" required />
+    </div>
+
+    <hr>
+
+    <!-- Añadir Zonas -->
+    <h3>Añadir Zonas</h3>
+    <div *ngFor="let zona of zonas; let i = index">
+      <strong>Zona {{ i + 1 }}:</strong> {{ zona.nombre }} - {{ zona.precioBase }}€ Base - {{ zona.precioVIP || 'Sin VIP' }}€ VIP
+      <button type="button" (click)="eliminarZona(i)">Eliminar</button>
+    </div>
+
+    <div>
+      <label for="nombreZona">Nombre de la Zona:</label>
+      <input type="text" id="nombreZona" [(ngModel)]="nombreZona" name="nombreZona" />
+    </div>
+    <div>
+      <label for="precioBaseZona">Precio Base:</label>
+      <input type="number" id="precioBaseZona" [(ngModel)]="precioBaseZona" name="precioBaseZona" />
+    </div>
+    <div>
+      <label for="precioVIPZona">Precio VIP (Opcional):</label>
+      <input type="number" id="precioVIPZona" [(ngModel)]="precioVIPZona" name="precioVIPZona" />
+    </div>
+
+    <button type="button" (click)="anadirZona()">Añadir Zona</button>
+
+    <hr>
+
+    <!-- Botón final -->
+    <button type="submit">Crear Recinto y Zonas</button>
+  </form>
+</div>

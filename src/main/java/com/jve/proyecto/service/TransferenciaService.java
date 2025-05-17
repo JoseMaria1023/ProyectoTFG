@@ -11,6 +11,10 @@ import com.jve.proyecto.dto.TransferenciaDTO;
 import com.jve.proyecto.entity.Transferencia;
 import com.jve.proyecto.entity.Entrada;
 import com.jve.proyecto.entity.Usuario;
+import com.jve.proyecto.exceptions.EntradaEnPetenenciaException;
+import com.jve.proyecto.exceptions.EntradaNoEncontradaException;
+import com.jve.proyecto.exceptions.TransferenciaNoEncontradaException;
+import com.jve.proyecto.exceptions.UsuarioNoEncontradoException;
 import com.jve.proyecto.repository.TransferenciaRepository;
 import com.jve.proyecto.repository.EntradaRepository;
 import com.jve.proyecto.repository.UsuarioRepository;
@@ -38,20 +42,20 @@ public class TransferenciaService {
     public TransferenciaDTO transferirEntrada(Long idEntrada, Long usuarioOrigenId, String telefonoDestino) {
         // Buscar la entrada
         Entrada entrada = entradaRepository.findById(idEntrada)
-                .orElseThrow(() -> new RuntimeException("Entrada no encontrada con ID: " + idEntrada));
+                .orElseThrow(() -> new EntradaNoEncontradaException());
 
         // Verificar que la entrada pertenece al usuario que la quiere transferir
         if (!entrada.getUsuario().getIdUsuario().equals(usuarioOrigenId)) {
-            throw new RuntimeException("La entrada no pertenece al usuario que intenta transferirla.");
+            throw new EntradaEnPetenenciaException();
         }
 
         // Buscar al usuario destino por teléfono
         Usuario usuarioDestino = usuarioRepository.findByTelefono(telefonoDestino)
-                .orElseThrow(() -> new RuntimeException("Usuario destino no encontrado con teléfono: " + telefonoDestino));
+                .orElseThrow(() -> new UsuarioNoEncontradoException());
 
         // Obtener el usuario origen (cargado completo desde DB)
         Usuario usuarioOrigen = usuarioRepository.findById(usuarioOrigenId)
-                .orElseThrow(() -> new RuntimeException("Usuario origen no encontrado con ID: " + usuarioOrigenId));
+                .orElseThrow(() -> new UsuarioNoEncontradoException());
 
         // Crear y guardar la transferencia
         Transferencia transferencia = new Transferencia();
@@ -79,7 +83,7 @@ public class TransferenciaService {
 
     public TransferenciaDTO obtenerTransferenciaPorId(Long id) {
         Transferencia transferencia = transferenciaRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Transferencia no encontrada con ID: " + id));
+            .orElseThrow(() -> new TransferenciaNoEncontradaException());
         return transferenciaConverter.toDto(transferencia); // Usamos el converter
     }
 
@@ -91,7 +95,7 @@ public class TransferenciaService {
 
     public TransferenciaDTO actualizarTransferencia(Long id, TransferenciaDTO transferenciaDTO) {
         Transferencia transferencia = transferenciaRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Transferencia no encontrada con ID: " + id));
+            .orElseThrow(() -> new TransferenciaNoEncontradaException());
         transferenciaConverter.toEntity(transferenciaDTO); // Usamos el converter para mapear de DTO a entidad
         if (transferenciaDTO.getEntradaId() != null) {
             Entrada entrada = new Entrada();
@@ -114,7 +118,7 @@ public class TransferenciaService {
 
     public void eliminarTransferencia(Long id) {
         Transferencia transferencia = transferenciaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Transferencia no encontrada con ID: " + id));
+                .orElseThrow(() -> new TransferenciaNoEncontradaException());
         transferenciaRepository.delete(transferencia);
     }
 }

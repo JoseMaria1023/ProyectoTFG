@@ -3,19 +3,23 @@ import { ArtistaService } from '../artista.service';
 import { CommonModule } from '@angular/common';
 import { CrearArtistaComponent } from '../crear-artista/crear-artista.component';
 import { EditarArtistaComponent } from '../editar-artista/editar-artista.component';
+import { Router } from '@angular/router';
 
 
 @Component({
   selector: 'app-gestionar-artista',
   standalone: true,
   imports: [CommonModule, CrearArtistaComponent, EditarArtistaComponent],
-  templateUrl: './gestionar-artista.component.html'
+  templateUrl: './gestionar-artista.component.html',
+  styleUrls: ['./gestionar-artista.component.css']
+
 })
 export class GestionarArtistaComponent implements OnInit {
   artistas: any[] = [];
   artistaSeleccionado: any = null;
 
-  constructor(private artistaService: ArtistaService) {}
+
+  constructor(private artistaService: ArtistaService, private router: Router ) {}
 
   ngOnInit(): void {
     this.cargarArtistas();
@@ -28,8 +32,9 @@ export class GestionarArtistaComponent implements OnInit {
   }
 
   seleccionarArtista(artista: any) {
-    this.artistaSeleccionado = { ...artista };
-  }
+  sessionStorage.setItem('artistaAEditar', artista.idArtista.toString());
+  this.router.navigate(['/Editar-artista']);
+}
 
   cancelarEdicion() {
     this.artistaSeleccionado = null;

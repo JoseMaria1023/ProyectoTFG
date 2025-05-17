@@ -11,6 +11,11 @@ import com.jve.proyecto.entity.Entrada;
 import com.jve.proyecto.entity.Pago;
 import com.jve.proyecto.entity.Pago.MetodoPago;
 import com.jve.proyecto.entity.Usuario;
+import com.jve.proyecto.exceptions.EntradaNoEncontradaException;
+import com.jve.proyecto.exceptions.MetodoDePagoValidoException;
+import com.jve.proyecto.exceptions.MetodosDePagoException;
+import com.jve.proyecto.exceptions.PagoNoEncontradoException;
+import com.jve.proyecto.exceptions.UsuarioNoEncontradoException;
 import com.jve.proyecto.repository.EntradaRepository;
 import com.jve.proyecto.repository.PagoRepository;
 import com.jve.proyecto.repository.UsuarioRepository;
@@ -35,7 +40,7 @@ public class PagoService {
 
     public PagoDTO crearPago(PagoDTO pagoDTO) {
         if (pagoDTO.getMetodoPago() == null || pagoDTO.getMetodoPago().trim().isEmpty()) {
-            throw new RuntimeException("El método de pago no puede ser nulo o vacío.");
+            throw new MetodosDePagoException();
         }
 
         // Convertir el método de pago desde el String al Enum
@@ -43,17 +48,17 @@ public class PagoService {
         try {
             metodoPago = MetodoPago.valueOf(pagoDTO.getMetodoPago().trim().toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException("Método de pago no válido: " + pagoDTO.getMetodoPago());
+            throw new MetodoDePagoValidoException();
         }
 
         // Recuperar la entrada usando el ID del DTO
         Entrada entrada = entradaRepository.findById(pagoDTO.getEntradaId()).orElseThrow(() -> 
-            new RuntimeException("Entrada no encontrada con ID: " + pagoDTO.getEntradaId())
+            new EntradaNoEncontradaException()
         );
 
         // Recuperar el usuario usando el ID del DTO
         Usuario usuario = usuarioRepository.findById(pagoDTO.getUsuarioId()).orElseThrow(() -> 
-            new RuntimeException("Usuario no encontrado con ID: " + pagoDTO.getUsuarioId())
+            new UsuarioNoEncontradoException()
         );
 
         // Mapear el DTO a la entidad Pago y asignar la entrada, el usuario y la fecha actual
@@ -69,7 +74,7 @@ public class PagoService {
 
     public PagoDTO obtenerPagoPorId(Long id) {
         Pago pago = pagoRepository.findById(id).orElseThrow(() -> 
-                new RuntimeException("Pago no encontrado con ID: " + id));
+                new PagoNoEncontradoException());
         return pagoConverter.toDto(pago); // Usamos el converter
     }
 
@@ -81,7 +86,7 @@ public class PagoService {
 
     public PagoDTO actualizarPago(Long id, PagoDTO pagoDTO) {
         Pago pago = pagoRepository.findById(id).orElseThrow(() -> 
-                new RuntimeException("Pago no encontrado con ID: " + id));
+                new PagoNoEncontradoException());
         
         pagoConverter.toEntity(pagoDTO); // Convertimos el DTO a la entidad para actualizarla
         Pago pagoActualizado = pagoRepository.save(pago);
@@ -90,7 +95,7 @@ public class PagoService {
 
     public void eliminarPago(Long id) {
         Pago pago = pagoRepository.findById(id).orElseThrow(() -> 
-                new RuntimeException("Pago no encontrado con ID: " + id));
+                new PagoNoEncontradoException());
         pagoRepository.delete(pago);
     }
 }

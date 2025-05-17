@@ -12,6 +12,8 @@ import com.jve.proyecto.dto.LoginResponse;
 import com.jve.proyecto.dto.UsuarioDTO;
 import com.jve.proyecto.entity.Artista;
 import com.jve.proyecto.entity.Usuario;
+import com.jve.proyecto.exceptions.ContraseniaException;
+import com.jve.proyecto.exceptions.CredencialesInvalidasException;
 import com.jve.proyecto.security.JwtTokenProvider;
 
 @Service
@@ -33,7 +35,7 @@ public class AuthService {
     public UsuarioDTO register(UsuarioDTO userDTO) throws Exception {
         // (Lógica de registro)
         if (userDTO.getPassword().length() < 8) {
-            throw new Exception("La contraseña es muy pequeña");
+            throw new ContraseniaException();
         }
         
         if (userDTO.getRole() == null || userDTO.getRole().isBlank()) {
@@ -48,7 +50,8 @@ public class AuthService {
         return userService.crearUsuario(userDTO);
     }
 
-    public LoginResponse login(AuthRequest loginDTO) {
+   public LoginResponse login(AuthRequest loginDTO) {
+    try {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword())
         );
@@ -68,7 +71,7 @@ public class AuthService {
         } else {
             throw new RuntimeException("Tipo de usuario no soportado");
         }
-        
+
         if (id == null) {
             throw new RuntimeException("El objeto LoginResponse no contiene idUser");
         }
@@ -76,10 +79,14 @@ public class AuthService {
         return new LoginResponse(
                 username,
                 authentication.getAuthorities().stream()
-                               .map(GrantedAuthority::getAuthority)
-                               .toList(),
+                        .map(GrantedAuthority::getAuthority)
+                        .toList(),
                 token,
                 id
         );
+    } catch (Exception ex) {
+        // Lanza una excepción más clara para que el controlador la capture
+        throw new CredencialesInvalidasException();
     }
+}
 }

@@ -2,12 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+
 import { EntradaService } from '../entrada.service'; 
 import { PagoService } from '../pago.service';
 import { AuthService } from '../auth.service';
-import { ConciertoService } from '../concierto.service';
 import { AsientoService } from '../asiento.service';
+import { UsuarioService } from '../usuario.service';
 import { MapaAsientosComponent } from '../mapa-asientos/mapa-asientos.component';
+
+interface AsientoSeleccionado {
+  idAsiento: number;
+  nombre: string;
+}
 
 @Component({
   selector: 'app-comprar-entrada',
@@ -17,18 +23,19 @@ import { MapaAsientosComponent } from '../mapa-asientos/mapa-asientos.component'
   styleUrls: ['./comprar-entrada.component.css']
 })
 export class ComprarEntradaComponent implements OnInit {
-  paso: number = 1;
   asientos: any[] = [];
-  mostrarModalAsientos: boolean = false;
+  mostrarModalAsientos = false;
+  entradasProcesadas = 0;
 
-  entrada: any = {
+  entrada = {
     tipo: 'Normal',
+    precioUnitario: 24,
     precioVenta: 24,
-    usuarioId: null,
-    conciertoId: null,
+    usuarioId: null as number | null,
+    conciertoId: null as number | null,
     conciertoNombre: '',
-    asientoId: null,
-    asientoNombre: '',
+    asientosSeleccionados: [] as AsientoSeleccionado[],
+    cantidadEntradas: 1,
     estado: 'Disponible'
   };
 
@@ -36,8 +43,7 @@ export class ComprarEntradaComponent implements OnInit {
     cantidad: 0,
     metodoPago: '',
     estado: '',
-    entradaId: null,
-    usuarioId: null
+    usuarioId: null as number | null
   };
 
   datosTarjeta = { numero: '', nombre: '', expiracion: '', cvv: '' };
@@ -50,108 +56,115 @@ export class ComprarEntradaComponent implements OnInit {
     private entradaService: EntradaService,
     private pagoService: PagoService,
     private authService: AuthService,
-    private conciertoService: ConciertoService,
-    private asientoService: AsientoService
+    private asientoService: AsientoService,
+    private usuarioService: UsuarioService 
   ) {}
 
   ngOnInit(): void {
     const userId = this.authService.getUserId();
-    if (userId === null) {
-      alert("No se encontró el ID del usuario. Por favor, inicia sesión.");
+    if (!userId) {
+      alert("Debes iniciar sesión.");
       this.router.navigate(['/login']);
       return;
     }
-    this.entrada.usuarioId = userId;
 
-    this.route.queryParams.subscribe(params => {
-      if (params['conciertoId'] && params['conciertoNombre']) {
-        this.entrada.conciertoId = +params['conciertoId'];
-        this.entrada.conciertoNombre = params['conciertoNombre'];
+    this.usuarioService.getUsuarioById(userId).subscribe({
+      next: usuario => {
+        if (!usuario.activo) {
+          alert('Cuenta desactivada. Actívala para comprar entradas.');
+          this.router.navigate(['/home']);
+          return;
+        }
+
+        this.entrada.usuarioId = userId;
+        this.pago.usuarioId = userId;
+
+        this.route.queryParams.subscribe(params => {
+          this.entrada.conciertoId = +params['conciertoId'] || +history.state.conciertoId;
+          this.entrada.conciertoNombre = params['conciertoNombre'] || history.state.conciertoNombre;
+        });
+      },
+      error: () => {
+        alert('Error al verificar usuario.');
+        this.router.navigate(['/login']);
       }
     });
-
-    if (!this.entrada.conciertoId && history.state && history.state.conciertoId) {
-      this.entrada.conciertoId = +history.state.conciertoId;
-      this.entrada.conciertoNombre = history.state.conciertoNombre;
-    }
-
-    console.log("Concierto asignado:", this.entrada.conciertoId, this.entrada.conciertoNombre);
   }
 
   abrirMapaAsientos(): void {
-    if (!this.entrada.conciertoId) {
-      alert('El concierto no está asignado.');
-      return;
-    }
-    this.asientoService.obtenerAsientosPorConcierto(this.entrada.conciertoId).subscribe(
-      data => {
-        this.asientos = data;
-        this.mostrarModalAsientos = true;
-      },
-      error => console.error('Error al obtener asientos:', error)
-    );
+    if (!this.entrada.conciertoId) return alert('Concierto no asignado.');
+    this.asientoService.obtenerAsientosPorConcierto(this.entrada.conciertoId)
+      .subscribe({
+        next: data => {
+          this.asientos = data;
+          this.mostrarModalAsientos = true;
+        },
+        error: err => console.error('Error al obtener asientos:', err)
+      });
   }
 
   onAsientoSeleccionado(asiento: any): void {
-    if (!asiento.idAsiento) {
-      console.error("No se encontró el ID del asiento en el objeto", asiento);
-      return;
-    }
-    this.entrada.asientoId = asiento.idAsiento;
-    this.entrada.asientoNombre = `F${asiento.fila} - C${asiento.columna}`;
+    if (asiento.ocupado || !asiento.idAsiento) return alert('Asiento ocupado o inválido.');
+
+    const yaSeleccionado = this.entrada.asientosSeleccionados
+      .some(a => a.idAsiento === asiento.idAsiento);
     
-    if (asiento.tipo === 'VIP') {
-      asiento.vip = true;
-      this.entrada.precioVenta = 43;
-      asiento.color = 'gold';
-    } else {
-      this.entrada.precioVenta = 24;
-      asiento.color = 'white';
+    if (!yaSeleccionado) {
+      this.entrada.asientosSeleccionados.push({
+        idAsiento: asiento.idAsiento,
+        nombre: `F${asiento.fila} - C${asiento.columna}`
+      });
     }
-    
+
+    this.entrada.cantidadEntradas = this.entrada.asientosSeleccionados.length;
+    this.entrada.precioVenta = this.entrada.precioUnitario * this.entrada.cantidadEntradas;
     this.mostrarModalAsientos = false;
   }
 
-  comprarEntrada(): void {
-    // 1. Validaciones previas
-    if (!this.entrada.conciertoId || !this.entrada.asientoId) {
-      alert('Debes seleccionar un concierto y un asiento.');
-      return;
+  comprarEntradas(): void {
+    if (!this.entrada.usuarioId || !this.entrada.conciertoId || !this.pago.metodoPago) {
+      return alert('Completa todos los datos antes de comprar.');
     }
-  
-    if (!this.pago.metodoPago) {
-      alert('Selecciona un método de pago antes de continuar.');
-      return;
+
+    if (this.entrada.asientosSeleccionados.length === 0) {
+      return alert('Selecciona al menos un asiento.');
     }
-  
-    // 2. Crear la entrada en el backend
-    this.entradaService.crearEntrada(this.entrada).subscribe({
-      next: response => {
-        console.log('Entrada creada:', response);
-  
-        // 3. Configurar datos del pago usando el precio devuelto
-        this.pago.entradaId = response.idEntrada;
-        this.pago.usuarioId = this.entrada.usuarioId;
-        this.pago.cantidad = response.precioVenta;  // ← precio desde la zona del concierto
-        this.pago.estado = 'PENDIENTE';
-  
-        // 4. Enviar el pago
-        this.pagoService.crearPago(this.pago).subscribe({
-          next: pagoResponse => {
-            console.log('Pago realizado:', pagoResponse);
-            alert('Compra completada exitosamente');
-            this.router.navigate(['/mis-entradas']);
-          },
-          error: err => {
-            console.error('Error al realizar el pago:', err);
-            alert('Error al realizar el pago');
-          }
-        });
-      },
-      error: err => {
-        console.error('Error al comprar la entrada:', err);
-        alert('Error al comprar la entrada');
-      }
-    });  
+
+    const entradasPayload = this.entrada.asientosSeleccionados.map(asiento => ({
+      tipo: this.entrada.tipo,
+      precioVenta: this.entrada.precioUnitario,
+      usuarioId: this.entrada.usuarioId!,
+      conciertoId: this.entrada.conciertoId!,
+      asientoId: asiento.idAsiento,
+      estado: 'PENDIENTE'
+    }));
+
+    this.entradasProcesadas = 0;
+
+    entradasPayload.forEach(entrada => {
+      this.entradaService.crearEntrada(entrada).subscribe({
+        next: entradaCreada => {
+          const pago = {
+            entradaId: entradaCreada.idEntrada,
+            usuarioId: this.pago.usuarioId!,
+            cantidad: entradaCreada.precioVenta,
+            metodoPago: this.pago.metodoPago,
+            estado: 'PENDIENTE'
+          };
+
+          this.pagoService.crearPago(pago).subscribe({
+            next: () => {
+              this.entradasProcesadas++;
+              if (this.entradasProcesadas === entradasPayload.length) {
+                alert('Compra completada exitosamente');
+                this.router.navigate(['/mi-perfil']);
+              }
+            },
+            error: () => alert('Error al procesar el pago.')
+          });
+        },
+        error: () => alert('Error al crear una entrada.')
+      });
+    });
   }
 }

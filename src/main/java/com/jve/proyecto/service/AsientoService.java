@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jve.proyecto.dto.AsientoDTO;
 import com.jve.proyecto.entity.Asiento;
 import com.jve.proyecto.entity.Concierto;
+import com.jve.proyecto.exceptions.AsientoNoEncontradoException;
+import com.jve.proyecto.exceptions.ConciertoNoEncontradoException;
 import com.jve.proyecto.repository.AsientoRepository;
 import com.jve.proyecto.repository.ConciertoRepository;
 
@@ -34,7 +36,7 @@ public class AsientoService {
         }
 
         Concierto concierto = conciertoRepository.findById(asientoDTO.getConciertoId())
-                .orElseThrow(() -> new RuntimeException("Concierto no encontrado con ID: " + asientoDTO.getConciertoId()));
+                .orElseThrow(() -> new ConciertoNoEncontradoException());
 
         Asiento asiento = Asiento.builder()
                 .numeracion(asientoDTO.getNumeracion())
@@ -53,7 +55,7 @@ public class AsientoService {
 
     public AsientoDTO obtenerAsientoPorId(Long id) {
         Asiento asiento = asientoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Asiento no encontrado con ID: " + id));
+                .orElseThrow(() -> new AsientoNoEncontradoException());
         return asientoConverter.toDto(asiento);
     }
 
@@ -66,14 +68,19 @@ public class AsientoService {
     public List<AsientoDTO> obtenerAsientosPorConcierto(Long conciertoId) {
         return asientoRepository.findByConciertoIdConcierto(conciertoId)
                 .stream()
-                .map(asiento -> asientoConverter.toDto(asiento))
+                .map(asiento -> {
+                    AsientoDTO dto = asientoConverter.toDto(asiento);
+                    dto.setOcupado(asiento.getEntradas() != null && !asiento.getEntradas().isEmpty());
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
-
+    
+    
     @Transactional
     public AsientoDTO actualizarAsiento(Long id, AsientoDTO asientoDTO) {
         Asiento asiento = asientoRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Asiento no encontrado con ID: " + id));
+            .orElseThrow(() -> new AsientoNoEncontradoException());
 
         if (asientoDTO.getNumeracion() != null) {
             asiento.setNumeracion(asientoDTO.getNumeracion());
@@ -95,7 +102,7 @@ public class AsientoService {
 
     public void eliminarAsiento(Long id) {
         Asiento asiento = asientoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Asiento no encontrado con ID: " + id));
+                .orElseThrow(() -> new AsientoNoEncontradoException());
         asientoRepository.delete(asiento);
     }
 }

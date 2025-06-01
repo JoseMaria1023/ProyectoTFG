@@ -1,8 +1,9 @@
-<div class="conciertos-container">
+<div class="mis-conciertos-container">
   <h2>Mis Conciertos</h2>
+
   <div *ngFor="let concierto of conciertos" class="concierto-card">
     <p><strong>{{ concierto.nombre }}</strong> (ID: {{ concierto.idConcierto }})</p>
-    <button (click)="gestionarAsientos(concierto)">Gestionar Asientos</button>
+    <button (click)="gestionarAsientos(concierto)" class="btn-gestionar">Gestionar Asientos</button>
   </div>
 </div>
 

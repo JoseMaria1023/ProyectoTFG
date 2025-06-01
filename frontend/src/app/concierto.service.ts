@@ -23,7 +23,7 @@ export class ConciertoService {
     return this.http.post(this.apiUrl, concierto, { headers });
   }
 
-  obtenerConciertos(): Observable<any[]> {
+  TraerConciertos(): Observable<any[]> {
     const headers = this.getAuthHeaders();
     return this.http.get<any[]>(this.apiUrl, { headers });
   }
@@ -38,7 +38,7 @@ export class ConciertoService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers });
   }
 
-  obtenerConciertosPorArtista(artistaId: number): Observable<any[]> {
+  TraerConciertosPorArtista(artistaId: number): Observable<any[]> {
     const headers = this.getAuthHeaders();
     return this.http.get<any[]>(`${this.apiUrl}/artista/${artistaId}`, { headers });
   }
@@ -54,8 +54,13 @@ export class ConciertoService {
     return this.http.get<any[]>(`${this.apiUrl}/filtrar`, { params: httpParams, headers });
   }
 
-  obtenerAsientosPorConcierto(conciertoId: number): Observable<any[]> {
+  TraerAsientosPorConcierto(conciertoId: number): Observable<any[]> {
     const headers = this.getAuthHeaders();
     return this.http.get<any[]>(`${this.apiUrl}/${conciertoId}/asientos`, { headers });
+  }
+ TraerConciertoPorId(id: number): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}/${id}`, {
+    headers: this.getAuthHeaders()
+  });
   }
 }

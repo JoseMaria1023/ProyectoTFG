@@ -30,6 +30,18 @@ h2 {
   min-width: 200px;
 }
 
+.etiqueta-realizado {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 0.4em 0.8em;
+  background-color: #f2dede;
+  color: #a94442;
+  border-radius: 8px;
+  font-weight: bold;
+  text-align: center;
+}
+
+
 label {
   margin-bottom: 0.3rem;
   font-weight: 600;

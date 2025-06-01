@@ -39,7 +39,6 @@ export class GestionarAsientosComponent implements OnInit {
   }
 
   seleccionarAsiento(asiento: any): void {
-    // guardamos el ID para que EditarAsientoComponent lo lea
     sessionStorage.setItem('asientoAEditar', asiento.idAsiento.toString());
     this.mostrandoEditor = true;
   }

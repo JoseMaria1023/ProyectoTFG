@@ -26,20 +26,20 @@ public class EntradaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EntradaDTO> obtenerEntradaPorId(@PathVariable Long id) {
-        EntradaDTO entrada = entradaService.obtenerEntradaPorId(id);
+    public ResponseEntity<EntradaDTO> TraerEntradaPorId(@PathVariable Long id) {
+        EntradaDTO entrada = entradaService.TraerEntradaPorId(id);
         return ResponseEntity.ok(entrada);
     }
 
     @GetMapping("/usuario/{usuarioId}")
-    public ResponseEntity<List<EntradaDTO>> obtenerEntradasPorUsuario(@PathVariable Long usuarioId) {
-        List<EntradaDTO> entradas = entradaService.obtenerEntradasPorUsuario(usuarioId);
+    public ResponseEntity<List<EntradaDTO>> TraerEntradasPorUsuario(@PathVariable Long usuarioId) {
+        List<EntradaDTO> entradas = entradaService.TraerEntradasPorUsuario(usuarioId);
         return ResponseEntity.ok(entradas);
     }
 
     @GetMapping
-    public ResponseEntity<List<EntradaDTO>> obtenerTodasLasEntradas() {
-        List<EntradaDTO> entradas = entradaService.obtenerTodasLasEntradas();
+    public ResponseEntity<List<EntradaDTO>> TraerTodasLasEntradas() {
+        List<EntradaDTO> entradas = entradaService.TraerTodasLasEntradas();
         return ResponseEntity.ok(entradas);
     }
 

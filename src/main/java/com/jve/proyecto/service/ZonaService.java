@@ -8,10 +8,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jve.proyecto.converter.ZonaConverter;
 import com.jve.proyecto.dto.ZonaDTO;
+import com.jve.proyecto.entity.Concierto;
 import com.jve.proyecto.entity.Recinto;
 import com.jve.proyecto.entity.Zona;
+import com.jve.proyecto.exceptions.ConciertoNoEncontradoException;
 import com.jve.proyecto.exceptions.RecintoNoEncontradoException;
 import com.jve.proyecto.exceptions.ZonaNoEncontradaException;
+import com.jve.proyecto.repository.ConciertoRepository;
 import com.jve.proyecto.repository.RecintoRepository;
 import com.jve.proyecto.repository.ZonaRepository;
 
@@ -20,14 +23,16 @@ public class ZonaService {
 
     private final ZonaRepository zonaRepository;
     private final RecintoRepository recintoRepository;
+    private final ConciertoRepository conciertoRepository;
     private final ZonaConverter zonaConverter;
 
     public ZonaService(ZonaRepository zonaRepository,
                        RecintoRepository recintoRepository,
-                       ZonaConverter zonaConverter) {
+                       ZonaConverter zonaConverter,ConciertoRepository conciertoRepository) {
         this.zonaRepository = zonaRepository;
         this.recintoRepository = recintoRepository;
         this.zonaConverter = zonaConverter;
+        this.conciertoRepository = conciertoRepository;
     }
 
     public ZonaDTO crearZona(ZonaDTO zonaDTO) {
@@ -35,10 +40,8 @@ public class ZonaService {
             throw new IllegalArgumentException("El ID del recinto es obligatorio.");
         }
 
-        Recinto recinto = recintoRepository.findById(zonaDTO.getRecintoId())
-                .orElseThrow(() -> new RecintoNoEncontradoException());
+        Recinto recinto = recintoRepository.findById(zonaDTO.getRecintoId()).orElseThrow(() -> new RecintoNoEncontradoException());
 
-        // Convertir DTO a entidad y asignar el recinto cargado
         Zona zona = zonaConverter.toEntity(zonaDTO);
         zona.setRecinto(recinto);
 
@@ -46,30 +49,24 @@ public class ZonaService {
         return zonaConverter.toDto(guardada);
     }
 
-    public ZonaDTO obtenerZonaPorId(Long id) {
-        Zona zona = zonaRepository.findById(id)
-                .orElseThrow(() -> new ZonaNoEncontradaException());
+    public ZonaDTO TraerZonaPorId(Long id) {
+        Zona zona = zonaRepository.findById(id).orElseThrow(() -> new ZonaNoEncontradaException());
         return zonaConverter.toDto(zona);
     }
 
-    public List<ZonaDTO> obtenerTodasLasZonas() {
-        return zonaRepository.findAll().stream()
-                .map(zonaConverter::toDto)
-                .collect(Collectors.toList());
+    public List<ZonaDTO> TraerTodasLasZonas() {
+        return zonaRepository.findAll().stream().map(zonaConverter::toDto).collect(Collectors.toList());
     }
 
     @Transactional
     public ZonaDTO actualizarZona(Long id, ZonaDTO zonaDTO) {
-        Zona existente = zonaRepository.findById(id)
-                .orElseThrow(() -> new ZonaNoEncontradaException());
+        Zona existente = zonaRepository.findById(id).orElseThrow(() -> new ZonaNoEncontradaException());
 
         if (zonaDTO.getRecintoId() != null) {
-            Recinto recinto = recintoRepository.findById(zonaDTO.getRecintoId())
-                    .orElseThrow(() -> new RecintoNoEncontradoException());
+            Recinto recinto = recintoRepository.findById(zonaDTO.getRecintoId()).orElseThrow(() -> new RecintoNoEncontradoException());
             existente.setRecinto(recinto);
         }
 
-        // Sobreescribir campos desde el DTO
         existente.setNombre(zonaDTO.getNombre());
         existente.setPrecioBase(zonaDTO.getPrecioBase());
         existente.setPrecioVIP(zonaDTO.getPrecioVIP());
@@ -78,9 +75,18 @@ public class ZonaService {
         return zonaConverter.toDto(actualizada);
     }
 
+     @Transactional(readOnly = true)
+    public ZonaDTO TraerZonaPorConcierto(Long conciertoId) {
+        Concierto concierto = conciertoRepository.findById(conciertoId).orElseThrow(() -> new ConciertoNoEncontradoException());
+        Zona zona = concierto.getZona();
+        if (zona == null) {
+            throw new ZonaNoEncontradaException();
+        }
+        return zonaConverter.toDto(zona);
+    }
+
     public void eliminarZona(Long id) {
-        Zona zona = zonaRepository.findById(id)
-                .orElseThrow(() -> new ZonaNoEncontradaException());
+        Zona zona = zonaRepository.findById(id).orElseThrow(() -> new ZonaNoEncontradaException());
         zonaRepository.delete(zona);
     }
 }

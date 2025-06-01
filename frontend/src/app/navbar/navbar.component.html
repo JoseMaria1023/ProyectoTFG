@@ -1,7 +1,7 @@
 <button class="toggle-button" (click)="toggleSidebar()">☰</button>
 <div class="sidebar" [class.open]="isSidebarOpen">
   <div class="logo">
-      <h1>🎤 CONCERTMANIA</h1>
+      <h1 (click)="navigateToHome()">🎤 CONCERTMANIA</h1>
     </div>
     <ul class="nav-links">
       <li *ngIf="!isLoggedIn()"><a (click)="navigateToLogin()"><i class="fas fa-sign-in-alt"></i> Iniciar sesión</a></li>

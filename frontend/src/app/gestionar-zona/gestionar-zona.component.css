@@ -1,134 +1,134 @@
-body {
-  background: linear-gradient(to right, #1e1e2f, #3a3a5a);
-  font-family: 'Poppins', sans-serif;
-  margin: 0;
-  padding: 0;
-  color: #fff;
-}
-
-.form-container {
+/* Contenedor principal */
+.gestionar-zona {
   background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 15px;
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
   padding: 40px;
-  max-width: 700px;
+  max-width: 800px;
   margin: 50px auto;
-  box-shadow: 0 0 25px rgba(255, 0, 128, 0.4), 0 0 35px rgba(0, 128, 255, 0.3);
-  animation: fadeIn 1s ease-in-out;
+  box-shadow: 
+    0 0 25px rgba(255, 0, 128, 0.4),
+    0 0 35px rgba(0, 128, 255, 0.3);
+  color: #fff;
+  animation: fadeIn 0.8s ease-in-out;
 }
 
-h2, h3 {
+/* Título */
+.gestionar-zona h2 {
   text-align: center;
+  font-size: 2.2rem;
+  font-weight: 700;
   margin-bottom: 30px;
-  font-weight: bold;
   color: #ff4081;
 }
 
-form div {
-  margin-bottom: 20px;
-}
-
-label {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 1.1em;
-}
-
-input[type="text"],
-input[type="number"],
-select {
-  width: 100%;
-  padding: 12px;
+/* Separador */
+.gestionar-zona hr {
   border: none;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.2);
-  color: #fff;
-  font-size: 1em;
-  transition: background 0.3s, box-shadow 0.3s;
-}
-
-input:focus,
-select:focus {
+  height: 1px;
   background: rgba(255, 255, 255, 0.3);
-  box-shadow: 0 0 10px #ff4081;
-  outline: none;
-}
-
-button {
-  background: linear-gradient(45deg, #ff4081, #7c4dff);
-  border: none;
-  padding: 12px 25px;
-  border-radius: 30px;
-  color: #fff;
-  font-size: 1em;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.4s, transform 0.3s;
-  margin-top: 10px;
-}
-
-button:hover {
-  background: linear-gradient(45deg, #7c4dff, #ff4081);
-  transform: scale(1.05);
-}
-
-/* Botón Eliminar */
-button[type="button"] {
-  background: #ff1744;
-  margin-left: 10px;
-}
-
-button[type="button"]:hover {
-  background: #d50000;
+  margin: 30px 0;
 }
 
 /* Lista de zonas */
 .gestionar-zona ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .gestionar-zona li {
   background: rgba(255, 255, 255, 0.05);
   margin-bottom: 15px;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 15px;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  transition: background 0.3s, transform 0.2s;
 }
 
+.gestionar-zona li:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.gestionar-zona li strong {
+  font-size: 1.1rem;
+  color: #ff4081;
+  margin-right: 10px;
+}
+
+/* Detalles de la zona */
+.gestionar-zona li span {
+  font-size: 0.95rem;
+  margin-right: 15px;
+  white-space: nowrap;
+}
+
+/* Botones de acción */
 .gestionar-zona button {
-  margin-top: 10px;
-  width: fit-content;
-}
-
-/* Título fuerte */
-strong {
-  font-size: 1.1em;
-  color: #03dac6;
-}
-
-/* Separador */
-hr {
-  margin: 40px 0;
+  background: linear-gradient(45deg, #ff4081, #7c4dff);
+  padding: 8px 18px;
   border: none;
-  border-top: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 30px;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.4s, transform 0.2s;
+  margin-top: 10px;
+}
+
+.gestionar-zona button + button {
+  margin-left: 10px;
+}
+
+.gestionar-zona button:hover {
+  background: linear-gradient(45deg, #7c4dff, #ff4081);
+  transform: scale(1.05);
+}
+
+/* Editor de zona */
+.gestionar-zona > div {
+  margin-top: 20px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+/* Botón cancelar */
+.gestionar-zona > div button {
+  width: auto;
+  margin: 20px 0 0;
+}
+
+/* Animación */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .form-container {
+  .gestionar-zona {
     margin: 20px;
     padding: 30px;
   }
-
   .gestionar-zona li {
-    font-size: 0.95em;
+    flex-direction: column;
+    align-items: flex-start;
   }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  .gestionar-zona button + button {
+    margin-left: 0;
+    margin-top: 10px;
+  }
 }

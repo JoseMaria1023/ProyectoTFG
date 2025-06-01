@@ -1,7 +1,7 @@
-<div class="configuracion">
+<div class="crear-asientos">
   <h2>Configurar Asientos</h2>
 
-  <div>
+  <div class="SeleccionConcierto">
     <label for="concierto">Selecciona Concierto:</label>
     <select
       id="concierto"
@@ -15,7 +15,7 @@
     </select>
   </div>
 
-  <div>
+  <div class="SeleccionConcierto">
     <label for="numFilas">Número de Filas:</label>
     <input
       type="number"
@@ -27,7 +27,7 @@
     >
   </div>
 
-  <div>
+  <div class="SeleccionConcierto">
     <label for="numColumnas">Número de Columnas:</label>
     <input
       type="number"
@@ -39,7 +39,9 @@
     >
   </div>
 
-  <button (click)="configurarAsientos()">
-    Configurar Asientos
-  </button>
+  <div class="Configurar">
+    <button class="btn-finalizar" (click)="configurarAsientos()">
+      Configurar Asientos
+    </button>
+  </div>
 </div>

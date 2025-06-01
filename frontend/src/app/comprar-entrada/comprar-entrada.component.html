@@ -10,40 +10,42 @@
 
     <div class="filtro-artista">
       <label>Asientos seleccionados:</label>
-      <div *ngIf="entrada.asientosSeleccionados.length; else ninguno">
-        <div *ngFor="let asiento of entrada.asientosSeleccionados">
-          <input type="text" [value]="asiento.nombre" readonly>
+
+      <ng-container *ngIf="hayAsientosSeleccionados; else ninguno">
+        <div class="asientos-grid">
+          <div *ngFor="let asiento of asientosSeleccionados" class="asiento-item" (click)="onAsientoSeleccionado(asiento)">
+            <span class="chip" title="Haz clic para quitar">{{ asiento.nombre }}</span>
+          </div>
         </div>
-      </div>
+      </ng-container>
+
       <ng-template #ninguno>
         <input type="text" value="Ningún asiento seleccionado" readonly>
       </ng-template>
+
       <button class="btn-comprar" (click)="abrirMapaAsientos()">Seleccionar Asientos</button>
     </div>
 
     <div class="filtro-artista">
-      <label>Cantidad de Entradas:</label>
-      <input type="number" [(ngModel)]="entrada.cantidadEntradas" min="1" readonly>
+      <label>Precio Unitario:</label>
+      <input type="text" [value]="precioUnitarioActual + ' €'" readonly>
     </div>
 
     <div class="filtro-artista">
       <label>Precio Total:</label>
-      <input type="number" [value]="entrada.precioVenta" readonly>
+      <input type="text" [value]="entrada.precioVenta + ' €'" readonly>
     </div>
 
     <div class="filtro-artista">
       <label>Método de Pago:</label>
       <select [(ngModel)]="pago.metodoPago" required>
         <option value="">Seleccionar...</option>
-        <option value="Tarjeta">Tarjeta</option>
-        <option value="PayPal">PayPal</option>
-        <option value="Transferencia">Transferencia</option>
+        <option *ngFor="let metodo of ['Tarjeta', 'PayPal', 'Transferencia']" [value]="metodo">{{ metodo }}</option>
       </select>
     </div>
   </div>
 
-  <!-- Tarjeta -->
-  <div *ngIf="pago.metodoPago === 'Tarjeta'" class="concierto-card">
+  <div class="concierto-card" *ngIf="mostrarPagoTarjeta">
     <h3>Pago con Tarjeta</h3>
     <label>Número:</label>
     <input type="text" [(ngModel)]="datosTarjeta.numero">
@@ -55,15 +57,13 @@
     <input type="text" [(ngModel)]="datosTarjeta.cvv">
   </div>
 
-  <!-- PayPal -->
-  <div *ngIf="pago.metodoPago === 'PayPal'" class="concierto-card">
+  <div class="concierto-card" *ngIf="mostrarPagoPaypal">
     <h3>Pago con PayPal</h3>
     <label>Email:</label>
     <input type="email" [(ngModel)]="datosPaypal.email">
   </div>
 
-  <!-- Transferencia -->
-  <div *ngIf="pago.metodoPago === 'Transferencia'" class="concierto-card">
+  <div class="concierto-card" *ngIf="mostrarPagoTransferencia">
     <h3>Transferencia Bancaria</h3>
     <label>Nombre:</label>
     <input type="text" [(ngModel)]="datosTransferencia.nombre">
@@ -76,11 +76,12 @@
   </div>
 </div>
 
-<app-mapa-asientos 
-  *ngIf="mostrarModalAsientos" 
-  [asientos]="asientos" 
+<app-mapa-asientos
+  *ngIf="mostrarModalAsientos"
+  [asientos]="asientos"
   [concierto]="{ nombre: entrada.conciertoNombre }"
   [modo]="'user'"
   (asientoSeleccionado)="onAsientoSeleccionado($event)"
   (cerrarModal)="mostrarModalAsientos = false">
 </app-mapa-asientos>
+ 

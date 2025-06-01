@@ -2,18 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-
-import { EntradaService } from '../entrada.service'; 
+import { EntradaService } from '../entrada.service';
 import { PagoService } from '../pago.service';
 import { AuthService } from '../auth.service';
 import { AsientoService } from '../asiento.service';
 import { UsuarioService } from '../usuario.service';
+import { ZonaService } from '../zona.service';
 import { MapaAsientosComponent } from '../mapa-asientos/mapa-asientos.component';
-
-interface AsientoSeleccionado {
-  idAsiento: number;
-  nombre: string;
-}
 
 @Component({
   selector: 'app-comprar-entrada',
@@ -27,19 +22,21 @@ export class ComprarEntradaComponent implements OnInit {
   mostrarModalAsientos = false;
   entradasProcesadas = 0;
 
-  entrada = {
+  precioBaseZona = 0;
+  precioVipZona  = 0;
+
+  entrada: any = {
     tipo: 'Normal',
-    precioUnitario: 24,
-    precioVenta: 24,
+    precioVenta: 0,
     usuarioId: null as number | null,
     conciertoId: null as number | null,
     conciertoNombre: '',
-    asientosSeleccionados: [] as AsientoSeleccionado[],
-    cantidadEntradas: 1,
+    asientosSeleccionados: [] as any[],
+    cantidadEntradas: 0,
     estado: 'Disponible'
   };
 
-  pago = {
+  pago: any = {
     cantidad: 0,
     metodoPago: '',
     estado: '',
@@ -57,19 +54,20 @@ export class ComprarEntradaComponent implements OnInit {
     private pagoService: PagoService,
     private authService: AuthService,
     private asientoService: AsientoService,
-    private usuarioService: UsuarioService 
+    private usuarioService: UsuarioService,
+    private zonaService: ZonaService
   ) {}
 
   ngOnInit(): void {
     const userId = this.authService.getUserId();
     if (!userId) {
-      alert("Debes iniciar sesión.");
+      alert('Debes iniciar sesión.');
       this.router.navigate(['/login']);
       return;
     }
 
     this.usuarioService.getUsuarioById(userId).subscribe({
-      next: usuario => {
+      next: (usuario: any) => {
         if (!usuario.activo) {
           alert('Cuenta desactivada. Actívala para comprar entradas.');
           this.router.navigate(['/home']);
@@ -77,11 +75,21 @@ export class ComprarEntradaComponent implements OnInit {
         }
 
         this.entrada.usuarioId = userId;
-        this.pago.usuarioId = userId;
+        this.pago.usuarioId   = userId;
 
-        this.route.queryParams.subscribe(params => {
+        this.route.queryParams.subscribe((params: any) => {
           this.entrada.conciertoId = +params['conciertoId'] || +history.state.conciertoId;
           this.entrada.conciertoNombre = params['conciertoNombre'] || history.state.conciertoNombre;
+
+          if (this.entrada.conciertoId) {
+            this.zonaService.getZonaPorConcierto(this.entrada.conciertoId).subscribe({
+              next: (zona: any) => {
+                this.precioBaseZona = Number(zona.precioBase);
+                this.precioVipZona  = Number(zona.precioVIP);
+              },
+              error: () => console.error('Error al cargar la zona')
+            });
+          }
         });
       },
       error: () => {
@@ -92,67 +100,125 @@ export class ComprarEntradaComponent implements OnInit {
   }
 
   abrirMapaAsientos(): void {
-    if (!this.entrada.conciertoId) return alert('Concierto no asignado.');
-    this.asientoService.obtenerAsientosPorConcierto(this.entrada.conciertoId)
-      .subscribe({
-        next: data => {
-          this.asientos = data;
-          this.mostrarModalAsientos = true;
-        },
-        error: err => console.error('Error al obtener asientos:', err)
-      });
-  }
-
-  onAsientoSeleccionado(asiento: any): void {
-    if (asiento.ocupado || !asiento.idAsiento) return alert('Asiento ocupado o inválido.');
-
-    const yaSeleccionado = this.entrada.asientosSeleccionados
-      .some(a => a.idAsiento === asiento.idAsiento);
-    
-    if (!yaSeleccionado) {
-      this.entrada.asientosSeleccionados.push({
-        idAsiento: asiento.idAsiento,
-        nombre: `F${asiento.fila} - C${asiento.columna}`
-      });
+    if (!this.entrada.conciertoId) {
+      alert('Concierto no asignado.');
+      return;
     }
-
-    this.entrada.cantidadEntradas = this.entrada.asientosSeleccionados.length;
-    this.entrada.precioVenta = this.entrada.precioUnitario * this.entrada.cantidadEntradas;
-    this.mostrarModalAsientos = false;
+    this.asientoService.TraerAsientosPorConcierto(this.entrada.conciertoId).subscribe({
+      next: (data: any[]) => {
+        this.asientos = data;
+        this.mostrarModalAsientos = true;
+      },
+      error: (err: any) => console.error('Error al obtener asientos:', err)
+    });
   }
+
+onAsientoSeleccionado(asiento: any): void {
+  if (asiento.ocupado || !asiento.idAsiento) {
+    alert('Asiento ocupado o inválido.');
+    return;
+  }
+
+  const seleccionados = this.entrada.asientosSeleccionados;
+  const esSeleccionado = seleccionados.some((a: any) => a.idAsiento === asiento.idAsiento);
+
+  if (esSeleccionado) {
+    this.entrada.asientosSeleccionados = seleccionados.filter((a: any) => a.idAsiento !== asiento.idAsiento);
+  } else {
+    const precio = asiento.tipo === 'VIP' ? this.precioVipZona : this.precioBaseZona;
+    this.entrada.asientosSeleccionados.push({
+      idAsiento: asiento.idAsiento,
+      nombre: `F${asiento.fila} - C${asiento.columna}`,
+      precioUnitario: precio
+    });
+  }
+
+  const nuevos = this.entrada.asientosSeleccionados;
+  this.entrada.tipo = nuevos.some((a: any) => a.precioUnitario === this.precioVipZona) ? 'VIP' : 'Normal';
+  this.entrada.cantidadEntradas = nuevos.length;
+  this.entrada.precioVenta = nuevos.reduce((total: number, a: any) => total + a.precioUnitario, 0);
+  this.mostrarModalAsientos = false;
+}
+
 
   comprarEntradas(): void {
-    if (!this.entrada.usuarioId || !this.entrada.conciertoId || !this.pago.metodoPago) {
-      return alert('Completa todos los datos antes de comprar.');
+    if (!this.entrada.usuarioId || !this.entrada.conciertoId) {
+      alert('Faltan datos del usuario o concierto.');
+      return;
     }
-
     if (this.entrada.asientosSeleccionados.length === 0) {
-      return alert('Selecciona al menos un asiento.');
+      alert('Debes seleccionar al menos un asiento.');
+      return;
+    }
+    if (!this.pago.metodoPago) {
+      alert('Selecciona un método de pago.');
+      return;
     }
 
-    const entradasPayload = this.entrada.asientosSeleccionados.map(asiento => ({
+    switch (this.pago.metodoPago) {
+      case 'Tarjeta':
+        if (!this.datosTarjeta.numero || !this.datosTarjeta.nombre || !this.datosTarjeta.expiracion || !this.datosTarjeta.cvv) {
+          alert('Completa todos los campos de la tarjeta.');
+          return;
+        }
+        if (!/^\d{16}$/.test(this.datosTarjeta.numero)) {
+          alert('Número de tarjeta inválido. Debe tener 16 dígitos.');
+          return;
+        }
+        if (!/^\d{3,4}$/.test(this.datosTarjeta.cvv)) {
+          alert('CVV inválido.');
+          return;
+        }
+        break;
+
+      case 'PayPal':
+        if (!this.datosPaypal.email) {
+          alert('Introduce tu correo de PayPal.');
+          return;
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.datosPaypal.email)) {
+          alert('Correo de PayPal no válido.');
+          return;
+        }
+        break;
+
+      case 'Transferencia':
+        if (!this.datosTransferencia.nombre || !this.datosTransferencia.iban) {
+          alert('Completa todos los campos de transferencia.');
+          return;
+        }
+        if (!/^([A-Z]{2}\d{2}[A-Z0-9]{1,30})$/.test(this.datosTransferencia.iban)) {
+          alert('IBAN inválido.');
+          return;
+        }
+        break;
+
+      default:
+        alert('Método de pago no válido.');
+        return;
+    }
+
+    const entradasPayload = this.entrada.asientosSeleccionados.map((a: any) => ({
       tipo: this.entrada.tipo,
-      precioVenta: this.entrada.precioUnitario,
-      usuarioId: this.entrada.usuarioId!,
-      conciertoId: this.entrada.conciertoId!,
-      asientoId: asiento.idAsiento,
+      precioVenta: a.precioUnitario,
+      usuarioId: this.entrada.usuarioId,
+      conciertoId: this.entrada.conciertoId,
+      asientoId: a.idAsiento,
       estado: 'PENDIENTE'
     }));
 
     this.entradasProcesadas = 0;
-
-    entradasPayload.forEach(entrada => {
+    entradasPayload.forEach((entrada: any) => {
       this.entradaService.crearEntrada(entrada).subscribe({
-        next: entradaCreada => {
-          const pago = {
-            entradaId: entradaCreada.idEntrada,
-            usuarioId: this.pago.usuarioId!,
-            cantidad: entradaCreada.precioVenta,
+        next: (eCreada: any) => {
+          const pagoObj = {
+            entradaId: eCreada.idEntrada,
+            usuarioId: this.pago.usuarioId,
+            cantidad: eCreada.precioVenta,
             metodoPago: this.pago.metodoPago,
             estado: 'PENDIENTE'
           };
-
-          this.pagoService.crearPago(pago).subscribe({
+          this.pagoService.crearPago(pagoObj).subscribe({
             next: () => {
               this.entradasProcesadas++;
               if (this.entradasProcesadas === entradasPayload.length) {
@@ -167,4 +233,28 @@ export class ComprarEntradaComponent implements OnInit {
       });
     });
   }
+  get asientosSeleccionados(): any[] {
+  return this.entrada.asientosSeleccionados;
+}
+
+get hayAsientosSeleccionados(): boolean {
+  return this.asientosSeleccionados.length > 0;
+}
+
+get precioUnitarioActual(): number {
+  return this.hayAsientosSeleccionados ? this.asientosSeleccionados[this.asientosSeleccionados.length - 1].precioUnitario : this.precioBaseZona;
+}
+
+get mostrarPagoTarjeta(): boolean {
+  return this.pago.metodoPago === 'Tarjeta';
+}
+
+get mostrarPagoPaypal(): boolean {
+  return this.pago.metodoPago === 'PayPal';
+}
+
+get mostrarPagoTransferencia(): boolean {
+  return this.pago.metodoPago === 'Transferencia';
+}
+
 }

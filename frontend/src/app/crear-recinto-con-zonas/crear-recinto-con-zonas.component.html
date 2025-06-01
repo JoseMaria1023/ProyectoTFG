@@ -1,14 +1,9 @@
 <div class="form-container">
   <h2>Crear Recinto y sus Zonas</h2>
 
-  <!-- Botones de gestión -->
-  <div class="gestion-botones">
-    <button type="button" (click)="irAGestionarZonas()">Gestionar Zonas</button>
-    <button type="button" (click)="irAGestionarRecintos()">Gestionar Recintos</button>
-  </div>
-
   <!-- Formulario de Recinto -->
   <form (ngSubmit)="crearRecintoConZonas()">
+    <!-- Datos del Recinto... -->
     <div>
       <label for="nombreRecinto">Nombre del Recinto:</label>
       <input type="text" id="nombreRecinto" [(ngModel)]="nombreRecinto" name="nombreRecinto" required />
@@ -45,6 +40,12 @@
     </div>
 
     <button type="button" (click)="anadirZona()">Añadir Zona</button>
+
+    <!-- <<< Aquí se movieron los botones de gestión justo debajo de “Añadir Zona” >>> -->
+    <div class="gestion-botones">
+      <button type="button" (click)="irAGestionarZonas()">Gestionar Zonas</button>
+      <button type="button" (click)="irAGestionarRecintos()">Gestionar Recintos</button>
+    </div>
 
     <hr>
 

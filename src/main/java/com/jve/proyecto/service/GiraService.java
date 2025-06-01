@@ -28,31 +28,30 @@ public class GiraService {
     }
 
     public GiraDTO crearGira(GiraDTO giraDTO) {
-        if (giraDTO.getArtistaId() == null) {
-            throw new RuntimeException("El ID del artista es obligatorio.");
-        }
-        Artista artista = artistaRepository.findById(giraDTO.getArtistaId())
-                .orElseThrow(() -> new ArtistaNoEncontradoException()) ;
-        
-        Gira gira = Gira.builder()
-                .nombre(giraDTO.getNombre())
-                .descripcion(giraDTO.getDescripcion())
-                .artista(artista)
-                .build();
-
-        Gira giraGuardada = giraRepository.save(gira);
-        return giraConverter.toDto(giraGuardada);
+    if (giraDTO.getArtistaId() == null) {
+        throw new RuntimeException("El ID del artista es obligatorio.");
     }
 
-    public GiraDTO obtenerGiraPorId(Long id) {
-        Gira gira = giraRepository.findById(id).orElseThrow(() -> 
-                new GiraNoEncontradaException());
+    Artista artista = artistaRepository.findById(giraDTO.getArtistaId())
+            .orElseThrow(() -> new ArtistaNoEncontradoException());
+
+    Gira gira = giraConverter.toEntity(giraDTO);
+
+    gira.setArtista(artista);
+
+    Gira giraGuardada = giraRepository.save(gira);
+
+    return giraConverter.toDto(giraGuardada);
+}
+
+    public GiraDTO TraerGiraPorId(Long id) {
+        Gira gira = giraRepository.findById(id).orElseThrow(() -> new GiraNoEncontradaException());
         GiraDTO dto = giraConverter.toDto(gira);
         dto.setArtistaId(gira.getArtista().getIdArtista());
         return dto;
     }
 
-    public List<GiraDTO> obtenerTodasLasGiras() {
+    public List<GiraDTO> TraerTodasLasGiras() {
         return giraRepository.findAll().stream()
                 .map(gira -> {
                     GiraDTO dto = giraConverter.toDto(gira);
@@ -63,27 +62,25 @@ public class GiraService {
     }
 
     public GiraDTO actualizarGira(Long id, GiraDTO giraDTO) {
-        Gira gira = giraRepository.findById(id).orElseThrow(() -> 
-                new GiraNoEncontradaException());
-        
-        if (giraDTO.getArtistaId() != null) {
-            Artista artista = artistaRepository.findById(giraDTO.getArtistaId())
-                    .orElseThrow(() -> new RuntimeException("Artista no encontrado con ID: " + giraDTO.getArtistaId()));
-            gira.setArtista(artista);
-        }
-        
-        gira.setNombre(giraDTO.getNombre());
-        gira.setDescripcion(giraDTO.getDescripcion());
+    Gira giraExistente = giraRepository.findById(id)
+            .orElseThrow(() -> new GiraNoEncontradaException());
 
-        Gira giraActualizada = giraRepository.save(gira);
-        GiraDTO dto = giraConverter.toDto(giraActualizada);
-        dto.setArtistaId(giraActualizada.getArtista().getIdArtista());
-        return dto;
+    giraExistente.setNombre(giraDTO.getNombre());
+    giraExistente.setDescripcion(giraDTO.getDescripcion());
+
+    if (giraDTO.getArtistaId() != null) {
+        Artista artista = artistaRepository.findById(giraDTO.getArtistaId())
+                .orElseThrow(() -> new RuntimeException("Artista no encontrado con ID: " + giraDTO.getArtistaId()));
+        giraExistente.setArtista(artista);
     }
 
+    Gira giraActualizada = giraRepository.save(giraExistente);
+    return giraConverter.toDto(giraActualizada);
+}
+
+
     public void eliminarGira(Long id) {
-        Gira gira = giraRepository.findById(id).orElseThrow(() -> 
-            new GiraNoEncontradaException());
+        Gira gira = giraRepository.findById(id).orElseThrow(() -> new GiraNoEncontradaException());
         giraRepository.delete(gira);
     }
 }

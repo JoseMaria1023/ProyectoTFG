@@ -16,13 +16,13 @@ public class RecintoController {
     }
 
     @GetMapping
-    public List<RecintoDTO> obtenerRecintos() {
-        return recintoService.obtenerTodosLosRecintos();
+    public List<RecintoDTO> TraerRecintos() {
+        return recintoService.TraerTodosLosRecintos();
     }
 
     @GetMapping("/{id}")
-    public RecintoDTO obtenerRecintoPorId(@PathVariable Long id) {
-        return recintoService.obtenerRecintoPorId(id);
+    public RecintoDTO TraerRecintoPorId(@PathVariable Long id) {
+        return recintoService.TraerRecintoPorId(id);
     }
 
     @PostMapping

@@ -23,14 +23,14 @@ export class GestionarConciertosComponent implements OnInit {
   }
 
   cargarConciertos(): void {
-    this.conciertoService.obtenerConciertos().subscribe(data => {
+    this.conciertoService.TraerConciertos().subscribe(data => {
       this.conciertos = data;
     });
   }
 
   seleccionarConcierto(concierto: any): void {
   sessionStorage.setItem('conciertoAEditar', concierto.idConcierto.toString());
-  this.conciertoSeleccionado = true; // Cambia de null a booleano
+  this.conciertoSeleccionado = true; 
 }
 
   onConciertoCreado(): void {

@@ -15,7 +15,7 @@ import com.jve.proyecto.converter.RecintoConverter;
 public class RecintoService {
 
     private final RecintoRepository recintoRepository;
-    private final RecintoConverter recintoConverter; // Inyectamos el RecintoConverter
+    private final RecintoConverter recintoConverter;
 
     public RecintoService(RecintoRepository recintoRepository, RecintoConverter recintoConverter) {
         this.recintoRepository = recintoRepository;
@@ -23,20 +23,20 @@ public class RecintoService {
     }
 
     public RecintoDTO crearRecinto(RecintoDTO recintoDTO) {
-        Recinto recinto = recintoConverter.toEntity(recintoDTO); // Usamos el converter para mapear de DTO a entidad
+        Recinto recinto = recintoConverter.toEntity(recintoDTO);
         Recinto recintoGuardado = recintoRepository.save(recinto);
-        return recintoConverter.toDto(recintoGuardado); // Usamos el converter para mapear de entidad a DTO
+        return recintoConverter.toDto(recintoGuardado); 
     }
 
-    public RecintoDTO obtenerRecintoPorId(Long id) {
+    public RecintoDTO TraerRecintoPorId(Long id) {
         Recinto recinto = recintoRepository.findById(id).orElseThrow(() -> 
                 new RecintoNoEncontradoException());
-        return recintoConverter.toDto(recinto); // Usamos el converter
+        return recintoConverter.toDto(recinto); 
     }
 
-    public List<RecintoDTO> obtenerTodosLosRecintos() {
+    public List<RecintoDTO> TraerTodosLosRecintos() {
         return recintoRepository.findAll().stream()
-                .map(recinto -> recintoConverter.toDto(recinto)) // Usamos el converter
+                .map(recinto -> recintoConverter.toDto(recinto))
                 .collect(Collectors.toList());
     }
 

@@ -63,18 +63,6 @@ public class EntradaService {
 
     @Transactional
     public EntradaDTO crearEntrada(EntradaDTO dto) {
-        // 1) Validaciones básicas
-        if (dto.getAsientoId() == null) {
-            throw new RuntimeException("El ID del asiento es obligatorio.");
-        }
-        if (dto.getConciertoId() == null) {
-            throw new RuntimeException("El ID del concierto es obligatorio.");
-        }
-        if (dto.getUsuarioId() == null) {
-            throw new RuntimeException("El ID del usuario es obligatorio.");
-        }
-    
-        // 2) Buscar Usuario, Asiento y Concierto
         Usuario usuario = usuarioRepository.findById(dto.getUsuarioId())
             .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + dto.getUsuarioId()));
         Asiento asiento = asientoRepository.findById(dto.getAsientoId())
@@ -82,14 +70,12 @@ public class EntradaService {
         Concierto concierto = conciertoRepository.findById(dto.getConciertoId())
             .orElseThrow(() -> new RuntimeException("Concierto no encontrado con ID: " + dto.getConciertoId()));
     
-        // 3) Obtener el precioBase de la zona asociada al concierto
         Zona zona = concierto.getZona();
         if (zona == null) {
             throw new RuntimeException("El concierto no tiene zona asignada");
         }
         BigDecimal precioVentaBase = zona.getPrecioBase();
     
-        // 4) Generar contenido del QR
         String qrContent = String.format(
             "Entrada para %s, Asiento %s, Usuario %s, Fecha %s",
             concierto.getNombre(),
@@ -99,14 +85,13 @@ public class EntradaService {
         );
         String codigoQR = QRCodeGenerator.generateBase64QRCode(qrContent, 250, 250);
     
-        // 5) Construir la entidad Entrada
         Entrada entrada = Entrada.builder()
             .codigoQR(codigoQR)
-            .tipo(Entrada.TipoEntrada.NORMAL)          // siempre NORMAL al crear; puedes cambiar si dto trae VIP
-            .precioVenta(precioVentaBase)             // tomado de la zona
-            .precioReventa(dto.getPrecioReventa())    // si quieres permitir reventa inmediata
-            .fechaCompra(LocalDateTime.now())         // fecha actual
-            .estado(Entrada.EstadoEntrada.DISPONIBLE) // siempre DISPONIBLE al crear
+            .tipo(Entrada.TipoEntrada.NORMAL)         
+            .precioVenta(precioVentaBase)            
+            .precioReventa(dto.getPrecioReventa())    
+            .fechaCompra(LocalDateTime.now())         
+            .estado(Entrada.EstadoEntrada.DISPONIBLE) 
             .asiento(asiento)
             .concierto(concierto)
             .usuario(usuario)
@@ -114,7 +99,6 @@ public class EntradaService {
     
         Entrada guardada = entradaRepository.save(entrada);
     
-        // 6) Mapear a DTO e inyectar los objetos anidados
         EntradaDTO salida = entradaConverter.toDto(guardada);
         salida.setAsiento(asientoConverter.toDto(guardada.getAsiento()));
         salida.setConcierto(conciertoConverter.toDto(guardada.getConcierto()));
@@ -122,16 +106,15 @@ public class EntradaService {
     }
     
 
-    public EntradaDTO obtenerEntradaPorId(Long id) {
-        Entrada e = entradaRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Entrada no encontrada: " + id));
+    public EntradaDTO TraerEntradaPorId(Long id) {
+        Entrada e = entradaRepository.findById(id).orElseThrow(() -> new EntradaNoEncontradaException());
         EntradaDTO dto = entradaConverter.toDto(e);
         dto.setAsiento(asientoConverter.toDto(e.getAsiento()));
         dto.setConcierto(conciertoConverter.toDto(e.getConcierto()));
         return dto;
     }
 
-    public List<EntradaDTO> obtenerEntradasPorUsuario(Long usuarioId) {
+    public List<EntradaDTO> TraerEntradasPorUsuario(Long usuarioId) {
         return entradaRepository.findByUsuario_IdUsuario(usuarioId).stream()
             .map(e -> {
                 EntradaDTO dto = entradaConverter.toDto(e);
@@ -142,7 +125,7 @@ public class EntradaService {
             .collect(Collectors.toList());
     }
 
-    public List<EntradaDTO> obtenerTodasLasEntradas() {
+    public List<EntradaDTO> TraerTodasLasEntradas() {
         return entradaRepository.findAll().stream()
             .map(e -> {
                 EntradaDTO dto = entradaConverter.toDto(e);
@@ -154,8 +137,7 @@ public class EntradaService {
     }
 
     public EntradaDTO actualizarEntrada(Long id, EntradaDTO dto) {
-        Entrada existente = entradaRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Entrada no encontrada: " + id));
+        Entrada existente = entradaRepository.findById(id) .orElseThrow(() -> new EntradaNoEncontradaException());
 
         existente.setEstado( Entrada.EstadoEntrada.valueOf(dto.getEstado().toUpperCase()) );
         existente.setPrecioReventa(dto.getPrecioReventa());
@@ -170,35 +152,35 @@ public class EntradaService {
 
     public void eliminarEntrada(Long id) {
         entradaRepository.delete(
-            entradaRepository.findById(id)
-                .orElseThrow(() -> new EntradaNoEncontradaException())
+            entradaRepository.findById(id).orElseThrow(() -> new EntradaNoEncontradaException())
         );
     }
 
-    public EntradaDTO revenderEntrada(Long idEntrada, BigDecimal precioReventa) {
-        Entrada e = entradaRepository.findById(idEntrada)
-            .orElseThrow(() -> new EntradaNoEncontradaException());
+ public EntradaDTO revenderEntrada(Long idEntrada, BigDecimal nuevoPrecio) {
+    Entrada entrada = entradaRepository.findById(idEntrada).orElseThrow(() -> new EntradaNoEncontradaException());
 
-        if (e.getEstado() != Entrada.EstadoEntrada.DISPONIBLE) {
-            throw new EntradasDisponiblesException();
-        }
-
-        BigDecimal max = e.getPrecioVenta()
-            .multiply(BigDecimal.valueOf(1.10))
-            .setScale(2, RoundingMode.HALF_UP);
-
-        BigDecimal pr = precioReventa.setScale(2, RoundingMode.HALF_UP);
-        if (pr.compareTo(max) > 0) {
-            throw new PrecioEntradaException();
-        }
-
-        e.setPrecioReventa(pr);
-        e.setEstado(Entrada.EstadoEntrada.VENDIDA);
-
-        Entrada guardada = entradaRepository.save(e);
-        EntradaDTO dto = entradaConverter.toDto(guardada);
-        dto.setAsiento(asientoConverter.toDto(guardada.getAsiento()));
-        dto.setConcierto(conciertoConverter.toDto(guardada.getConcierto()));
-        return dto;
+    if (entrada.getEstado() != Entrada.EstadoEntrada.DISPONIBLE) {
+        throw new EntradasDisponiblesException();
     }
+
+    BigDecimal precioMaximo = entrada.getPrecioVenta().multiply(new BigDecimal("1.10"));
+
+    nuevoPrecio = nuevoPrecio.setScale(2, RoundingMode.HALF_UP);
+    precioMaximo = precioMaximo.setScale(2, RoundingMode.HALF_UP);
+
+    if (nuevoPrecio.compareTo(precioMaximo) > 0) {
+        throw new PrecioEntradaException();
+    }
+
+    entrada.setPrecioReventa(nuevoPrecio);
+    entrada.setEstado(Entrada.EstadoEntrada.VENDIDA);
+
+    entrada = entradaRepository.save(entrada);
+
+    EntradaDTO dto = entradaConverter.toDto(entrada);
+    dto.setAsiento(asientoConverter.toDto(entrada.getAsiento()));
+    dto.setConcierto(conciertoConverter.toDto(entrada.getConcierto()));
+
+    return dto;
+}
 }

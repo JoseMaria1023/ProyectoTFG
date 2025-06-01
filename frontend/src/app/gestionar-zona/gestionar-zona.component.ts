@@ -24,11 +24,10 @@ export class GestionarZonaComponent implements OnInit {
   }
 
   cargarZonas(): void {
-    this.zonaService.obtenerZonas().subscribe(data => this.zonas = data);
+    this.zonaService.TraerZonas().subscribe(data => this.zonas = data);
   }
 
   seleccionarZona(idZona: number): void {
-    // Guardamos el ID para que EditarZonaComponent lo cargue desde sessionStorage
     sessionStorage.setItem('zonaSeleccionadaId', idZona.toString());
     this.editarVisible = true;
   }

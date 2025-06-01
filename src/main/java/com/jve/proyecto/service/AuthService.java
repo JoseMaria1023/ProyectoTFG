@@ -33,7 +33,6 @@ public class AuthService {
     }
 
     public UsuarioDTO register(UsuarioDTO userDTO) throws Exception {
-        // (Lógica de registro)
         if (userDTO.getPassword().length() < 8) {
             throw new ContraseniaException();
         }
@@ -69,7 +68,7 @@ public class AuthService {
             id = artista.getIdArtista();
             username = artista.getUsername();
         } else {
-            throw new RuntimeException("Tipo de usuario no soportado");
+            throw new RuntimeException("Tipo de usuario no reconocido");
         }
 
         if (id == null) {
@@ -78,14 +77,11 @@ public class AuthService {
 
         return new LoginResponse(
                 username,
-                authentication.getAuthorities().stream()
-                        .map(GrantedAuthority::getAuthority)
-                        .toList(),
+                authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList(),
                 token,
                 id
         );
     } catch (Exception ex) {
-        // Lanza una excepción más clara para que el controlador la capture
         throw new CredencialesInvalidasException();
     }
 }

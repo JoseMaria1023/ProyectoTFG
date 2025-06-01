@@ -30,11 +30,11 @@ export class ElegirConciertoComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargarTodos();
-    this.obtenerArtistas();
+    this.TraerArtistas();
   }
 
   cargarTodos(): void {
-    this.conciertoService.obtenerConciertos().subscribe(
+    this.conciertoService.TraerConciertos().subscribe(
       data => this.conciertos = data,
       err  => console.error(err)
     );
@@ -42,7 +42,7 @@ export class ElegirConciertoComponent implements OnInit {
 
   filtrarPorArtista(): void {
     if (!this.artistaSeleccionado) return;
-    this.conciertoService.obtenerConciertosPorArtista(this.artistaSeleccionado.idArtista)
+    this.conciertoService.TraerConciertosPorArtista(this.artistaSeleccionado.idArtista)
       .subscribe(data => this.conciertos = data);
   }
 
@@ -55,7 +55,7 @@ export class ElegirConciertoComponent implements OnInit {
     });
   }
 
-  aplicarFiltro() {
+ aplicarFiltro(): void {
     const filtros: any = {};
     if (this.tipoFiltro === 'artista' && this.artistaSeleccionado) {
       filtros.artistaId = this.artistaSeleccionado.idArtista;
@@ -67,11 +67,17 @@ export class ElegirConciertoComponent implements OnInit {
     }
 
     this.conciertoService.filtrarConciertos(filtros).subscribe(data => {
-      this.conciertos = data;
+      this.conciertos = data.filter(concierto => !this.esConciertoPasado(concierto));
     });
   }
 
-  obtenerArtistas(): void {
+    esConciertoPasado(concierto: any): boolean {
+    const hoy = new Date();
+    const fechaConcierto = new Date(concierto.fecha);
+    return fechaConcierto < hoy;
+  }
+
+  TraerArtistas(): void {
     this.artistaService.getArtistas().subscribe(
       data => this.artistas = data,
       err  => console.error(err)

@@ -18,6 +18,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 
 @Entity
@@ -51,7 +52,8 @@ public class Artista implements UserDetails {
     @Column(length = 50)
     private String generoMusical;
 
-    @Column(length = 255)
+    @Lob
+     @Column(columnDefinition = "LONGTEXT")
     private String foto;
 
     @Override
@@ -64,6 +66,7 @@ public class Artista implements UserDetails {
          return true;
     }
 
+    
     @Override
     public boolean isAccountNonLocked() {
          return true;

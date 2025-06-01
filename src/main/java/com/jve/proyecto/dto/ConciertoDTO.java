@@ -25,5 +25,7 @@ public class ConciertoDTO {
     private String estado;
     private String nombreRecinto;
     private String nombreZona;
+    private String nombreArtista;
+    private String apellidosArtista;
 }
 

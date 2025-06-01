@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RecintoService } from '../recinto.service'; 
@@ -11,12 +11,9 @@ import { RecintoService } from '../recinto.service';
   styleUrls: ['./crear-recinto.component.css']
 })
 export class CrearRecintoComponent {
-  // Campos del formulario
   nombre: string = '';
   ubicacion: string = '';
   capacidadTotal: number = 0;
-
-  @Output() recintoCreado = new EventEmitter<void>();
 
   constructor(private recintoService: RecintoService) {}
 
@@ -31,16 +28,18 @@ export class CrearRecintoComponent {
       response => {
         console.log('Recinto creado con éxito', response);
         alert('Recinto creado con éxito');
-        // Reiniciamos los campos del formulario
-        this.nombre = '';
-        this.ubicacion = '';
-        this.capacidadTotal = 0;
-        this.recintoCreado.emit();
+        this.resetFormulario();
       },
       error => {
         console.error('Error al crear el recinto', error);
         alert('Error al crear el recinto');
       }
     );
+  }
+
+  private resetFormulario(): void {
+    this.nombre = '';
+    this.ubicacion = '';
+    this.capacidadTotal = 0;
   }
 }

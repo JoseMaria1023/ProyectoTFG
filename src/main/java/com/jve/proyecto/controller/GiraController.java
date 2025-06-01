@@ -17,8 +17,8 @@ public class GiraController {
     }
 
     @GetMapping
-    public List<GiraDTO> obtenerGiras() {
-        return giraService.obtenerTodasLasGiras();
+    public List<GiraDTO> TraerGiras() {
+        return giraService.TraerTodasLasGiras();
     }
 
     @PostMapping
@@ -27,8 +27,8 @@ public class GiraController {
     }
 
     @GetMapping("/{id}")
-    public GiraDTO obtenerGiraPorId(@PathVariable Long id) {
-        return giraService.obtenerGiraPorId(id);
+    public GiraDTO TraerGiraPorId(@PathVariable Long id) {
+        return giraService.TraerGiraPorId(id);
     }
 
     @PutMapping("/{id}")

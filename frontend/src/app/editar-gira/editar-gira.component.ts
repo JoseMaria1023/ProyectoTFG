@@ -23,20 +23,23 @@ export class EditarGiraComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const idGuardado = sessionStorage.getItem('giraAEditar');
-    if (idGuardado) {
-      const id = Number(idGuardado);
-      this.giraService.getGiraById(id).subscribe(data => {
-        this.gira = data;
-      });
-      this.artistaService.getArtistas().subscribe(data => {
-        this.artistas = data;
-      });
-    } else {
-      alert('No se ha seleccionado ninguna gira para editar.');
-      this.router.navigate(['/Gestionar-gira']);
-    }
+  const id = sessionStorage.getItem('giraAEditar');
+  if (id) {
+    this.giraService.getAllGiras().subscribe((data: any[]) => {
+      const encontrada = data.find(gira => gira.idGira === +id);
+      if (encontrada) {
+        this.gira = encontrada;
+      }
+    });
+  } else {
+    alert('No se ha seleccionado ninguna gira para editar.');
+    this.router.navigate(['/Gestionar-gira']);
   }
+
+  this.artistaService.getArtistas().subscribe((data: any[]) => {
+    this.artistas = data;
+  });
+}
 
   actualizarGira(): void {
     this.giraService.updateGira(this.gira.idGira, this.gira).subscribe(
@@ -51,7 +54,8 @@ export class EditarGiraComponent implements OnInit {
     );
   }
 
-  cancelar(): void {
-    this.router.navigate(['/Gestionar-gira']);
-  }
+ cancelar(): void {
+  sessionStorage.removeItem('giraAEditar');
+  window.location.reload(); 
+}
 }

@@ -27,32 +27,27 @@ export class EditarZonaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // 1) Cargamos lista de recintos
-    this.recintoService.obtenerRecintos().subscribe(
-      data => this.recintos = data,
-      err => console.error('Error al obtener recintos', err)
-    );
+  const id = sessionStorage.getItem('zonaSeleccionadaId');
 
-    // 2) Cargamos la zona a editar:
-    const idZonaStr = sessionStorage.getItem('zonaSeleccionadaId');
-    if (idZonaStr) {
-      const idZona = Number(idZonaStr);
-      this.zonaService.obtenerZonaPorId(idZona).subscribe(
-        zona => this.zona = zona,
-        err => {
-          console.error('Error al cargar zona', err);
-          alert('No se pudo cargar la zona para editar.');
-        }
-      );
-    } else {
-      console.warn('No hay zonaSeleccionadaId en sessionStorage');
-    }
+  if (id) {
+    this.zonaService.TraerZonas().subscribe((data: any[]) => {
+      const encontrada = data.find(zona => zona.idZona === +id);
+      if (encontrada) {
+        this.zona = encontrada;
+      }
+    });
   }
+
+  this.recintoService.TraerRecintos().subscribe((data: any[]) => {
+    this.recintos = data;
+  });
+}
+
 
   actualizarZona(): void {
     this.zonaService.actualizarZona(this.zona.idZona, this.zona).subscribe(
-      resp => {
-        console.log('Zona actualizada:', resp);
+      respuesta => {
+        console.log('Zona actualizada:', respuesta);
         alert('Zona actualizada con éxito');
       },
       err => {

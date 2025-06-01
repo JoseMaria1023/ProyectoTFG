@@ -29,6 +29,11 @@ export class NavbarComponent {
     this.toggleSidebar();
   }
 
+  navigateToHome(): void {
+    this.router.navigate(['/home']);
+    this.toggleSidebar();
+  }
+
   navigateListarArtista(): void {
     this.router.navigate(['/Listar-artista']);
     this.toggleSidebar();

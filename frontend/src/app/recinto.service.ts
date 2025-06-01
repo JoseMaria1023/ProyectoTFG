@@ -25,7 +25,7 @@ export class RecintoService {
   }
 
   // Método para obtener todos los recintos
-  obtenerRecintos(): Observable<any> {
+  TraerRecintos(): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.get(this.apiUrl, { headers });
   }
@@ -36,7 +36,7 @@ export class RecintoService {
     return this.http.put(`${this.apiUrl}/${id}`, recinto, { headers });
   }
 
-   obtenerRecintoPorId(id: number): Observable<any> {
+   TraerRecintoPorId(id: number): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.get<any>(`${this.apiUrl}/${id}`, { headers });
   }

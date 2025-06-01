@@ -13,5 +13,11 @@
 
   <hr />
 
+  <div *ngIf="giraSeleccionada">
+    <app-editar-gira></app-editar-gira>
+  </div>
+
+  <div *ngIf="!giraSeleccionada">
   <app-crear-gira (giraCreada)="onGiraCreada()"></app-crear-gira>
+</div>
 </div>

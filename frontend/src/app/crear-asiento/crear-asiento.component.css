@@ -1,39 +1,73 @@
-/* Contenedor de la configuración */
-.configuracion {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+.crear-asientos {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 30px;
+  background: linear-gradient(to right, #1e1e2f, #2c2c54);
+  color: #f0f0f0;
+  font-family: 'Orbitron', sans-serif;
+  border-radius: 20px;
+  box-shadow: 0 0 25px rgba(255, 0, 128, 0.3);
+  animation: fadeIn 1s ease-in-out;
+}
+
+.crear-asientos h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  color: #ff4081;
+  letter-spacing: 1px;
+}
+
+.SeleccionConcierto{
+  margin-bottom: 20px;
+}
+
+.SeleccionConcierto label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.SeleccionConcierto select,
+.SeleccionConcierto input {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  background-color: #2f2f46;
+  color: #f0f0f0;
+  font-size: 1rem;
+}
+
+.Configurar {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.btn-finalizar {
+  background-color: #ff4081;
+  color: #fff;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 25px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-finalizar:hover {
+  background-color: #e03570;
+  box-shadow: 0 0 10px rgba(255, 64, 129, 0.4);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
   }
-  
-  .configuracion label {
-    font-weight: bold;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .configuracion input,
-  .configuracion select {
-    padding: 8px;
-    border-radius: 5px;
-    border: none;
-    text-align: center;
-  }
-  
-  button {
-    padding: 10px;
-    background-color: #ff00ff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-  
-  button:hover {
-    background-color: #00ffff;
-  }
-  
+}

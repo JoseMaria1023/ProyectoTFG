@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -62,55 +63,51 @@ public class ArtistaService {
         }
     }
 
-    public ArtistaDTO obtenerArtistaPorId(Long id) {
-        Artista artista = artistaRepository.findById(id)
-                .orElseThrow(() -> new ArtistaNoEncontradoException());
+    public ArtistaDTO TraerArtistaPorId(Long id) {
+        Artista artista = artistaRepository.findById(id).orElseThrow(() -> new ArtistaNoEncontradoException());
         return artistaConverter.toDto(artista);
     }
 
     public Artista getByUsername(String username) {
-        return artistaRepository.findByUsername(username)
-                .orElseThrow(() -> new UsuarioNoEncontradoException());
+        return artistaRepository.findByUsername(username).orElseThrow(() -> new UsuarioNoEncontradoException());
     }
 
-    public List<ArtistaDTO> obtenerTodosLosArtistas() {
-        return artistaRepository.findAll().stream()
-                .map(artista -> artistaConverter.toDto(artista))
-                .collect(Collectors.toList());
-    }
 
-    public List<ArtistaDTO> obtenerListaArtistas() {
-        return artistaRepository.findAll().stream()
-                .map(artista -> artistaConverter.toDto(artista))
-                .collect(Collectors.toList());
+    public List<ArtistaDTO> TraerListaArtistas() {
+        return artistaRepository.findAll().stream().map(artista -> artistaConverter.toDto(artista))
+        .collect(Collectors.toList());
     }
 
  public ArtistaDTO actualizarArtista(Long id, ArtistaDTO artistaDTO) {
-    Artista artista = artistaRepository.findById(id)
-            .orElseThrow(() -> new ArtistaNoEncontradoException());
+    Artista artistaExistente = artistaRepository.findById(id)
+        .orElseThrow(() -> new ArtistaNoEncontradoException());
 
-    artista.setNombre(artistaDTO.getNombre());
-    artista.setApellidos(artistaDTO.getApellidos());
-    artista.setUsername(artistaDTO.getUsername());
+    Artista artistaParaActualizar = artistaConverter.toEntity(artistaDTO);
+    artistaParaActualizar.setIdArtista(id);
 
     if (artistaDTO.getPassword() != null && !artistaDTO.getPassword().isEmpty()) {
-        artista.setPassword(passwordEncoder.encode(artistaDTO.getPassword()));
+        artistaParaActualizar.setPassword(passwordEncoder.encode(artistaDTO.getPassword()));
+    } else {
+        artistaParaActualizar.setPassword(artistaExistente.getPassword());
     }
-
-    artista.setDescripcion(artistaDTO.getDescripcion());
-    artista.setGeneroMusical(artistaDTO.getGeneroMusical());
 
     if (artistaDTO.getFoto() != null && !artistaDTO.getFoto().isEmpty()) {
-        artista.setFoto(artistaDTO.getFoto());
+        artistaParaActualizar.setFoto(artistaDTO.getFoto());
+    } else {
+        artistaParaActualizar.setFoto(artistaExistente.getFoto());
     }
 
-    Artista artistaActualizado = artistaRepository.save(artista);
+    Artista artistaActualizado = artistaRepository.save(artistaParaActualizar);
     return artistaConverter.toDto(artistaActualizado);
 }
 
+    public Optional<Long> findArtistaIdByUsername(String username) {
+        return artistaRepository.findByUsername(username)
+                                 .map(Artista::getIdArtista);
+    }
+
     public void eliminarArtista(Long id) {
-        Artista artista = artistaRepository.findById(id)
-                .orElseThrow(() -> new ArtistaNoEncontradoException());
+        Artista artista = artistaRepository.findById(id).orElseThrow(() -> new ArtistaNoEncontradoException());
         artistaRepository.delete(artista);
     }
 }

@@ -30,6 +30,7 @@ import { UserGuard } from './Guards/user.guard';
 import { ArtistaGuard } from './Guards/artista.guard';
 import { CrearRecintoConZonasComponent } from './crear-recinto-con-zonas/crear-recinto-con-zonas.component';
 import { ListaArtistaComponent } from './lista-artista/lista-artista.component';
+import { MapaAsientosComponent } from './mapa-asientos/mapa-asientos.component';
 
 export const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -59,6 +60,7 @@ export const appRoutes: Routes = [
   { path: 'Listar-artista', component: ListaArtistaComponent},
   { path: 'Editar-gira', component: EditarGiraComponent,canActivate: [AdminGuard]},
   { path: 'mi-perfil', component: MiPerfilComponent },
+  { path: 'mapa-asientos/:id', component: MapaAsientosComponent },
   { path: 'Gestionar-asiento-artista', component: GestionarAsientoConciertoArtistaComponent,canActivate: [ArtistaGuard] },
 
 

@@ -17,7 +17,7 @@ export class ListaArtistaComponent implements OnInit {
   ngOnInit(): void {
     this.artistaService.getArtistas().subscribe({
       next: (data) => {
-        console.log('Artistas raw:', data);
+        console.log('Artistas lista:', data);
         this.artistas = data.map((artista: any) => ({ ...artista,
           fotoUrl: `http://localhost:9000${artista.foto}`
         }));

@@ -37,10 +37,8 @@ export class AsientoService {
     return this.http.get<any>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
   }
 
-  obtenerAsientosPorConcierto(conciertoId: number): Observable<any[]> {
-    return this.http.get<any[]>(
-      `${this.apiUrl}/concierto/${conciertoId}`,
-      { headers: this.getAuthHeaders() }   
+  TraerAsientosPorConcierto(conciertoId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/concierto/${conciertoId}`,{ headers: this.getAuthHeaders() }   
     );
   }
 }

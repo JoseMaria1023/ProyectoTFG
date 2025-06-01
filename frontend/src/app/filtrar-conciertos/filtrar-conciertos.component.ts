@@ -22,7 +22,7 @@ export class FiltrarConciertosComponent implements OnInit {
       return;
     }
 
-    this.conciertoService.obtenerConciertosPorArtista(this.artistaId).subscribe({
+    this.conciertoService.TraerConciertosPorArtista(this.artistaId).subscribe({
       next: data => {
         this.conciertos = data;
         this.error = '';

@@ -24,13 +24,13 @@ public class UsuarioController {
     }
 
     @GetMapping
-    public List<UsuarioDTO> obtenerUsuarios() {
-        return usuarioService.obtenerTodosLosUsuarios();
+    public List<UsuarioDTO> TraerUsuarios() {
+        return usuarioService.TraerTodosLosUsuarios();
     }
 
     @GetMapping("/{id}")
-    public UsuarioDTO obtenerUsuarioPorId(@PathVariable Long id) {
-        return usuarioService.obtenerUsuarioPorId(id);
+    public UsuarioDTO TraerUsuarioPorId(@PathVariable Long id) {
+        return usuarioService.TraerUsuarioPorId(id);
     }
 
 
@@ -49,8 +49,8 @@ public class UsuarioController {
         usuarioService.eliminarUsuario(id);
     }
     @GetMapping("/{id}/entradas")
-    public List<EntradaDTO> obtenerEntradasPorUsuario(@PathVariable Long id) {
-        return entradaService.obtenerEntradasPorUsuario(id);
+    public List<EntradaDTO> TraerEntradasPorUsuario(@PathVariable Long id) {
+        return entradaService.TraerEntradasPorUsuario(id);
     }
     @PutMapping("/{idUsuario}/entradas/{idEntrada}/transferir")
 public ResponseEntity<String> transferirEntrada(

@@ -17,13 +17,13 @@ public class AsientoController {
     }
 
     @GetMapping
-    public List<AsientoDTO> obtenerAsientos() {
-        return asientoService.obtenerTodosLosAsientos();
+    public List<AsientoDTO> TraerAsientos() {
+        return asientoService.TraerTodosLosAsientos();
     }
 
     @GetMapping("/concierto/{id}")
-    public List<AsientoDTO> obtenerAsientosPorConcierto(@PathVariable("id") Long conciertoId) {
-        return asientoService.obtenerAsientosPorConcierto(conciertoId);
+    public List<AsientoDTO> TraerAsientosPorConcierto(@PathVariable("id") Long conciertoId) {
+        return asientoService.TraerAsientosPorConcierto(conciertoId);
     }
 
     @PostMapping
@@ -36,8 +36,8 @@ public class AsientoController {
         return asientoService.actualizarAsiento(id, asientoDTO);
     }
     @GetMapping("/{id}")
-    public AsientoDTO obtenerAsientoPorId(@PathVariable Long id) {
-    return asientoService.obtenerAsientoPorId(id);
+    public AsientoDTO TraerAsientoPorId(@PathVariable Long id) {
+    return asientoService.TraerAsientoPorId(id);
 }
 
     

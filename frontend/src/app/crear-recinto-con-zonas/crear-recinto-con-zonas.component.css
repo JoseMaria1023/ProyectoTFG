@@ -68,6 +68,12 @@ body {
     margin-top: 10px;
   }
   
+  gestion-botones {
+    display: flex;
+    margin-top: 7px;
+    justify-content: center;
+    align-items: center;
+  }
   button:hover {
     background: linear-gradient(45deg, #7c4dff, #ff4081);
     transform: scale(1.05);

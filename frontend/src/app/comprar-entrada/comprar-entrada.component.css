@@ -50,6 +50,21 @@ label {
   color: #ffed8a;
   text-transform: uppercase;
 }
+.asientos-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.asiento-item input {
+  width: 100px;
+  text-align: center;
+  background-color: #f2f2f2;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 5px;
+}
 
 /* Inputs y selects */
 input[type="text"],

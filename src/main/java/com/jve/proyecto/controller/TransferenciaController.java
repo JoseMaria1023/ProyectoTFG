@@ -29,8 +29,8 @@ public class TransferenciaController {
     }
 
     @GetMapping("/{id}")
-    public TransferenciaDTO obtenerTransferenciaPorId(@PathVariable Long id) {
-        return transferenciaService.obtenerTransferenciaPorId(id);
+    public TransferenciaDTO TraerTransferenciaPorId(@PathVariable Long id) {
+        return transferenciaService.TraerTransferenciaPorId(id);
     }
 
     @DeleteMapping("/{id}")

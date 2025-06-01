@@ -18,7 +18,9 @@ body {
   z-index: 1;
   overflow: hidden;
 }
-
+.perfil-container li span {
+  margin-top: 18px;
+}
 .perfil-container h2 {
   text-align: center;
   font-size: 2.5rem;

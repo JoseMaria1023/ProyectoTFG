@@ -34,15 +34,15 @@ export class EditarConciertoComponent implements OnInit {
   ngOnInit(): void {
     const id = sessionStorage.getItem('conciertoAEditar');
     if (id) {
-      this.conciertoService.obtenerConciertos().subscribe(data => {
-        const encontrado = data.find(c => c.idConcierto == +id);
+      this.conciertoService.TraerConciertos().subscribe(data => {
+        const encontrado = data.find(concierto => concierto.idConcierto == +id);
         if (encontrado) {
           this.concierto = encontrado;
         }
       });
     }
 
-    this.zonaService.obtenerZonas().subscribe(data => {
+    this.zonaService.TraerZonas().subscribe(data => {
       this.zonas = data;
     });
     this.giraService.getAllGiras().subscribe(data => {
@@ -64,4 +64,8 @@ export class EditarConciertoComponent implements OnInit {
         }
       );
   }
+  cancelar(): void {
+  sessionStorage.removeItem('conciertoAEditar');
+  window.location.reload(); 
+}
 }

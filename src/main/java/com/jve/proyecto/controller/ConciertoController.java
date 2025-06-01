@@ -25,8 +25,12 @@ public class ConciertoController {
     }
 
     @GetMapping
-    public List<ConciertoDTO> obtenerConciertos() {
-        return conciertoService.obtenerTodosLosConciertos();
+    public List<ConciertoDTO> TraerConciertos() {
+        return conciertoService.TraerTodosLosConciertos();
+    }
+      @GetMapping("/{id}")
+    public ConciertoDTO TraerConciertoPorId(@PathVariable Long id) {
+        return conciertoService.TraerConciertoPorId(id);
     }
 
     @PostMapping
@@ -44,24 +48,34 @@ public class ConciertoController {
         conciertoService.eliminarConcierto(id);
     }
     
-    // NUEVO: Obtener asientos por el id del concierto
     @GetMapping("/{conciertoId}/asientos")
-    public List<AsientoDTO> obtenerAsientosPorConcierto(@PathVariable Long conciertoId) {
-        return asientoService.obtenerAsientosPorConcierto(conciertoId);
+    public List<AsientoDTO> TraerAsientosPorConcierto(@PathVariable Long conciertoId) {
+        return asientoService.TraerAsientosPorConcierto(conciertoId);
     }
-    @GetMapping("/filtrar")
-public List<ConciertoDTO> filtrarConciertos(
-    @RequestParam(required = false) Long artistaId,
-    @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaDesde,
-    @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaHasta,
-    @RequestParam(required = false) String estado
-) {
-    return conciertoService.filtrarConciertos(artistaId, fechaDesde, fechaHasta, estado);
-}
     
-    // También se mantiene el endpoint para obtener conciertos por artista
+     @GetMapping("/filtrar")
+    public List<ConciertoDTO> filtrarConciertos(
+        @RequestParam(required = false) Long artistaId,
+        @RequestParam(required = false) 
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaDesde,
+        @RequestParam(required = false) 
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaHasta,
+        @RequestParam(required = false) String estado
+    ) {
+        LocalDateTime desdeDateTime = null;
+        LocalDateTime hastaDateTime = null;
+
+        if (fechaDesde != null) {
+            desdeDateTime = fechaDesde.atStartOfDay();
+        }
+        if (fechaHasta != null) {
+            hastaDateTime = fechaHasta.atTime(23, 59, 59);
+        }
+        return conciertoService.filtrarConciertos(artistaId, desdeDateTime, hastaDateTime, estado);
+    }
+    
     @GetMapping("/artista/{artistaId}")
-    public List<ConciertoDTO> obtenerConciertosPorArtista(@PathVariable("artistaId") Long artistaId) {
-        return conciertoService.obtenerConciertosPorArtista(artistaId);
+    public List<ConciertoDTO> TraerConciertosPorArtista(@PathVariable("artistaId") Long artistaId) {
+        return conciertoService.TraerConciertosPorArtista(artistaId);
     }
 }

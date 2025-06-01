@@ -57,6 +57,7 @@
   <div class="conciertos-grid">
     <div *ngFor="let concierto of conciertos" class="concierto-card">
       <div class="concierto-nombre">
+        {{ concierto.nombreArtista }} {{ concierto.apellidosArtista }} -
         {{ concierto.nombre }}<br>
         <small>{{ concierto.fecha | date:'short' }}</small>
       </div>
@@ -64,9 +65,16 @@
         <span>Recinto: {{ concierto.nombreRecinto || 'Desconocido' }}</span>
         <span>Zona: {{ concierto.nombreZona || 'Desconocida' }}</span>
       </div>
-      <button class="btn-comprar" (click)="comprarEntrada(concierto)">
-        Comprar entrada
-      </button>
+
+      <div *ngIf="!esConciertoPasado(concierto)">
+        <button class="btn-comprar" (click)="comprarEntrada(concierto)">
+          Comprar entrada
+        </button>
+      </div>
+
+      <div *ngIf="esConciertoPasado(concierto)" class="concierto-finalizado">
+        <span class="etiqueta-realizado">Concierto realizado</span>
+      </div>
     </div>
   </div>
 </div>

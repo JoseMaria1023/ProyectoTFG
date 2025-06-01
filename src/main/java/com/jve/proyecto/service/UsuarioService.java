@@ -34,45 +34,38 @@ public class UsuarioService {
     }
 
     public UsuarioDTO crearUsuario(UsuarioDTO usuarioDTO) {
-        // DTO → entidad
         Usuario entidad = usuarioConverter.toEntity(usuarioDTO);
         Usuario guardado = usuarioRepository.save(entidad);
-        // entidad → DTO
         return usuarioConverter.toDto(guardado);
     }
 
     @Transactional
     public void transferirEntrada(Long idUsuario, Long idEntrada, String telefonoDestino) {
-        Entrada entrada = entradaRepository.findById(idEntrada)
-            .orElseThrow(() -> new EntradaNoEncontradaException());
+        Entrada entrada = entradaRepository.findById(idEntrada).orElseThrow(() -> new EntradaNoEncontradaException());
 
         if (!entrada.getUsuario().getIdUsuario().equals(idUsuario)) {
             throw new EntradaEnPetenenciaException();
         }
 
-        Usuario nuevoUsuario = usuarioRepository.findByTelefono(telefonoDestino)
-            .orElseThrow(() -> new UsuarioNoEncontradoException());
+        Usuario nuevoUsuario = usuarioRepository.findByTelefono(telefonoDestino).orElseThrow(() -> new UsuarioNoEncontradoException());
 
         entrada.setUsuario(nuevoUsuario);
         entradaRepository.save(entrada);
     }
 
-    public UsuarioDTO obtenerUsuarioPorId(Long id) {
-        Usuario usuario = usuarioRepository.findById(id)
-            .orElseThrow(() -> new UsuarioNoEncontradoException());
+    public UsuarioDTO TraerUsuarioPorId(Long id) {
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new UsuarioNoEncontradoException());
         return usuarioConverter.toDto(usuario);
     }
 
-    public List<UsuarioDTO> obtenerTodosLosUsuarios() {
+    public List<UsuarioDTO> TraerTodosLosUsuarios() {
         return usuarioRepository.findAll().stream()
             .map(usuarioConverter::toDto)
             .collect(Collectors.toList());
     }
 
     public UsuarioDTO actualizarUsuario(Long id, UsuarioDTO usuarioDTO) {
-        Usuario existente = usuarioRepository.findById(id)
-            .orElseThrow(() -> new UsuarioNoEncontradoException());
-        // Mapear propiedades del DTO sobre la entidad existente
+        Usuario existente = usuarioRepository.findById(id).orElseThrow(() -> new UsuarioNoEncontradoException());
         Usuario actualizado = usuarioConverter.toEntity(usuarioDTO);
         actualizado.setIdUsuario(existente.getIdUsuario());
         Usuario guardado = usuarioRepository.save(actualizado);
@@ -80,8 +73,7 @@ public class UsuarioService {
     }
 
     public void eliminarUsuario(Long id) {
-        Usuario usuario = usuarioRepository.findById(id)
-            .orElseThrow(() -> new UsuarioNoEncontradoException());
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new UsuarioNoEncontradoException());
         usuarioRepository.delete(usuario);
     }
 

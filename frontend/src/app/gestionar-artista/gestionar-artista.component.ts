@@ -33,7 +33,7 @@ export class GestionarArtistaComponent implements OnInit {
 
   seleccionarArtista(artista: any) {
   sessionStorage.setItem('artistaAEditar', artista.idArtista.toString());
-  this.router.navigate(['/Editar-artista']);
+  this.artistaSeleccionado = true;
 }
 
   cancelarEdicion() {

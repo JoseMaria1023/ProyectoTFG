@@ -22,12 +22,12 @@ export class EntradaService {
     return this.http.post<any>(this.apiUrl, entrada);
   }
 
-  obtenerEntradas(): Observable<any[]> {
+  TraerEntradas(): Observable<any[]> {
     const headers = this.getAuthHeaders();
     return this.http.get<any[]>(`${this.apiUrl}/TodasEntradas`, { headers });
   }
 
-  obtenerEntradaPorId(id: number): Observable<any> {
+  TraerEntradaPorId(id: number): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.get<any>(`${this.apiUrl}/${id}`, { headers });
   }

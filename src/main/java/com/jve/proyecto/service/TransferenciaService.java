@@ -26,7 +26,7 @@ public class TransferenciaService {
     private final TransferenciaRepository transferenciaRepository;
     private final EntradaRepository entradaRepository;
     private final UsuarioRepository usuarioRepository;
-    private final TransferenciaConverter transferenciaConverter; // Inyectamos el TransferenciaConverter
+    private final TransferenciaConverter transferenciaConverter;
 
     public TransferenciaService(TransferenciaRepository transferenciaRepository, 
                                  EntradaRepository entradaRepository, 
@@ -38,87 +38,59 @@ public class TransferenciaService {
         this.transferenciaConverter = transferenciaConverter;
     }
 
-    @Transactional
-    public TransferenciaDTO transferirEntrada(Long idEntrada, Long usuarioOrigenId, String telefonoDestino) {
-        // Buscar la entrada
-        Entrada entrada = entradaRepository.findById(idEntrada)
-                .orElseThrow(() -> new EntradaNoEncontradaException());
+  @Transactional
+public TransferenciaDTO transferirEntrada(Long idEntrada, Long usuarioOrigenId, String telefonoDestino) {
+    Entrada entrada = entradaRepository.findById(idEntrada)
+        .orElseThrow(EntradaNoEncontradaException::new);
 
-        // Verificar que la entrada pertenece al usuario que la quiere transferir
-        if (!entrada.getUsuario().getIdUsuario().equals(usuarioOrigenId)) {
-            throw new EntradaEnPetenenciaException();
-        }
-
-        // Buscar al usuario destino por teléfono
-        Usuario usuarioDestino = usuarioRepository.findByTelefono(telefonoDestino)
-                .orElseThrow(() -> new UsuarioNoEncontradoException());
-
-        // Obtener el usuario origen (cargado completo desde DB)
-        Usuario usuarioOrigen = usuarioRepository.findById(usuarioOrigenId)
-                .orElseThrow(() -> new UsuarioNoEncontradoException());
-
-        // Crear y guardar la transferencia
-        Transferencia transferencia = new Transferencia();
-        transferencia.setEntrada(entrada);
-        transferencia.setUsuarioOrigen(usuarioOrigen);
-        transferencia.setUsuarioDestino(usuarioDestino);
-        transferencia.setFechaTransferencia(LocalDateTime.now());
-        transferencia.setEstado(Transferencia.EstadoTransferencia.COMPLETADA);
-        transferencia.setComentario("Transferencia realizada correctamente");
-
-        Transferencia transferenciaGuardada = transferenciaRepository.save(transferencia);
-
-        // Actualizar el usuario asignado en la entrada
-        entrada.setUsuario(usuarioDestino);
-        entradaRepository.save(entrada);
-
-        return transferenciaConverter.toDto(transferenciaGuardada); // Usamos el converter
+    if (!entrada.getUsuario().getIdUsuario().equals(usuarioOrigenId)) {
+        throw new EntradaEnPetenenciaException();
     }
+
+    Usuario usuarioDestino = usuarioRepository.findByTelefono(telefonoDestino)
+        .orElseThrow(UsuarioNoEncontradoException::new);
+
+    Usuario usuarioOrigen = usuarioRepository.findById(usuarioOrigenId)
+        .orElseThrow(UsuarioNoEncontradoException::new);
+
+    Transferencia transferencia = Transferencia.builder()
+        .entrada(entrada)
+        .usuarioOrigen(usuarioOrigen)
+        .usuarioDestino(usuarioDestino)
+        .fechaTransferencia(LocalDateTime.now())
+        .estado(Transferencia.EstadoTransferencia.COMPLETADA)
+        .comentario("Transferencia realizada correctamente")
+        .build();
+
+    Transferencia transferenciaGuardada = transferenciaRepository.save(transferencia);
+
+    entrada.setUsuario(usuarioDestino);
+    entradaRepository.save(entrada);
+    return transferenciaConverter.toDto(transferenciaGuardada);
+}
+
 
     public TransferenciaDTO crearTransferencia(TransferenciaDTO transferenciaDTO) {
-        Transferencia transferencia = transferenciaConverter.toEntity(transferenciaDTO); // Usamos el converter
+        Transferencia transferencia = transferenciaConverter.toEntity(transferenciaDTO); 
         Transferencia transferenciaGuardada = transferenciaRepository.save(transferencia);
-        return transferenciaConverter.toDto(transferenciaGuardada); // Usamos el converter
+        return transferenciaConverter.toDto(transferenciaGuardada); 
     }
 
-    public TransferenciaDTO obtenerTransferenciaPorId(Long id) {
+    public TransferenciaDTO TraerTransferenciaPorId(Long id) {
         Transferencia transferencia = transferenciaRepository.findById(id)
             .orElseThrow(() -> new TransferenciaNoEncontradaException());
-        return transferenciaConverter.toDto(transferencia); // Usamos el converter
+        return transferenciaConverter.toDto(transferencia); 
     }
 
-    public List<TransferenciaDTO> obtenerTodasLasTransferencias() {
+    public List<TransferenciaDTO> TraerTodasLasTransferencias() {
         return transferenciaRepository.findAll().stream()
-                .map(transferencia -> transferenciaConverter.toDto(transferencia)) // Usamos el converter
+                .map(transferencia -> transferenciaConverter.toDto(transferencia)) 
                 .collect(Collectors.toList());
     }
 
-    public TransferenciaDTO actualizarTransferencia(Long id, TransferenciaDTO transferenciaDTO) {
-        Transferencia transferencia = transferenciaRepository.findById(id)
-            .orElseThrow(() -> new TransferenciaNoEncontradaException());
-        transferenciaConverter.toEntity(transferenciaDTO); // Usamos el converter para mapear de DTO a entidad
-        if (transferenciaDTO.getEntradaId() != null) {
-            Entrada entrada = new Entrada();
-            entrada.setIdEntrada(transferenciaDTO.getEntradaId());
-            transferencia.setEntrada(entrada);
-        }
-        if (transferenciaDTO.getUsuarioOrigenId() != null) {
-            Usuario usuarioOrigen = new Usuario();
-            usuarioOrigen.setIdUsuario(transferenciaDTO.getUsuarioOrigenId());
-            transferencia.setUsuarioOrigen(usuarioOrigen);
-        }
-        if (transferenciaDTO.getUsuarioDestinoId() != null) {
-            Usuario usuarioDestino = new Usuario();
-            usuarioDestino.setIdUsuario(transferenciaDTO.getUsuarioDestinoId());
-            transferencia.setUsuarioDestino(usuarioDestino);
-        }
-        Transferencia transferenciaActualizada = transferenciaRepository.save(transferencia);
-        return transferenciaConverter.toDto(transferenciaActualizada); // Usamos el converter
-    }
 
     public void eliminarTransferencia(Long id) {
-        Transferencia transferencia = transferenciaRepository.findById(id)
-                .orElseThrow(() -> new TransferenciaNoEncontradaException());
+        Transferencia transferencia = transferenciaRepository.findById(id).orElseThrow(() -> new TransferenciaNoEncontradaException());
         transferenciaRepository.delete(transferencia);
     }
 }

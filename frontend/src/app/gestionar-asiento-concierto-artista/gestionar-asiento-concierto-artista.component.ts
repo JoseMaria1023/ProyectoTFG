@@ -27,7 +27,7 @@ export class GestionarAsientoConciertoArtistaComponent implements OnInit {
   ngOnInit(): void {
     const artistaId = this.authService.getUserId();
     if (!artistaId) return;
-    this.conciertoService.obtenerConciertosPorArtista(artistaId)
+    this.conciertoService.TraerConciertosPorArtista(artistaId)
       .subscribe(data => this.conciertos = data, console.error);
   }
 
@@ -38,7 +38,7 @@ export class GestionarAsientoConciertoArtistaComponent implements OnInit {
   gestionarAsientos(concierto: any): void {
     this.conciertoSeleccionado = concierto;
     this.mostrarModal = true;
-    this.conciertoService.obtenerAsientosPorConcierto(concierto.idConcierto)
+    this.conciertoService.TraerAsientosPorConcierto(concierto.idConcierto)
       .subscribe(data => this.asientos = data, console.error);
   }
 
@@ -48,12 +48,9 @@ export class GestionarAsientoConciertoArtistaComponent implements OnInit {
 
       this.asientoService.actualizarAsiento(asiento.idAsiento, asiento)
         .subscribe(updated => {
-          console.log('Respuesta server:', updated);
-          // Sustituimos el asiento en el array con el que viene del servidor
           this.asientos = this.asientos.map(a =>
             a.idAsiento === updated.idAsiento ? updated : a
           );
-          // no cerramos el modal para que veas el VIP
         }, console.error);
     } else {
       console.log('Comprar asiento', asiento);

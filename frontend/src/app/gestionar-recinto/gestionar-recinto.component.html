@@ -5,8 +5,8 @@
   <ul>
     <li *ngFor="let recinto of recintos">
       <strong>{{ recinto.nombre }}</strong>
-      – {{ recinto.ubicacion }}
-      – Capacidad: {{ recinto.capacidadTotal }}
+       {{ recinto.ubicacion }}
+       - Capacidad: {{ recinto.capacidadTotal }}
       <button (click)="seleccionarRecinto(recinto.idRecinto)">Editar</button>
       <button type="button" (click)="eliminarRecinto(recinto.idRecinto)">Eliminar</button>
     </li>

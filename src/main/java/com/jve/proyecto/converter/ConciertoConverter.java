@@ -17,7 +17,21 @@ public class ConciertoConverter {
     }
 
     public ConciertoDTO toDto(Concierto concierto) {
-        return modelMapper.map(concierto, ConciertoDTO.class);
+        ConciertoDTO dto = modelMapper.map(concierto, ConciertoDTO.class);
+
+        if (concierto.getGira() != null && concierto.getGira().getArtista() != null) {
+            dto.setNombreArtista(concierto.getGira().getArtista().getNombre());
+            dto.setApellidosArtista(concierto.getGira().getArtista().getApellidos());
+        }
+
+        if (concierto.getZona() != null) {
+            dto.setNombreZona(concierto.getZona().getNombre());
+            if (concierto.getZona().getRecinto() != null) {
+                dto.setNombreRecinto(concierto.getZona().getRecinto().getNombre());
+            }
+        }
+
+        return dto;
     }
 
     public Concierto toEntity(ConciertoDTO conciertoDTO) {

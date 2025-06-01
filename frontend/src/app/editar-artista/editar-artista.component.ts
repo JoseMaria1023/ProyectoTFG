@@ -31,22 +31,24 @@ export class EditarArtistaComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {
-    const idStr = sessionStorage.getItem('artistaAEditar');
-    if (!idStr) {
-      // si no hay ID, volvemos al listado
-      this.router.navigate(['/Gestionar-artista']);
-      return;
-    }
-    const id = +idStr;
-    this.artistaService.getArtistaPorId(id).subscribe(
-      data => this.artista = data,
-      err => {
-        console.error('No se pudo cargar artista', err);
-        this.router.navigate(['/Gestionar-artista']);
+ngOnInit(): void {
+  const id = sessionStorage.getItem('artistaAEditar');
+
+  if (id) {
+    this.artistaService.getArtistaPorId(+id).subscribe(data => {
+      this.artista = data;
+      if (this.artista.foto) {
+        this.artista.foto = 'http://localhost:9000' + this.artista.foto;
       }
-    );
+    }, err => {
+      console.error('No se pudo cargar artista', err);
+      this.router.navigate(['/Gestionar-artista']);
+    });
+  } else {
+    this.router.navigate(['/Gestionar-artista']);
   }
+}
+
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -84,8 +86,8 @@ export class EditarArtistaComponent implements OnInit {
       );
   }
 
-  cancelar(): void {
-    sessionStorage.removeItem('artistaAEditar');
-    this.router.navigate(['/Gestionar-artista']);
-  }
+cancelar(): void {
+  sessionStorage.removeItem('artistaAEditar');
+  window.location.reload(); 
+}
 }

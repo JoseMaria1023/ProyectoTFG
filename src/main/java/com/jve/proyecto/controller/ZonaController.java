@@ -16,13 +16,13 @@ public class ZonaController {
     }
 
     @GetMapping
-    public List<ZonaDTO> obtenerZonas() {
-        return zonaService.obtenerTodasLasZonas();
+    public List<ZonaDTO> TraerZonas() {
+        return zonaService.TraerTodasLasZonas();
     }
 
     @GetMapping("/{id}")
-    public ZonaDTO obtenerZonaPorId(@PathVariable Long id) {
-        return zonaService.obtenerZonaPorId(id);
+    public ZonaDTO TraerZonaPorId(@PathVariable Long id) {
+        return zonaService.TraerZonaPorId(id);
     }
 
     @PostMapping
@@ -38,5 +38,9 @@ public class ZonaController {
     @DeleteMapping("/{id}")
     public void eliminarZona(@PathVariable Long id) {
         zonaService.eliminarZona(id);
+    }
+     @GetMapping("/concierto/{conciertoId}")
+    public ZonaDTO TraerZonaPorConcierto(@PathVariable Long conciertoId) {
+        return zonaService.TraerZonaPorConcierto(conciertoId);
     }
 }

@@ -5,16 +5,19 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CrearGiraComponent } from '../crear-gira/crear-gira.component';
 import { Router } from '@angular/router';
+import { EditarGiraComponent } from '../editar-gira/editar-gira.component';
 
 @Component({
   selector: 'app-gestionar-gira',
   standalone: true,
-  imports: [CommonModule, FormsModule, CrearGiraComponent],
+  imports: [CommonModule, FormsModule, CrearGiraComponent, EditarGiraComponent],
   templateUrl: './gestionar-gira.component.html',
   styleUrls: ['./gestionar-gira.component.css']
 })
 export class GestionarGiraComponent implements OnInit {
   giras: any[] = [];
+  giraSeleccionada: any = null;
+
 
   constructor(
     private giraService: GiraService,
@@ -37,7 +40,7 @@ export class GestionarGiraComponent implements OnInit {
 
  editarGira(id: number): void {
   sessionStorage.setItem('giraAEditar', id.toString());
-  this.router.navigate(['/Editar-gira']); // sin parámetro
+  this.giraSeleccionada = true; 
 }
 
   eliminarGira(id: number): void {

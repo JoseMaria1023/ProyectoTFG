@@ -60,6 +60,6 @@ export class TransferenciaEntradaComponent {
 
   cerrarModal(): void {
     sessionStorage.removeItem('entradaSeleccionada');
-    window.location.reload(); // o emitir evento global si prefieres evitar recarga
+    window.location.reload(); 
   }
 }

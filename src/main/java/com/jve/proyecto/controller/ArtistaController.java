@@ -16,16 +16,10 @@ import java.util.List;
 public class ArtistaController {
 
     private final ArtistaService artistaService;
-    // Directorio de subida (asegúrate de que coincida con el usado en el servicio)
     private static final String UPLOAD_DIR = "uploads/";
 
     public ArtistaController(ArtistaService artistaService) {
         this.artistaService = artistaService;
-    }
-
-    @GetMapping("/ObtenerArtistas")
-    public List<ArtistaDTO> obtenerArtistas() {
-        return artistaService.obtenerTodosLosArtistas();
     }
 
     @PostMapping("/crear")
@@ -41,10 +35,9 @@ public class ArtistaController {
 
     @GetMapping("/listar")
     public List<ArtistaDTO> listarArtistas() {
-        return artistaService.obtenerListaArtistas();
+        return artistaService.TraerListaArtistas();
     }
     
-    // Endpoint para actualizar artista
     @PutMapping("/actualizar/{id}")
     public ArtistaDTO actualizarArtista(@PathVariable Long id,
                                         @RequestParam("nombre") String nombre,
@@ -69,20 +62,17 @@ public class ArtistaController {
                 Path path = Paths.get(UPLOAD_DIR + fileName);
                 Files.createDirectories(path.getParent());
                 Files.write(path, foto.getBytes());
-                // Asigna la ruta de la imagen al DTO
                 artistaDTO.setFoto("/" + UPLOAD_DIR + fileName);
             } catch (IOException e) {
                 throw new RuntimeException("Error al subir la imagen: " + e.getMessage());
             }
         }
-        // Llama al servicio para actualizar el artista
         return artistaService.actualizarArtista(id, artistaDTO);
     }
      @GetMapping("/{id}")
     public ArtistaDTO getArtistaPorId(@PathVariable Long id) {
-        return artistaService.obtenerArtistaPorId(id);
+        return artistaService.TraerArtistaPorId(id);
     }
-    // Endpoint para eliminar artista
     @DeleteMapping("/eliminar/{id}")
     public void eliminarArtista(@PathVariable Long id) {
         artistaService.eliminarArtista(id);

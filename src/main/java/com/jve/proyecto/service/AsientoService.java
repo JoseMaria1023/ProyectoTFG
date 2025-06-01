@@ -30,58 +30,51 @@ public class AsientoService {
         this.asientoConverter = asientoConverter;
     }
 
-    public AsientoDTO crearAsiento(AsientoDTO asientoDTO) {
-        if (asientoDTO.getConciertoId() == null) {
-            throw new RuntimeException("El ID del concierto es obligatorio.");
-        }
-
-        Concierto concierto = conciertoRepository.findById(asientoDTO.getConciertoId())
-                .orElseThrow(() -> new ConciertoNoEncontradoException());
-
-        Asiento asiento = Asiento.builder()
-                .numeracion(asientoDTO.getNumeracion())
-                .fila(asientoDTO.getFila())
-                .columna(asientoDTO.getColumna())
-                .tipo(asientoDTO.getTipo() != null
-                        ? Asiento.TipoAsiento.valueOf(asientoDTO.getTipo().toUpperCase())
-                        : Asiento.TipoAsiento.NORMAL)
-                .concierto(concierto)
-                .build();
-
-        Asiento asientoGuardado = asientoRepository.save(asiento);
-
-        return asientoConverter.toDto(asientoGuardado);
+ public AsientoDTO crearAsiento(AsientoDTO dto) {
+    if (dto.getConciertoId() == null) {
+        throw new RuntimeException("El ID del concierto es obligatorio.");
     }
 
-    public AsientoDTO obtenerAsientoPorId(Long id) {
-        Asiento asiento = asientoRepository.findById(id)
-                .orElseThrow(() -> new AsientoNoEncontradoException());
+    Asiento asiento = asientoConverter.toEntity(dto);
+
+    Concierto concierto = conciertoRepository.findById(dto.getConciertoId()).orElseThrow(ConciertoNoEncontradoException::new);
+    asiento.setConcierto(concierto);
+
+    if (dto.getTipo() == null || dto.getTipo().isBlank()) {
+        asiento.setTipo(Asiento.TipoAsiento.NORMAL);
+    } else {
+        asiento.setTipo(Asiento.TipoAsiento.valueOf(dto.getTipo().toUpperCase()));
+    }
+
+    Asiento guardado = asientoRepository.save(asiento);
+    return asientoConverter.toDto(guardado);
+}
+
+
+    public AsientoDTO TraerAsientoPorId(Long id) {
+        Asiento asiento = asientoRepository.findById(id).orElseThrow(() -> new AsientoNoEncontradoException());
         return asientoConverter.toDto(asiento);
     }
 
     
-    public List<AsientoDTO> obtenerTodosLosAsientos() {
-        return asientoRepository.findAll().stream()
-                .map(asiento -> asientoConverter.toDto(asiento))
-                .collect(Collectors.toList());
+    public List<AsientoDTO> TraerTodosLosAsientos() {
+        return asientoRepository.findAll().stream().map(asiento -> asientoConverter.toDto(asiento))
+        .collect(Collectors.toList());
     }
 
-    public List<AsientoDTO> obtenerAsientosPorConcierto(Long conciertoId) {
-        return asientoRepository.findByConciertoIdConcierto(conciertoId)
-                .stream()
-                .map(asiento -> {
-                    AsientoDTO dto = asientoConverter.toDto(asiento);
-                    dto.setOcupado(asiento.getEntradas() != null && !asiento.getEntradas().isEmpty());
-                    return dto;
+    public List<AsientoDTO> TraerAsientosPorConcierto(Long conciertoId) {
+        return asientoRepository.findByConciertoIdConcierto(conciertoId).stream().map(asiento -> {
+        AsientoDTO dto = asientoConverter.toDto(asiento);
+        dto.setOcupado(asiento.getEntradas() != null && !asiento.getEntradas().isEmpty());
+        return dto;
                 })
-                .collect(Collectors.toList());
+        .collect(Collectors.toList());
     }
     
     
     @Transactional
     public AsientoDTO actualizarAsiento(Long id, AsientoDTO asientoDTO) {
-        Asiento asiento = asientoRepository.findById(id)
-            .orElseThrow(() -> new AsientoNoEncontradoException());
+        Asiento asiento = asientoRepository.findById(id).orElseThrow(() -> new AsientoNoEncontradoException());
 
         if (asientoDTO.getNumeracion() != null) {
             asiento.setNumeracion(asientoDTO.getNumeracion());
@@ -102,8 +95,7 @@ public class AsientoService {
     }
 
     public void eliminarAsiento(Long id) {
-        Asiento asiento = asientoRepository.findById(id)
-                .orElseThrow(() -> new AsientoNoEncontradoException());
+        Asiento asiento = asientoRepository.findById(id).orElseThrow(() -> new AsientoNoEncontradoException());
         asientoRepository.delete(asiento);
     }
 }

@@ -17,13 +17,12 @@ export class CrearZonaComponent {
   recinto_id: number | null = null;
   precioBase: number = 0;
   precioVIP: number | null = null;
-  recintos: any[] = []; // Lista de recintos disponibles
+  recintos: any[] = []; 
 
   constructor(private zonaService: ZonaService, private recintoService: RecintoService) {}
 
   ngOnInit() {
-    // Cargar recintos disponibles para selección
-    this.recintoService.obtenerRecintos().subscribe(data => {
+    this.recintoService.TraerRecintos().subscribe(data => {
       this.recintos = data;
     }, error => {
       console.error('Error al obtener recintos', error);
@@ -46,7 +45,6 @@ export class CrearZonaComponent {
     this.zonaService.crearZona(nuevaZona).subscribe(response => {
       console.log('Zona creada con éxito', response);
       alert('Zona creada con éxito');
-      // Reinicia los campos, si es necesario
       this.nombre = '';
       this.recinto_id = null;
       this.precioBase = 0;

@@ -16,11 +16,11 @@ import { GiraService }       from '../gira.service';
   styleUrls: ['./crear-concierto.component.css'],
 })
 export class CrearConciertoComponent implements OnInit {
-  nombre     = '';
-  fecha      = '';               
+  nombre = '';
+  fecha = '';               
   zonaId: number | null = null;
   giraId: number | null = null;
-  estado     = 'Activo';
+  estado = 'Activo';
   zonas: any[] = [];
   giras: any[] = [];
 
@@ -32,8 +32,8 @@ export class CrearConciertoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.zonaService.obtenerZonas().subscribe(zs => this.zonas = zs);
-    this.giraService.getAllGiras().subscribe(gs => this.giras = gs);
+    this.zonaService.TraerZonas().subscribe(zonas => this.zonas = zonas);
+    this.giraService.getAllGiras().subscribe(giras => this.giras = giras);
   }
 
   onSubmit(): void {
@@ -44,11 +44,11 @@ export class CrearConciertoComponent implements OnInit {
       return alert('Selecciona una fecha');
     }
 
-    const fechaISO = this.fecha + 'T00:00:00';
+    const fechaCorrecta= this.fecha + 'T00:00:00';
 
     const nuevoConcierto = {
       nombre: this.nombre,
-      fecha: fechaISO,
+      fecha: fechaCorrecta,
       zonaId: this.zonaId,
       giraId: this.giraId,
       estado: this.estado,

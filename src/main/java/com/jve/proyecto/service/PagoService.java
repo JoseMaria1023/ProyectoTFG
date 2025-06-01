@@ -27,7 +27,7 @@ public class PagoService {
     private final PagoRepository pagoRepository;
     private final EntradaRepository entradaRepository;
     private final UsuarioRepository usuarioRepository;
-    private final PagoConverter pagoConverter; // Inyectamos el PagoConverter
+    private final PagoConverter pagoConverter; 
 
     public PagoService(PagoRepository pagoRepository, 
                        EntradaRepository entradaRepository,
@@ -38,59 +38,53 @@ public class PagoService {
         this.pagoConverter = pagoConverter;
     }
 
-    public PagoDTO crearPago(PagoDTO pagoDTO) {
-        if (pagoDTO.getMetodoPago() == null || pagoDTO.getMetodoPago().trim().isEmpty()) {
-            throw new MetodosDePagoException();
-        }
-
-        // Convertir el método de pago desde el String al Enum
-        MetodoPago metodoPago;
-        try {
-            metodoPago = MetodoPago.valueOf(pagoDTO.getMetodoPago().trim().toUpperCase());
-        } catch (IllegalArgumentException e) {
-            throw new MetodoDePagoValidoException();
-        }
-
-        // Recuperar la entrada usando el ID del DTO
-        Entrada entrada = entradaRepository.findById(pagoDTO.getEntradaId()).orElseThrow(() -> 
-            new EntradaNoEncontradaException()
-        );
-
-        // Recuperar el usuario usando el ID del DTO
-        Usuario usuario = usuarioRepository.findById(pagoDTO.getUsuarioId()).orElseThrow(() -> 
-            new UsuarioNoEncontradoException()
-        );
-
-        // Mapear el DTO a la entidad Pago y asignar la entrada, el usuario y la fecha actual
-        Pago pago = pagoConverter.toEntity(pagoDTO); // Usamos el converter para mapear de DTO a entidad
-        pago.setMetodoPago(metodoPago);
-        pago.setEntrada(entrada);
-        pago.setUsuario(usuario);
-        pago.setFechaPago(LocalDateTime.now());
-
-        Pago pagoGuardado = pagoRepository.save(pago);
-        return pagoConverter.toDto(pagoGuardado); // Usamos el converter para mapear de entidad a DTO
+ public PagoDTO crearPago(PagoDTO pagoDTO) {
+    if (pagoDTO.getMetodoPago() == null || pagoDTO.getMetodoPago().trim().isEmpty()) {
+        throw new MetodosDePagoException();
     }
 
-    public PagoDTO obtenerPagoPorId(Long id) {
+    MetodoPago metodoPago;
+    try {
+        metodoPago = MetodoPago.valueOf(pagoDTO.getMetodoPago().trim().toUpperCase());
+    } catch (IllegalArgumentException e) {
+        throw new MetodoDePagoValidoException();
+    }
+
+    Entrada entrada = entradaRepository.findById(pagoDTO.getEntradaId())
+        .orElseThrow(EntradaNoEncontradaException::new);
+
+    Usuario usuario = usuarioRepository.findById(pagoDTO.getUsuarioId())
+        .orElseThrow(UsuarioNoEncontradoException::new);
+
+    Pago pago = pagoConverter.toEntity(pagoDTO);
+    pago.setMetodoPago(metodoPago);
+    pago.setEntrada(entrada);
+    pago.setUsuario(usuario);
+    pago.setFechaPago(LocalDateTime.now());
+
+    Pago pagoGuardado = pagoRepository.save(pago);
+    return pagoConverter.toDto(pagoGuardado);
+}
+
+
+    public PagoDTO TraerPagoPorId(Long id) {
         Pago pago = pagoRepository.findById(id).orElseThrow(() -> 
                 new PagoNoEncontradoException());
-        return pagoConverter.toDto(pago); // Usamos el converter
+        return pagoConverter.toDto(pago); 
     }
 
-    public List<PagoDTO> obtenerTodosLosPagos() {
+    public List<PagoDTO> TraerTodosLosPagos() {
         return pagoRepository.findAll().stream()
-                .map(pago -> pagoConverter.toDto(pago)) // Usamos el converter
+                .map(pago -> pagoConverter.toDto(pago)) 
                 .collect(Collectors.toList());
     }
 
     public PagoDTO actualizarPago(Long id, PagoDTO pagoDTO) {
-        Pago pago = pagoRepository.findById(id).orElseThrow(() -> 
-                new PagoNoEncontradoException());
+        Pago pago = pagoRepository.findById(id).orElseThrow(() -> new PagoNoEncontradoException());
         
-        pagoConverter.toEntity(pagoDTO); // Convertimos el DTO a la entidad para actualizarla
+        pagoConverter.toEntity(pagoDTO); 
         Pago pagoActualizado = pagoRepository.save(pago);
-        return pagoConverter.toDto(pagoActualizado); // Usamos el converter para devolver el DTO actualizado
+        return pagoConverter.toDto(pagoActualizado); 
     }
 
     public void eliminarPago(Long id) {

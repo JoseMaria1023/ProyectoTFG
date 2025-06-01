@@ -16,8 +16,8 @@ public class PagoController {
     }
 
     @GetMapping
-    public List<PagoDTO> obtenerPagos() {
-        return pagoService.obtenerTodosLosPagos();
+    public List<PagoDTO> TraerPagos() {
+        return pagoService.TraerTodosLosPagos();
     }
 
     @PostMapping

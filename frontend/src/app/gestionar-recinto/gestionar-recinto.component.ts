@@ -27,7 +27,7 @@ export class GestionarRecintosComponent implements OnInit {
   }
 
   cargarRecintos(): void {
-    this.recintoService.obtenerRecintos().subscribe(data => {
+    this.recintoService.TraerRecintos().subscribe(data => {
       this.recintos = data;
     });
   }
@@ -37,7 +37,6 @@ export class GestionarRecintosComponent implements OnInit {
     this.editarVisible = true;
   }
 
-  // Se llama desde EditarRecintoComponent tras guardar
   refrescarYCancelar(): void {
     sessionStorage.removeItem('recintoSeleccionadoId');
     this.editarVisible = false;

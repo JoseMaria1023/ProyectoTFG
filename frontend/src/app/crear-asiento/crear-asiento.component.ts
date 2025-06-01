@@ -2,7 +2,6 @@ import { Component, OnInit }    from '@angular/core';
 import { FormsModule }          from '@angular/forms';
 import { CommonModule }         from '@angular/common';
 import { ActivatedRoute }       from '@angular/router';
-
 import { AsientoService }       from '../asiento.service'; 
 import { ConciertoService }     from '../concierto.service';
 
@@ -26,17 +25,14 @@ export class CrearAsientoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // 1) Leer conciertoId del query param (si viene)
-    const qp = this.route.snapshot.queryParamMap.get('conciertoId');
-    if (qp) {
-      this.selectedConciertoId = +qp;
+    const id = this.route.snapshot.queryParamMap.get('conciertoId');
+    if (id) {
+      this.selectedConciertoId = +id;
     }
 
-    // 2) Cargar lista de conciertos
-    this.conciertoService.obtenerConciertos().subscribe({
+    this.conciertoService.TraerConciertos().subscribe({
       next: data => {
         this.conciertos = data;
-        // Si no venía en queryParams, ponemos el primero
         if (!this.selectedConciertoId && this.conciertos.length) {
           this.selectedConciertoId = this.conciertos[0].idConcierto;
         }

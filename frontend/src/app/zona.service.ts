@@ -25,7 +25,7 @@ export class ZonaService {
   }
 
   // Obtener todas las zonas
-  obtenerZonas(): Observable<any> {
+  TraerZonas(): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.get(this.apiUrl, { headers });
   }
@@ -36,7 +36,7 @@ export class ZonaService {
     return this.http.put(`${this.apiUrl}/${id}`, zona, { headers });
   }
 
-  obtenerZonaPorId(id: number): Observable<any> {
+  TraerZonaPorId(id: number): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.get<any>(`${this.apiUrl}/${id}`, { headers });
   }
@@ -44,5 +44,8 @@ export class ZonaService {
   eliminarZona(id: number): Observable<void> {
     const headers = this.getAuthHeaders();
     return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers });
+  }
+   getZonaPorConcierto(conciertoId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/concierto/${conciertoId}`);
   }
 }

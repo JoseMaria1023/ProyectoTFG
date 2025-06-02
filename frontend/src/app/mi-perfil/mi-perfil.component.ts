@@ -160,8 +160,8 @@ revenderEntrada(entrada: any) {
 
   cargarEntradas(id: any) {
     this.usuarioService.getEntradasByUsuario(id).subscribe(lista => {
-      this.entradas = lista.filter(e => e.estado !== 'TRANSFERIDA' && e.estado !== 'VENDIDA');
-      this.entradas.forEach(e => e.precioReventaTemp = null);
+      this.entradas = lista.filter(entrada => entrada.estado !== 'TRANSFERIDA' && entrada.estado !== 'VENDIDA');
+      this.entradas.forEach(entrada => entrada.precioReventaTemp = null);
       this.totalPaginas = Math.ceil(this.entradas.length / this.porPagina);
       this.pagina = 1;
       this.actualizarEntradasPagina();

@@ -3,6 +3,7 @@ package com.jve.proyecto.controller;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,31 +23,31 @@ public class EntradaController {
     @PostMapping
     public ResponseEntity<EntradaDTO> crearEntrada(@RequestBody EntradaDTO entradaDTO) {
         EntradaDTO nuevaEntrada = entradaService.crearEntrada(entradaDTO);
-        return ResponseEntity.ok(nuevaEntrada);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevaEntrada);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<EntradaDTO> TraerEntradaPorId(@PathVariable Long id) {
         EntradaDTO entrada = entradaService.TraerEntradaPorId(id);
-        return ResponseEntity.ok(entrada);
+        return entrada == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(entrada);
     }
 
     @GetMapping("/usuario/{usuarioId}")
     public ResponseEntity<List<EntradaDTO>> TraerEntradasPorUsuario(@PathVariable Long usuarioId) {
         List<EntradaDTO> entradas = entradaService.TraerEntradasPorUsuario(usuarioId);
-        return ResponseEntity.ok(entradas);
+        return entradas.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(entradas);
     }
 
     @GetMapping
     public ResponseEntity<List<EntradaDTO>> TraerTodasLasEntradas() {
         List<EntradaDTO> entradas = entradaService.TraerTodasLasEntradas();
-        return ResponseEntity.ok(entradas);
+        return entradas.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(entradas);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<EntradaDTO> actualizarEntrada(@PathVariable Long id, @RequestBody EntradaDTO entradaDTO) {
         EntradaDTO entradaActualizada = entradaService.actualizarEntrada(id, entradaDTO);
-        return ResponseEntity.ok(entradaActualizada);
+        return entradaActualizada == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(entradaActualizada);
     }
 
     @DeleteMapping("/{id}")
@@ -60,6 +61,6 @@ public class EntradaController {
             @PathVariable Long id,
             @RequestParam BigDecimal precioReventa) {
         EntradaDTO entradaRevendida = entradaService.revenderEntrada(id, precioReventa);
-        return ResponseEntity.ok(entradaRevendida);
+        return entradaRevendida == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(entradaRevendida);
     }
 }

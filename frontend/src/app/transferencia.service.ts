@@ -5,16 +5,11 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class TransferenciaService {
-  // Reemplaza esto con tu URL base real del backend
   private apiUrl = 'http://localhost:9000/api/transferencias';
 
   constructor(private http: HttpClient) {}
 
   transferirEntrada(idEntrada: number, usuarioOrigenId: number, telefonoDestino: string) {
-    return this.http.post(`${this.apiUrl}/transferir`, {
-      idEntrada,
-      usuarioOrigenId,
-      telefonoDestino
-    });
+    return this.http.post(`${this.apiUrl}/transferir`, {idEntrada,usuarioOrigenId,telefonoDestino});
   }
 }

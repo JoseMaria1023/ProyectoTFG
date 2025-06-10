@@ -78,7 +78,7 @@ export class ElegirConciertoComponent implements OnInit {
   }
 
   TraerArtistas(): void {
-    this.artistaService.getArtistas().subscribe(
+    this.artistaService.TraerArtistas().subscribe(
       data => this.artistas = data,
       err  => console.error(err)
     );

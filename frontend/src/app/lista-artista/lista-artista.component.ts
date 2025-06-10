@@ -15,7 +15,7 @@ export class ListaArtistaComponent implements OnInit {
   constructor(private artistaService: ArtistaService) {}
 
   ngOnInit(): void {
-    this.artistaService.getArtistas().subscribe({
+    this.artistaService.TraerArtistas().subscribe({
       next: (data) => {
         console.log('Artistas lista:', data);
         this.artistas = data.map((artista: any) => ({ ...artista,

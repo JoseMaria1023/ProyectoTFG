@@ -15,7 +15,10 @@
   
       <li *ngIf="isUser()"><a (click)="navigateListarArtista()"><i class="fas fa-user-circle"></i> Artistas disponibles</a></li>
       <li *ngIf="isUser()"><a (click)="navigateToComprar()"><i class="fas fa-user-circle"></i> Comprar</a></li>
+      <li *ngIf="isUser()"><a (click)="navigateToContacto()"><i class="fas fa-user-circle"></i> Contacto</a></li>
       <li *ngIf="isArtista()"><a (click)="navigateToGestionarAsientos()"><i class="fas fa-chair"></i> Asientos</a></li>
+      <li *ngIf="isArtista()"><a (click)="navigateToContacto()"><i class="fas fa-user-circle"></i> Contacto</a></li>
+
   
       <li *ngIf="isUser()"><a (click)="navigateToPerfil()"><i class="fas fa-user-circle"></i> Mi Perfil</a></li>
       <li *ngIf="isLoggedIn()"><a (click)="logout()"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a></li>

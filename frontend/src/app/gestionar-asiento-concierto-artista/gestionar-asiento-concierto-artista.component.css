@@ -12,7 +12,7 @@
 
 .mis-conciertos-container h2 {
   text-align: center;
-  font-size: 2.5rem;
+  font-size: 40px; 
   margin-bottom: 30px;
   color: #ff4081;
   letter-spacing: 1px;
@@ -38,7 +38,7 @@
   padding: 10px 20px;
   border: none;
   border-radius: 25px;
-  font-size: 1rem;
+  font-size: 16px; 
   font-weight: bold;
   cursor: pointer;
   margin-top: 10px;

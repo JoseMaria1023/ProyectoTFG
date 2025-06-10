@@ -2,6 +2,8 @@ package com.jve.proyecto.controller;
 
 import com.jve.proyecto.dto.PagoDTO;
 import com.jve.proyecto.service.PagoService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -16,13 +18,14 @@ public class PagoController {
     }
 
     @GetMapping
-    public List<PagoDTO> TraerPagos() {
-        return pagoService.TraerTodosLosPagos();
+    public ResponseEntity<List<PagoDTO>> TraerPagos() {
+        List<PagoDTO> pagos = pagoService.TraerTodosLosPagos();
+        return pagos.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(pagos);
     }
 
     @PostMapping
-    public PagoDTO realizarPago(@RequestBody PagoDTO pagoDTO) {
-        return pagoService.crearPago(pagoDTO);
+    public ResponseEntity<PagoDTO> realizarPago(@RequestBody PagoDTO pagoDTO) {
+        PagoDTO nuevoPago = pagoService.crearPago(pagoDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoPago);
     }
 }
-

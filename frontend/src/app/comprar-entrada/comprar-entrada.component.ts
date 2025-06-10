@@ -198,12 +198,12 @@ onAsientoSeleccionado(asiento: any): void {
         return;
     }
 
-    const entradasPayload = this.entrada.asientosSeleccionados.map((a: any) => ({
+    const entradasPayload = this.entrada.asientosSeleccionados.map((asiento: any) => ({
       tipo: this.entrada.tipo,
-      precioVenta: a.precioUnitario,
+      precioVenta: asiento.precioUnitario,
       usuarioId: this.entrada.usuarioId,
       conciertoId: this.entrada.conciertoId,
-      asientoId: a.idAsiento,
+      asientoId: asiento.idAsiento,
       estado: 'PENDIENTE'
     }));
 

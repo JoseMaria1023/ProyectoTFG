@@ -56,7 +56,7 @@ export class CrearArtistaComponent {
       this.artistaService.registrarArtista(formData).subscribe(
         (response) => {
           console.log('Artista creado:', response);
-          alert('Artista registrado con éxito');
+          alert('Artista registrado');
           this.artistaForm.reset();
           this.selectedFile = null;
           this.fotoPreview = null;

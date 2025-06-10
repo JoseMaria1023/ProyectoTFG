@@ -31,10 +31,14 @@ import { ArtistaGuard } from './Guards/artista.guard';
 import { CrearRecintoConZonasComponent } from './crear-recinto-con-zonas/crear-recinto-con-zonas.component';
 import { ListaArtistaComponent } from './lista-artista/lista-artista.component';
 import { MapaAsientosComponent } from './mapa-asientos/mapa-asientos.component';
+import { FooterComponent } from './footer/footer.component';
+import { ContactoComponent } from './contacto/contacto.component';
 
 export const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'footer', component: FooterComponent },
+  { path: 'contacto', component: ContactoComponent },
   { path: 'login', component: LoginComponent },
   { path: 'Crear-gira', component: CrearGiraComponent,canActivate: [AdminGuard] },
   { path: 'Crear-artista', component: CrearArtistaComponent,canActivate: [AdminGuard] },

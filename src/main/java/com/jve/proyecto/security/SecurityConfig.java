@@ -29,9 +29,8 @@ public class SecurityConfig {
 
     private final JWTFilter jwtFilter;
     private final PasswordEncoder passwordEncoder;
-    private final UserDetailsService userDetailsService; // Inyectado automáticamente
+    private final UserDetailsService userDetailsService; 
 
-    // Inyección de dependencias
     @Autowired
     public SecurityConfig(@Lazy JWTFilter jwtFilter, PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) {
         this.jwtFilter = jwtFilter;

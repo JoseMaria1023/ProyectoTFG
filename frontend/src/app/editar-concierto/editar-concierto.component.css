@@ -1,121 +1,111 @@
-/* Estilo para el contenedor del formulario */
 .form-container {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(15px);
-    border-radius: 20px;
-    padding: 40px;
-    max-width: 700px;
-    margin: 50px auto;
-    box-shadow: 0 0 25px rgba(255, 0, 128, 0.4), 0 0 35px rgba(0, 128, 255, 0.3);
-    color: #fff;
-    animation: fadeIn 1s ease-in-out;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 700px;
+  margin: 50px auto;
+  box-shadow: 0 0 25px rgba(255, 0, 128, 0.4), 0 0 35px rgba(0, 128, 255, 0.3);
+  color: #fff;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.form-container h2 {
+  text-align: center;
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 40px;
+  color: #ff4081;
+}
+
+.form-container div {
+  margin-bottom: 20px;
+}
+
+.form-container label {
+  font-size: 18px;
+  margin-bottom: 8px;
+  display: block;
+  color: #ff4081;
+}
+
+.form-container input,
+.form-container textarea,
+.form-container select {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 16px;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.form-container input:focus,
+.form-container textarea:focus,
+.form-container select:focus {
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 10px #ff4081;
+  outline: none;
+}
+
+.form-container select {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  transition: background 0.3s, color 0.3s;
+}
+
+.form-container select:focus {
+  background-color: rgba(255, 255, 255, 0.3);
+  color: #ff4081;
+}
+
+.form-container select option {
+  background-color: #333;
+  color: #fff;
+}
+
+.form-container select option:checked {
+  background-color: #ff4081;
+  color: #fff;
+}
+
+.form-container button {
+  background: linear-gradient(45deg, #ff4081, #7c4dff);
+  padding: 12px 25px;
+  border-radius: 30px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.4s, transform 0.3s;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.form-container button:hover {
+  background: linear-gradient(45deg, #7c4dff, #ff4081);
+  transform: scale(1.05);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  
-  /* Encabezado */
-  .form-container h2 {
-    text-align: center;
-    font-size: 2em;
-    font-weight: bold;
-    margin-bottom: 40px;
-    color: #ff4081;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  /* Estilo para los divs de los campos */
-  .form-container div {
-    margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .form-container {
+    margin: 20px;
+    padding: 30px;
   }
-  
-  /* Etiquetas de los campos */
-  .form-container label {
-    font-size: 1.1em;
-    margin-bottom: 8px;
-    display: block;
-    color: #ff4081;
-  }
-  
-  /* Estilo para los inputs y selects */
-  .form-container input,
-  .form-container textarea,
-  .form-container select {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.2);
-    color: #fff;
-    font-size: 1em;
-    transition: background 0.3s, box-shadow 0.3s;
-  }
-  
-  /* Efecto al hacer focus en los campos */
-  .form-container input:focus,
-  .form-container textarea:focus,
-  .form-container select:focus {
-    background: rgba(255, 255, 255, 0.3);
-    box-shadow: 0 0 10px #ff4081;
-    outline: none;
-  }
-  
-  /* Estilo especial para los select */
-  .form-container select {
-    background-color: rgba(255, 255, 255, 0.2);
-    color: #fff;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    transition: background 0.3s, color 0.3s;
-  }
-  
-  .form-container select:focus {
-    background-color: rgba(255, 255, 255, 0.3);
-    color: #ff4081;
-  }
-  
-  .form-container select option {
-    background-color: #333;
-    color: #fff;
-  }
-  
-  .form-container select option:checked {
-    background-color: #ff4081;
-    color: #fff;
-  }
-  
-  /* Botón de envío */
-  .form-container button {
-    background: linear-gradient(45deg, #ff4081, #7c4dff);
-    padding: 12px 25px;
-    border-radius: 30px;
-    color: #fff;
-    font-size: 1.1em;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.4s, transform 0.3s;
-    margin-top: 20px;
-    width: 100%;
-  }
-  
-  .form-container button:hover {
-    background: linear-gradient(45deg, #7c4dff, #ff4081);
-    transform: scale(1.05);
-  }
-  
-  /* Animación para el formulario */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  @media (max-width: 768px) {
-    .form-container {
-      margin: 20px;
-      padding: 30px;
-    }
-  }
-  
+}

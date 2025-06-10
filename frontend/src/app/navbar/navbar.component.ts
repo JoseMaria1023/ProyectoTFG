@@ -34,6 +34,12 @@ export class NavbarComponent {
     this.toggleSidebar();
   }
 
+  navigateToContacto(): void {
+    this.router.navigate(['/contacto']);
+    this.toggleSidebar();
+  }
+
+
   navigateListarArtista(): void {
     this.router.navigate(['/Listar-artista']);
     this.toggleSidebar();

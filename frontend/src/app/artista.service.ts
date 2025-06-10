@@ -26,7 +26,7 @@ export class ArtistaService {
     return this.http.post( `${this.apiUrl}/crear`,artista,{ headers });
   }
 
-  getArtistas(): Observable<any[]> {
+  TraerArtistas(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/listar`);
   }
 
@@ -42,7 +42,7 @@ export class ArtistaService {
     const headers = this.getAuthHeaders();
     return this.http.delete<void>(`${this.apiUrl}/eliminar/${id}`, { headers });
   }
-   getArtistaPorId(id: number): Observable<any> {
+   TraerArtistaPorId(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 }

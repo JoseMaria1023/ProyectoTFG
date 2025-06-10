@@ -2,6 +2,7 @@ package com.jve.proyecto.controller;
 
 import com.jve.proyecto.dto.ZonaDTO;
 import com.jve.proyecto.service.ZonaService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -16,31 +17,38 @@ public class ZonaController {
     }
 
     @GetMapping
-    public List<ZonaDTO> TraerZonas() {
-        return zonaService.TraerTodasLasZonas();
+    public ResponseEntity<List<ZonaDTO>> TraerZonas() {
+        List<ZonaDTO> zonas = zonaService.TraerTodasLasZonas();
+        return ResponseEntity.ok(zonas);
     }
 
     @GetMapping("/{id}")
-    public ZonaDTO TraerZonaPorId(@PathVariable Long id) {
-        return zonaService.TraerZonaPorId(id);
+    public ResponseEntity<ZonaDTO> TraerZonaPorId(@PathVariable Long id) {
+        ZonaDTO zona = zonaService.TraerZonaPorId(id);
+        return ResponseEntity.ok(zona);
     }
 
     @PostMapping
-    public ZonaDTO crearZona(@RequestBody ZonaDTO zonaDTO) {
-        return zonaService.crearZona(zonaDTO);
+    public ResponseEntity<ZonaDTO> crearZona(@RequestBody ZonaDTO zonaDTO) {
+        ZonaDTO nuevaZona = zonaService.crearZona(zonaDTO);
+        return ResponseEntity.status(201).body(nuevaZona);
     }
-    
+
     @PutMapping("/{id}")
-    public ZonaDTO actualizarZona(@PathVariable Long id, @RequestBody ZonaDTO zonaDTO) {
-        return zonaService.actualizarZona(id, zonaDTO);
+    public ResponseEntity<ZonaDTO> actualizarZona(@PathVariable Long id, @RequestBody ZonaDTO zonaDTO) {
+        ZonaDTO zonaActualizada = zonaService.actualizarZona(id, zonaDTO);
+        return ResponseEntity.ok(zonaActualizada);
     }
-    
+
     @DeleteMapping("/{id}")
-    public void eliminarZona(@PathVariable Long id) {
+    public ResponseEntity<Void> eliminarZona(@PathVariable Long id) {
         zonaService.eliminarZona(id);
+        return ResponseEntity.noContent().build();
     }
-     @GetMapping("/concierto/{conciertoId}")
-    public ZonaDTO TraerZonaPorConcierto(@PathVariable Long conciertoId) {
-        return zonaService.TraerZonaPorConcierto(conciertoId);
+
+    @GetMapping("/concierto/{conciertoId}")
+    public ResponseEntity<ZonaDTO> TraerZonaPorConcierto(@PathVariable Long conciertoId) {
+        ZonaDTO zona = zonaService.TraerZonaPorConcierto(conciertoId);
+        return ResponseEntity.ok(zona);
     }
 }

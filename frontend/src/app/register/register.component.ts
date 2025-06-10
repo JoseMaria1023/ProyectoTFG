@@ -15,8 +15,8 @@ import { HttpClientModule } from '@angular/common/http';
 export class RegisterComponent {
   registerForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
-    this.registerForm = this.fb.group({
+  constructor(private formbuild: FormBuilder, private authService: AuthService, private router: Router) {
+    this.registerForm = this.formbuild.group({
       nombre: ['', Validators.required],
       apellidos: ['', Validators.required],
       username: ['', [Validators.required, Validators.minLength(4)]],

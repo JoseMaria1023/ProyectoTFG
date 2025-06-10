@@ -44,7 +44,6 @@ export class GestionarAsientoConciertoArtistaComponent implements OnInit {
 
   onAsientoSeleccionado(asiento: any): void {
     if (this.isArtista()) {
-      asiento.precioVenta = 43;
 
       this.asientoService.actualizarAsiento(asiento.idAsiento, asiento)
         .subscribe(updated => {

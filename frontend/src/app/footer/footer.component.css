@@ -1,0 +1,82 @@
+
+.footer {
+  background: linear-gradient(180deg, #1a001f, #000);
+  color: #fff;
+  padding: 40px 20px 20px;
+  font-family: 'Montserrat', sans-serif;
+  position: relative;
+  z-index: 10;
+  box-shadow: 0 -5px 20px rgba(255, 0, 127, 0.3);
+}
+
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: auto;
+  text-align: center;
+}
+
+.footer-logo h2 {
+  font-size: 28px;
+  color: #ff007f;
+  text-shadow: 0 0 10px rgba(255, 0, 127, 0.6);
+  margin-bottom: 10px;
+}
+
+.footer-logo p {
+  font-style: italic;
+  color: #ccc;
+  margin: 0;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.footer-links a {
+  color: #eee;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.footer-links a:hover {
+  color: #ff007f;
+  text-shadow: 0 0 5px #ff007f;
+}
+
+.footer-social {
+  margin-top: 10px;
+}
+
+.footer-social p {
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #ff007f;
+}
+
+.icons a {
+  margin: 0 10px;
+  font-size: 20px;
+  color: #fff;
+  transition: transform 0.3s, color 0.3s;
+}
+
+.icons a:hover {
+  color: #ff007f;
+  transform: scale(1.2);
+}
+
+.footer-bottom {
+  margin-top: 30px;
+  border-top: 1px solid #333;
+  padding-top: 15px;
+  text-align: center;
+  font-size: 14px;
+  color: #aaa;
+}

@@ -1,31 +1,31 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap');
 
 body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Montserrat', sans-serif;
-    background: radial-gradient(circle at 20% 30%, #1a0023, #0d0010 80%);
-    background-attachment: fixed;
-    color: #fff;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  ::selection {
-    background-color: #ff007f;
-    color: #fff;
-  }
-  
-  * {
-    box-sizing: border-box;
-  }
+  margin: 0;
+  padding: 0;
+  font-family: 'Montserrat', sans-serif;
+  background: radial-gradient(circle at 20% 30%, #1a0023, #0d0010 80%);
+  background-attachment: fixed;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+::selection {
+  background-color: #ff007f;
+  color: #fff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 .login-container {
   max-width: 500px;
-  margin: 3rem auto;
+  margin: 48px auto; 
   background: linear-gradient(135deg, #1a1a1a, #2e003e);
-  padding: 2.5rem 3rem;
+  padding: 40px 48px; 
   border-radius: 20px;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
   font-family: 'Montserrat', sans-serif;
@@ -35,20 +35,20 @@ body {
 
 .login-container h2 {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 32px; 
   font-weight: 700;
-  font-size: 2rem;
+  font-size: 32px;
   color: #ff007f;
   text-shadow: 0 0 10px rgba(255, 0, 127, 0.5);
 }
 
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 24px; 
 }
 
 label {
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 8px; 
   font-weight: 500;
   color: #ffb6e6;
 }
@@ -56,12 +56,12 @@ label {
 input[type="text"],
 input[type="password"] {
   width: 100%;
-  padding: 0.8rem 1rem;
+  padding: 13px 16px; 
   border: none;
   border-radius: 10px;
   background-color: #2b2b2b;
   color: #ffffff;
-  font-size: 1rem;
+  font-size: 16px; 
   outline: none;
   transition: box-shadow 0.3s, background-color 0.3s;
 }
@@ -71,6 +71,7 @@ input[type="password"] {
   font-size: 0.85em;
   margin-top: 4px;
 }
+
 input:focus {
   background-color: #3d003d;
   box-shadow: 0 0 0 2px #ff007f80;
@@ -78,15 +79,30 @@ input:focus {
 
 .btn {
   width: 100%;
-  padding: 0.9rem;
+  padding: 14px;
   background: linear-gradient(90deg, #ff007f, #8e2de2);
   color: white;
-  font-size: 1rem;
+  font-size: 16px; 
   font-weight: 600;
   border: none;
   border-radius: 30px;
   cursor: pointer;
   transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.registro-mensaje {
+  margin-top: 16px; 
+  text-align: center;
+  font-size: 15px;
+}
+
+.registro-mensaje a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.registro-mensaje a:hover {
+  text-decoration: underline;
 }
 
 .btn:hover {
@@ -107,11 +123,11 @@ input:focus {
 
 @media (max-width: 600px) {
   .login-container {
-    margin: 2rem 1rem;
-    padding: 2rem 1.5rem;
+    margin: 32px 16px; 
+    padding: 32px 24px; 
   }
 
   .btn {
-    font-size: 0.95rem;
+    font-size: 15px;
   }
 }

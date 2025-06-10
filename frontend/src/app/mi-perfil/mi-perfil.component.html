@@ -1,48 +1,52 @@
-<div class="perfil-container" *ngIf="usuario">
-  <h2>Mi Perfil</h2>
+<div class="perfil-container" *ngIf="usuario"> 
 
-  <!-- Formulario de edición -->
-  <form *ngIf="editando; else vistaPerfil" (ngSubmit)="guardarCambios()">
-    <label>Nombre:
-      <input type="text" [(ngModel)]="usuario.nombre" name="nombre" required>
-    </label><br>
-    <label>Apellidos:
-      <input type="text" [(ngModel)]="usuario.apellidos" name="apellidos" required>
-    </label><br>
-    <label>Username:
-      <input type="text" [(ngModel)]="usuario.username" name="username" required>
-    </label><br>
-    <label>Email:
-      <input type="email" [(ngModel)]="usuario.email" name="email" required>
-    </label><br>
-    <label>Teléfono:
-      <input type="text" [(ngModel)]="usuario.telefono" name="telefono">
-    </label><br>
-    <label>Activo:
-      <input type="checkbox" [checked]="usuario.activo" (change)="eliminarCuenta($event)" name="activo">
-    </label><br>
+  <!-- Ventana acotada para datos de usuario -->
+  <div class="info-window">
+    <h2>Mi Perfil</h2>
 
-    <button type="button" (click)="desactivarTemporal()" *ngIf="editando && usuario.activo">
-      Desactivar temporalmente
-    </button><br>
-    <button type="submit">Guardar cambios</button>
-    <button type="button" (click)="cancelarEdicion()">Cancelar</button>
-  </form>
+    <!-- Formulario de edición -->
+    <form *ngIf="editando; else vistaPerfil" (ngSubmit)="guardarCambios()">
+      <label>Nombre:
+        <input type="text" [(ngModel)]="usuario.nombre" name="nombre" required>
+      </label><br>
+      <label>Apellidos:
+        <input type="text" [(ngModel)]="usuario.apellidos" name="apellidos" required>
+      </label><br>
+      <label>Username:
+        <input type="text" [(ngModel)]="usuario.username" name="username" required>
+      </label><br>
+      <label>Email:
+        <input type="email" [(ngModel)]="usuario.email" name="email" required>
+      </label><br>
+      <label>Teléfono:
+        <input type="text" [(ngModel)]="usuario.telefono" name="telefono">
+      </label><br>
+      <label>Activo:
+        <input type="checkbox" [checked]="usuario.activo" (change)="eliminarCuenta($event)" name="activo">
+      </label><br>
 
-  <!-- Vista sólo lectura -->
-  <ng-template #vistaPerfil>
-    <p><strong>Nombre:</strong> {{ usuario.nombre }}</p>
-    <p><strong>Apellidos:</strong> {{ usuario.apellidos }}</p>
-    <p><strong>Username:</strong> {{ usuario.username }}</p>
-    <p><strong>Email:</strong> {{ usuario.email }}</p>
-    <p><strong>Teléfono:</strong> {{ usuario.telefono }}</p>
-    <p><strong>Activo:</strong> {{ usuario.activo ? 'Sí' : 'No' }}</p>
-    <button (click)="activarEdicion()">Editar</button>
-  </ng-template>
+      <button type="button" (click)="desactivarTemporal()" *ngIf="editando && usuario.activo">
+        Desactivar temporalmente
+      </button><br>
+      <button type="submit">Guardar cambios</button>
+      <button type="button" (click)="cancelarEdicion()">Cancelar</button>
+    </form>
 
-  <div *ngIf="mensaje" class="mensaje-exito">{{ mensaje }}</div>
+    <!-- Vista sólo lectura -->
+    <ng-template #vistaPerfil>
+      <p><strong>Nombre:</strong> {{ usuario.nombre }}</p>
+      <p><strong>Apellidos:</strong> {{ usuario.apellidos }}</p>
+      <p><strong>Username:</strong> {{ usuario.username }}</p>
+      <p><strong>Email:</strong> {{ usuario.email }}</p>
+      <p><strong>Teléfono:</strong> {{ usuario.telefono }}</p>
+      <p><strong>Activo:</strong> {{ usuario.activo ? 'Sí' : 'No' }}</p>
+      <button (click)="activarEdicion()">Editar</button>
+    </ng-template>
 
-  <!-- Mis Entradas -->
+    <div *ngIf="mensaje" class="mensaje-exito">{{ mensaje }}</div>
+  </div>
+
+  <!-- Mis Entradas (sin cambios) -->
   <ng-container *ngIf="!editando">
     <h3>Mis Entradas</h3>
     <div *ngIf="entradasPagina.length > 0; else noEntradas">
@@ -50,9 +54,9 @@
         <li *ngFor="let entrada of entradasPagina" class="entrada-item">
           <button type="button" (click)="verQr(entrada)">Ver QR</button>
           <span>
-            Entrada #{{ entrada.idEntrada }} —
-            Concierto: {{ entrada.concierto?.nombre }} —
-            Asiento: {{ entrada.asiento?.numeracion }} —
+            Entrada #{{ entrada.idEntrada }} — 
+            Concierto: {{ entrada.concierto?.nombre }} — 
+            Asiento: {{ entrada.asiento?.numeracion }} — 
             Estado: {{ entrada.estado }}
           </span>
           <button type="button" (click)="abrirTransferencia(entrada)">Transferir</button>

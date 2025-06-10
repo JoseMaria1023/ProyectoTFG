@@ -9,7 +9,6 @@ public class StaticResourceConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // Mapea todas las peticiones /uploads/** al directorio uploads/ en el disco
         registry
           .addResourceHandler("/uploads/**")
           .addResourceLocations("file:uploads/");

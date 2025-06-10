@@ -31,7 +31,7 @@ form div {
 label {
   display: block;
   margin-bottom: 8px;
-  font-size: 1.1em;
+  font-size: 18px; 
 }
 
 input[type="text"],
@@ -43,7 +43,7 @@ select {
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.2);
   color: #fff;
-  font-size: 1em;
+  font-size: 16px; 
   transition: background 0.3s, box-shadow 0.3s;
 }
 
@@ -60,7 +60,7 @@ button {
   padding: 12px 25px;
   border-radius: 30px;
   color: #fff;
-  font-size: 1em;
+  font-size: 16px; 
   font-weight: bold;
   cursor: pointer;
   transition: background 0.4s, transform 0.3s;
@@ -72,7 +72,6 @@ button:hover {
   transform: scale(1.05);
 }
 
-/* Botón Eliminar */
 button[type="button"] {
   background: #ff1744;
   margin-left: 10px;
@@ -82,7 +81,6 @@ button[type="button"]:hover {
   background: #d50000;
 }
 
-/* Lista de zonas */
 .gestionar-zona ul {
   list-style: none;
   padding: 0;
@@ -103,20 +101,17 @@ button[type="button"]:hover {
   width: fit-content;
 }
 
-/* Título fuerte */
 strong {
-  font-size: 1.1em;
+  font-size: 18px; 
   color: #03dac6;
 }
 
-/* Separador */
 hr {
   margin: 40px 0;
   border: none;
   border-top: 2px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .form-container {
     margin: 20px;
@@ -124,7 +119,7 @@ hr {
   }
 
   .gestionar-zona li {
-    font-size: 0.95em;
+    font-size: 15px; 
   }
 }
 

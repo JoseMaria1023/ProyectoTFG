@@ -1,14 +1,13 @@
 package com.jve.proyecto.controller;
 
 import com.jve.proyecto.dto.TransferenciaDTO;
-import com.jve.proyecto.dto.TransferenciaRequest;
 import com.jve.proyecto.service.TransferenciaService;
-import com.jve.proyecto.entity.Usuario;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
+
 import java.util.Map;
+
 @RestController
 @RequestMapping("/api/transferencias")
 public class TransferenciaController {
@@ -20,21 +19,24 @@ public class TransferenciaController {
     }
 
     @PostMapping("/transferir")
-    public TransferenciaDTO transferirEntrada(@RequestBody Map<String, Object> datos) {
+    public ResponseEntity<TransferenciaDTO> transferirEntrada(@RequestBody Map<String, Object> datos) {
         Long idEntrada = Long.valueOf(datos.get("idEntrada").toString());
         Long usuarioOrigenId = Long.valueOf(datos.get("usuarioOrigenId").toString());
         String telefonoDestino = datos.get("telefonoDestino").toString();
 
-        return transferenciaService.transferirEntrada(idEntrada, usuarioOrigenId, telefonoDestino);
+        TransferenciaDTO transferencia = transferenciaService.transferirEntrada(idEntrada, usuarioOrigenId, telefonoDestino);
+        return ResponseEntity.status(HttpStatus.CREATED).body(transferencia);
     }
 
     @GetMapping("/{id}")
-    public TransferenciaDTO TraerTransferenciaPorId(@PathVariable Long id) {
-        return transferenciaService.TraerTransferenciaPorId(id);
+    public ResponseEntity<TransferenciaDTO> TraerTransferenciaPorId(@PathVariable Long id) {
+        TransferenciaDTO transferencia = transferenciaService.TraerTransferenciaPorId(id);
+        return ResponseEntity.ok(transferencia);
     }
 
     @DeleteMapping("/{id}")
-    public void eliminarTransferencia(@PathVariable Long id) {
+    public ResponseEntity<Void> eliminarTransferencia(@PathVariable Long id) {
         transferenciaService.eliminarTransferencia(id);
+        return ResponseEntity.noContent().build();
     }
 }

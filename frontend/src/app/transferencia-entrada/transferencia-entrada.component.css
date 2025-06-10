@@ -12,7 +12,7 @@
 
 .modal-content {
   background: rgb(0, 0, 0);
-  padding: 2rem;
+  padding: 32px;        
   border-radius: 10px;
   width: 90%;
   max-width: 400px;
@@ -23,15 +23,15 @@
 input {
   width: 100%;
   padding: 8px;
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
+  margin-top: 8px;     
+  margin-bottom: 16px;  
   border: 1px solid #ccc;
   border-radius: 5px;
 }
 
 button {
-  margin: 0.5rem;
-  padding: 0.5rem 1rem;
+  margin: 8px;          
+  padding: 8px 16px;    
   background-color: #0057ff;
   color: white;
   border: none;
@@ -45,12 +45,12 @@ button.cancelar {
 
 .mensaje-exito {
   color: green;
-  margin-top: 1rem;
+  margin-top: 16px;     
   font-weight: bold;
 }
 
 .mensaje-error {
   color: red;
-  margin-top: 1rem;
+  margin-top: 16px;     
   font-weight: bold;
 }

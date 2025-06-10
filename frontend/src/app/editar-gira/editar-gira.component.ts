@@ -36,7 +36,7 @@ export class EditarGiraComponent implements OnInit {
     this.router.navigate(['/Gestionar-gira']);
   }
 
-  this.artistaService.getArtistas().subscribe((data: any[]) => {
+  this.artistaService.TraerArtistas().subscribe((data: any[]) => {
     this.artistas = data;
   });
 }

@@ -25,7 +25,7 @@ export class CrearGiraComponent implements OnInit {
   }
 
   cargarArtistas(): void {
-    this.artistaService.getArtistas().subscribe(
+    this.artistaService.TraerArtistas().subscribe(
       (data) => {
         this.artistas = data;
       },

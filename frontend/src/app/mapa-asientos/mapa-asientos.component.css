@@ -11,7 +11,7 @@
 .modal-content {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(8px);
-  padding: 1rem;
+  padding: 16px;          
   border-radius: 8px;
   width: 90%;
   max-width: 800px;
@@ -30,42 +30,42 @@
 .modal-content.many-rows .asiento {
   width: 32px;
   height: 32px;
-  font-size: 0.8rem;
+  font-size: 13px;        
 }
 
 .escenario {
   background: #222;
-  padding: 0.5rem;
+  padding: 8px;           
   border-radius: 4px;
   text-align: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: 8px;     
   font-weight: bold;
 }
 
 .asiento:not(.ocupado):not(.vip) {
-  background: #2ecc71; /* verde para asiento libre */
+  background: #2ecc71;
   color: #fff;
 }
 
 .asientos-container {
   display: flex;
   flex-direction: column;
-  gap: 1rem; /* espacio vertical entre filas */
-  padding: 0.5rem;
-  overflow-y: auto; /* Permitir desplazamiento si el contenedor tiene muchas filas */
+  gap: 16px;             
+  padding: 8px;           
+  overflow-y: auto;
 }
 
 .fila {
   display: flex;
-  flex-wrap: wrap; /* Esto asegura que los asientos se ajusten en varias filas si es necesario */
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 0.75rem; /* espacio horizontal entre butacas */
+  gap: 12px;             
 }
 
 .asiento {
   width: 50px;
   height: 50px;
-  margin: 0.25rem; /* pequeño margen adicional */
+  margin: 4px;            
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -75,7 +75,7 @@
 }
 
 .modal-content.many-rows {
-  max-height: 70vh; /* Deja espacio para muchas filas */
+  max-height: 70vh;
   overflow-y: auto;
 }
 
@@ -98,7 +98,7 @@
 .close-btn {
   margin-top: auto;
   align-self: center;
-  padding: 0.5rem 1.5rem;
+  padding: 8px 24px;     
   background: linear-gradient(90deg, #00c6ff, #0072ff);
   border: none;
   border-radius: 20px;

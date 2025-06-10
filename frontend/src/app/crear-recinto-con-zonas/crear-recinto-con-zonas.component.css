@@ -1,117 +1,113 @@
-/* crear-recinto-con-zonas.component.css */
-
 body {
-    background: linear-gradient(to right, #1e1e2f, #3a3a5a);
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding: 0;
-  }
-  
+  background: linear-gradient(to right, #1e1e2f, #3a3a5a);
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.form-container {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 40px;
+  max-width: 700px;
+  margin: 50px auto;
+  box-shadow: 0 0 25px rgba(255, 0, 128, 0.4), 0 0 35px rgba(0, 128, 255, 0.3);
+  color: #fff;
+  animation: fadeIn 1s ease-in-out;
+}
+
+h2, h3 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: bold;
+  color: #ff4081;
+}
+
+form div {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 18px;
+}
+
+input[type="text"],
+input[type="number"] {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 16px;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 10px #ff4081;
+  outline: none;
+}
+
+button {
+  background: linear-gradient(45deg, #ff4081, #7c4dff);
+  border: none;
+  padding: 12px 25px;
+  border-radius: 30px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.4s, transform 0.3s;
+  margin-top: 10px;
+}
+
+gestion-botones {
+  display: flex;
+  margin-top: 7px;
+  justify-content: center;
+  align-items: center;
+}
+
+button:hover {
+  background: linear-gradient(45deg, #7c4dff, #ff4081);
+  transform: scale(1.05);
+}
+
+hr {
+  margin: 40px 0;
+  border: none;
+  border-top: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 18px;
+  color: #03dac6;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+button[type="button"] {
+  background: #ff1744;
+  margin-left: 10px;
+}
+
+button[type="button"]:hover {
+  background: #d50000;
+}
+
+@media (max-width: 768px) {
   .form-container {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 15px;
-    padding: 40px;
-    max-width: 700px;
-    margin: 50px auto;
-    box-shadow: 0 0 25px rgba(255, 0, 128, 0.4), 0 0 35px rgba(0, 128, 255, 0.3);
-    color: #fff;
-    animation: fadeIn 1s ease-in-out;
+    margin: 20px;
+    padding: 30px;
   }
-  
-  h2, h3 {
-    text-align: center;
-    margin-bottom: 30px;
-    font-weight: bold;
-    color: #ff4081;
-  }
-  
-  form div {
-    margin-bottom: 20px;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 1.1em;
-  }
-  
-  input[type="text"],
-  input[type="number"] {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.2);
-    color: #fff;
-    font-size: 1em;
-    transition: background 0.3s, box-shadow 0.3s;
-  }
-  
-  input[type="text"]:focus,
-  input[type="number"]:focus {
-    background: rgba(255, 255, 255, 0.3);
-    box-shadow: 0 0 10px #ff4081;
-    outline: none;
-  }
-  
-  button {
-    background: linear-gradient(45deg, #ff4081, #7c4dff);
-    border: none;
-    padding: 12px 25px;
-    border-radius: 30px;
-    color: #fff;
-    font-size: 1em;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.4s, transform 0.3s;
-    margin-top: 10px;
-  }
-  
-  gestion-botones {
-    display: flex;
-    margin-top: 7px;
-    justify-content: center;
-    align-items: center;
-  }
-  button:hover {
-    background: linear-gradient(45deg, #7c4dff, #ff4081);
-    transform: scale(1.05);
-  }
-  
-  hr {
-    margin: 40px 0;
-    border: none;
-    border-top: 2px solid rgba(255, 255, 255, 0.2);
-  }
-  
-  strong {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 1.1em;
-    color: #03dac6;
-  }
-  
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  
-  /* Botón Eliminar */
-  button[type="button"] {
-    background: #ff1744;
-    margin-left: 10px;
-  }
-  
-  button[type="button"]:hover {
-    background: #d50000;
-  }
-  
-  /* Responsive */
-  @media (max-width: 768px) {
-    .form-container {
-      margin: 20px;
-      padding: 30px;
-    }
-  }
-  
+}

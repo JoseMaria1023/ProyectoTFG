@@ -22,6 +22,7 @@ h2 {
   margin-bottom: 30px;
   font-weight: bold;
   color: #ff4081;
+
 }
 
 ul.gira-lista {
@@ -43,7 +44,7 @@ ul.gira-lista li {
 
 strong {
   color: #03dac6;
-  font-size: 1.2em;
+  font-size: 19px; 
 }
 
 .botones-acciones {
@@ -57,7 +58,7 @@ button {
   padding: 10px 20px;
   border-radius: 30px;
   color: #fff;
-  font-size: 0.95em;
+  font-size: 15px;
   font-weight: bold;
   cursor: pointer;
   transition: background 0.4s, transform 0.3s;
@@ -83,8 +84,14 @@ hr {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @media (max-width: 768px) {

@@ -1,9 +1,11 @@
-// src/main/java/com/jve/proyecto/controller/AsientoController.java
 package com.jve.proyecto.controller;
 
 import com.jve.proyecto.dto.AsientoDTO;
 import com.jve.proyecto.service.AsientoService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -17,32 +19,38 @@ public class AsientoController {
     }
 
     @GetMapping
-    public List<AsientoDTO> TraerAsientos() {
-        return asientoService.TraerTodosLosAsientos();
+    public ResponseEntity<List<AsientoDTO>> TraerAsientos() {
+        List<AsientoDTO> asientos = asientoService.TraerTodosLosAsientos();
+        return ResponseEntity.ok(asientos);
     }
 
     @GetMapping("/concierto/{id}")
-    public List<AsientoDTO> TraerAsientosPorConcierto(@PathVariable("id") Long conciertoId) {
-        return asientoService.TraerAsientosPorConcierto(conciertoId);
+    public ResponseEntity<List<AsientoDTO>> TraerAsientosPorConcierto(@PathVariable("id") Long conciertoId) {
+        List<AsientoDTO> asientos = asientoService.TraerAsientosPorConcierto(conciertoId);
+        return ResponseEntity.ok(asientos);
     }
 
     @PostMapping
-    public AsientoDTO crearAsiento(@RequestBody AsientoDTO asientoDTO) {
-        return asientoService.crearAsiento(asientoDTO);
+    public ResponseEntity<AsientoDTO> crearAsiento(@RequestBody AsientoDTO asientoDTO) {
+        AsientoDTO nuevoAsiento = asientoService.crearAsiento(asientoDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoAsiento);
     }
-    
-    @PutMapping("/{id}")
-    public AsientoDTO actualizarAsiento(@PathVariable Long id, @RequestBody AsientoDTO asientoDTO) {
-        return asientoService.actualizarAsiento(id, asientoDTO);
-    }
-    @GetMapping("/{id}")
-    public AsientoDTO TraerAsientoPorId(@PathVariable Long id) {
-    return asientoService.TraerAsientoPorId(id);
-}
 
-    
+    @PutMapping("/{id}")
+    public ResponseEntity<AsientoDTO> actualizarAsiento(@PathVariable Long id, @RequestBody AsientoDTO asientoDTO) {
+        AsientoDTO actualizado = asientoService.actualizarAsiento(id, asientoDTO);
+        return ResponseEntity.ok(actualizado);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<AsientoDTO> TraerAsientoPorId(@PathVariable Long id) {
+        AsientoDTO asiento = asientoService.TraerAsientoPorId(id);
+        return ResponseEntity.ok(asiento);
+    }
+
     @DeleteMapping("/{id}")
-    public void eliminarAsiento(@PathVariable Long id) {
+    public ResponseEntity<Void> eliminarAsiento(@PathVariable Long id) {
         asientoService.eliminarAsiento(id);
+        return ResponseEntity.noContent().build();
     }
 }

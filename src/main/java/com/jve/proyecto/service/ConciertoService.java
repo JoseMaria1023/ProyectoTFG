@@ -39,10 +39,9 @@ public class ConciertoService {
    public ConciertoDTO crearConcierto(ConciertoDTO dto) {
     Concierto concierto = conciertoConverter.toEntity(dto);
 
-    Zona zona = zonaRepository.findById(dto.getZonaId())
-        .orElseThrow(ZonaNoEncontradaException::new);
-    Gira gira = giraRepository.findById(dto.getGiraId())
-        .orElseThrow(GiraNoEncontradaException::new);
+    Zona zona = zonaRepository.findById(dto.getZonaId()).orElseThrow(ZonaNoEncontradaException::new);
+
+    Gira gira = giraRepository.findById(dto.getGiraId()).orElseThrow(GiraNoEncontradaException::new);
 
     concierto.setZona(zona);
     concierto.setGira(gira);
@@ -52,8 +51,8 @@ public class ConciertoService {
 }
 
     public ConciertoDTO TraerConciertoPorId(Long id) {
-        Concierto c = conciertoRepository.findById(id).orElseThrow(() -> new RuntimeException("Concierto no encontrado con ID: " + id));
-        return conciertoConverter.toDto(c);
+        Concierto concierto = conciertoRepository.findById(id).orElseThrow(() -> new ConciertoNoEncontradoException());
+        return conciertoConverter.toDto(concierto);
     }
 
     public List<ConciertoDTO> TraerTodosLosConciertos() {
@@ -67,19 +66,19 @@ public class ConciertoService {
     public List<ConciertoDTO> filtrarConciertos(Long artistaId, LocalDateTime fechaDesde,
                                                 LocalDateTime fechaHasta, String estado) {
         return conciertoRepository.findAll().stream()
-            .filter(con -> {
+            .filter(concierto -> {
                 boolean ok = true;
                 if (artistaId != null) {
-                    ok &= con.getGira() != null
-                       && con.getGira().getArtista() != null
-                       && con.getGira().getArtista().getIdArtista().equals(artistaId);
+                    ok &= concierto.getGira() != null
+                       && concierto.getGira().getArtista() != null
+                       && concierto.getGira().getArtista().getIdArtista().equals(artistaId);
                 }
                 if (fechaDesde != null && fechaHasta != null) {
-                    ok &= !con.getFecha().isBefore(fechaDesde)
-                       && !con.getFecha().isAfter(fechaHasta);
+                    ok &= !concierto.getFecha().isBefore(fechaDesde)
+                       && !concierto.getFecha().isAfter(fechaHasta);
                 }
                 if (estado != null && !estado.isEmpty()) {
-                    ok &= con.getEstado().name().equalsIgnoreCase(estado);
+                    ok &= concierto.getEstado().name().equalsIgnoreCase(estado);
                 }
                 return ok;
             })
@@ -88,34 +87,31 @@ public class ConciertoService {
 
     public List<ConciertoDTO> TraerConciertosPorArtista(Long artistaId) {
         return conciertoRepository.findAll().stream()
-            .filter(con -> con.getGira()!=null 
-                        && con.getGira().getArtista()!=null 
-                        && con.getGira().getArtista().getIdArtista().equals(artistaId)).map(conciertoConverter::toDto).collect(Collectors.toList());
+            .filter(concierto -> concierto.getGira()!=null 
+                        && concierto.getGira().getArtista()!=null 
+                        && concierto.getGira().getArtista().getIdArtista().equals(artistaId)).map(conciertoConverter::toDto).collect(Collectors.toList());
     }
 
   public ConciertoDTO actualizarConcierto(Long id, ConciertoDTO dto) {
-    Concierto con = conciertoRepository.findById(id)
-        .orElseThrow(() -> new ConciertoNoEncontradoException());
+    Concierto concierto = conciertoRepository.findById(id).orElseThrow(() -> new ConciertoNoEncontradoException());
 
-    Zona zona = zonaRepository.findById(dto.getZonaId())
-        .orElseThrow(() -> new ZonaNoEncontradaException());
+    Zona zona = zonaRepository.findById(dto.getZonaId()).orElseThrow(() -> new ZonaNoEncontradaException());
 
-    Gira gira = giraRepository.findById(dto.getGiraId())
-        .orElseThrow(() -> new GiraNoEncontradaException());
+    Gira gira = giraRepository.findById(dto.getGiraId()).orElseThrow(() -> new GiraNoEncontradaException());
 
-    con.setNombre(dto.getNombre());
-    con.setFecha(dto.getFecha());
-    con.setZona(zona);
-    con.setGira(gira);
-    con.setEstado(Enum.valueOf(Concierto.EstadoConcierto.class, dto.getEstado().toUpperCase()));
+    concierto.setNombre(dto.getNombre());
+    concierto.setFecha(dto.getFecha());
+    concierto.setZona(zona);
+    concierto.setGira(gira);
+    concierto.setEstado(Enum.valueOf(Concierto.EstadoConcierto.class, dto.getEstado().toUpperCase()));
 
-    Concierto updated = conciertoRepository.save(con);
+    Concierto updated = conciertoRepository.save(concierto);
     return conciertoConverter.toDto(updated);
 }
 
 
     public void eliminarConcierto(Long id) {
-        Concierto con = conciertoRepository.findById(id).orElseThrow(() -> new ConciertoNoEncontradoException());
-        conciertoRepository.delete(con);
+        Concierto concierto = conciertoRepository.findById(id).orElseThrow(() -> new ConciertoNoEncontradoException());
+        conciertoRepository.delete(concierto);
     }
 }

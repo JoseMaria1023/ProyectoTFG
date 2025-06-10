@@ -12,7 +12,7 @@
 .crear-artista-container h2 {
   text-align: center;
   margin-bottom: 30px;
-  font-size: 2rem;
+  font-size: 32px;
   color: #ff2e88;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -27,7 +27,7 @@
 .form-group label {
   margin-bottom: 6px;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 15px;
   color: #dcdcdc;
 }
 
@@ -39,8 +39,8 @@
   border: none;
   border-radius: 8px;
   background-color: #2c2c3c;
-  color: white;
-  font-size: 1rem;
+  color: #fff;
+  font-size: 16px;
   transition: outline 0.3s ease;
 }
 
@@ -71,8 +71,8 @@ button[type="submit"] {
   width: 100%;
   padding: 14px;
   background-color: #ff2e88;
-  color: white;
-  font-size: 1rem;
+  color: #fff;
+  font-size: 16px;
   font-weight: bold;
   border: none;
   border-radius: 10px;

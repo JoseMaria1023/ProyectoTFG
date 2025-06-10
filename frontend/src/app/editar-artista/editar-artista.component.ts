@@ -35,7 +35,7 @@ ngOnInit(): void {
   const id = sessionStorage.getItem('artistaAEditar');
 
   if (id) {
-    this.artistaService.getArtistaPorId(+id).subscribe(data => {
+    this.artistaService.TraerArtistaPorId(+id).subscribe(data => {
       this.artista = data;
       if (this.artista.foto) {
         this.artista.foto = 'http://localhost:9000' + this.artista.foto;

@@ -1,8 +1,9 @@
 package com.jve.proyecto.controller;
 
-
 import com.jve.proyecto.dto.GiraDTO;
 import com.jve.proyecto.service.GiraService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -17,27 +18,32 @@ public class GiraController {
     }
 
     @GetMapping
-    public List<GiraDTO> TraerGiras() {
-        return giraService.TraerTodasLasGiras();
+    public ResponseEntity<List<GiraDTO>> TraerGiras() {
+        List<GiraDTO> giras = giraService.TraerTodasLasGiras();
+        return giras.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(giras);
     }
 
     @PostMapping
-    public GiraDTO crearGira(@RequestBody GiraDTO giraDTO) {
-        return giraService.crearGira(giraDTO);
+    public ResponseEntity<GiraDTO> crearGira(@RequestBody GiraDTO giraDTO) {
+        GiraDTO nuevaGira = giraService.crearGira(giraDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevaGira);
     }
 
     @GetMapping("/{id}")
-    public GiraDTO TraerGiraPorId(@PathVariable Long id) {
-        return giraService.TraerGiraPorId(id);
+    public ResponseEntity<GiraDTO> TraerGiraPorId(@PathVariable Long id) {
+        GiraDTO gira = giraService.TraerGiraPorId(id);
+        return gira == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(gira);
     }
 
     @PutMapping("/{id}")
-    public GiraDTO actualizarGira(@PathVariable Long id, @RequestBody GiraDTO giraDTO) {
-        return giraService.actualizarGira(id, giraDTO);
+    public ResponseEntity<GiraDTO> actualizarGira(@PathVariable Long id, @RequestBody GiraDTO giraDTO) {
+        GiraDTO actualizada = giraService.actualizarGira(id, giraDTO);
+        return actualizada == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(actualizada);
     }
 
     @DeleteMapping("/{id}")
-    public void eliminarGira(@PathVariable Long id) {
+    public ResponseEntity<Void> eliminarGira(@PathVariable Long id) {
         giraService.eliminarGira(id);
+        return ResponseEntity.noContent().build();
     }
 }

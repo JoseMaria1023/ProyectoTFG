@@ -1,5 +1,6 @@
 package com.jve.proyecto.dto;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Valid
 @Builder
 public class ArtistaDTO {
     private Long idArtista;

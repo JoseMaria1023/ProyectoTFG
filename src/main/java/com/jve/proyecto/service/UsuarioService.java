@@ -39,19 +39,6 @@ public class UsuarioService {
         return usuarioConverter.toDto(guardado);
     }
 
-    @Transactional
-    public void transferirEntrada(Long idUsuario, Long idEntrada, String telefonoDestino) {
-        Entrada entrada = entradaRepository.findById(idEntrada).orElseThrow(() -> new EntradaNoEncontradaException());
-
-        if (!entrada.getUsuario().getIdUsuario().equals(idUsuario)) {
-            throw new EntradaEnPetenenciaException();
-        }
-
-        Usuario nuevoUsuario = usuarioRepository.findByTelefono(telefonoDestino).orElseThrow(() -> new UsuarioNoEncontradoException());
-
-        entrada.setUsuario(nuevoUsuario);
-        entradaRepository.save(entrada);
-    }
 
     public UsuarioDTO TraerUsuarioPorId(Long id) {
         Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new UsuarioNoEncontradoException());

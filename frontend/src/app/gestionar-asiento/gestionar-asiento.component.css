@@ -12,7 +12,7 @@
 
 .gestionar-asientos h2 {
   text-align: center;
-  font-size: 2.5rem;
+  font-size: 40px; 
   margin-bottom: 30px;
   color: #ff4081;
   letter-spacing: 1px;
@@ -49,7 +49,7 @@
 
 .nombre-artista {
   font-weight: bold;
-  font-size: 1.1rem;
+  font-size: 18px; 
   color: #fff;
   word-wrap: break-word;
 }
@@ -71,7 +71,7 @@
   cursor: pointer;
   letter-spacing: 0.5px;
   transition: all 0.3s ease;
-  font-size: 0.95rem;
+  font-size: 15px; 
 }
 
 .btn-editar {

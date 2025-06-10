@@ -26,7 +26,7 @@ export class GestionarArtistaComponent implements OnInit {
   }
 
   cargarArtistas(): void {
-    this.artistaService.getArtistas().subscribe((data) => {
+    this.artistaService.TraerArtistas().subscribe((data) => {
       this.artistas = data;
     });
   }

@@ -1,4 +1,3 @@
-// src/main/java/com/jve/proyecto/controller/UsuarioController.java
 package com.jve.proyecto.controller;
 
 import com.jve.proyecto.dto.UsuarioDTO;
@@ -18,46 +17,45 @@ public class UsuarioController {
     private final UsuarioService usuarioService;
     private final EntradaService entradaService;
 
-    public UsuarioController(UsuarioService usuarioService,EntradaService entradaService) {
+    public UsuarioController(UsuarioService usuarioService, EntradaService entradaService) {
         this.usuarioService = usuarioService;
         this.entradaService = entradaService;
     }
 
     @GetMapping
-    public List<UsuarioDTO> TraerUsuarios() {
-        return usuarioService.TraerTodosLosUsuarios();
+    public ResponseEntity<List<UsuarioDTO>> TraerUsuarios() {
+        List<UsuarioDTO> usuarios = usuarioService.TraerTodosLosUsuarios();
+        return ResponseEntity.ok(usuarios);
     }
 
     @GetMapping("/{id}")
-    public UsuarioDTO TraerUsuarioPorId(@PathVariable Long id) {
-        return usuarioService.TraerUsuarioPorId(id);
+    public ResponseEntity<UsuarioDTO> TraerUsuarioPorId(@PathVariable Long id) {
+        UsuarioDTO usuario = usuarioService.TraerUsuarioPorId(id);
+        return ResponseEntity.ok(usuario);
     }
 
-
     @PostMapping
-    public UsuarioDTO crearUsuario(@RequestBody UsuarioDTO usuarioDTO) {
-        return usuarioService.crearUsuario(usuarioDTO);
+    public ResponseEntity<UsuarioDTO> crearUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+        UsuarioDTO nuevoUsuario = usuarioService.crearUsuario(usuarioDTO);
+        return ResponseEntity.status(201).body(nuevoUsuario);
     }
 
     @PutMapping("/{id}")
-    public UsuarioDTO actualizarUsuario(@PathVariable Long id, @RequestBody UsuarioDTO usuarioDTO) {
-        return usuarioService.actualizarUsuario(id, usuarioDTO);
+    public ResponseEntity<UsuarioDTO> actualizarUsuario(@PathVariable Long id, @RequestBody UsuarioDTO usuarioDTO) {
+        UsuarioDTO usuarioActualizado = usuarioService.actualizarUsuario(id, usuarioDTO);
+        return ResponseEntity.ok(usuarioActualizado);
     }
 
     @DeleteMapping("/{id}")
-    public void eliminarUsuario(@PathVariable Long id) {
+    public ResponseEntity<Void> eliminarUsuario(@PathVariable Long id) {
         usuarioService.eliminarUsuario(id);
+        return ResponseEntity.noContent().build();
     }
+
     @GetMapping("/{id}/entradas")
-    public List<EntradaDTO> TraerEntradasPorUsuario(@PathVariable Long id) {
-        return entradaService.TraerEntradasPorUsuario(id);
+    public ResponseEntity<List<EntradaDTO>> TraerEntradasPorUsuario(@PathVariable Long id) {
+        List<EntradaDTO> entradas = entradaService.TraerEntradasPorUsuario(id);
+        return ResponseEntity.ok(entradas);
     }
-    @PutMapping("/{idUsuario}/entradas/{idEntrada}/transferir")
-public ResponseEntity<String> transferirEntrada(
-        @PathVariable Long idUsuario,
-        @PathVariable Long idEntrada,
-        @RequestBody TransferenciaRequest request) {
-    usuarioService.transferirEntrada(idUsuario, idEntrada, request.getTelefonoDestino());
-    return ResponseEntity.ok("Entrada transferida correctamente");
-}
+
 }

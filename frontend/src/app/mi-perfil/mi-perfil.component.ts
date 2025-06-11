@@ -25,7 +25,7 @@ export class MiPerfilComponent implements OnInit {
   mostrarTransferencia = false;
   entradaSeleccionada: any = null;
 
-  showQrModal = false;
+  mostrarQrModal = false;
   qrSeleccionado: string | null = null;
 
   constructor(
@@ -150,12 +150,12 @@ revenderEntrada(entrada: any) {
 
   verQr(entrada: any) {
     this.qrSeleccionado = `data:image/png;base64,${entrada.codigoQR}`;
-    this.showQrModal = true;
+    this.mostrarQrModal = true;
   }
 
   cerrarQrModal() {
     this.qrSeleccionado = null;
-    this.showQrModal = false;
+    this.mostrarQrModal = false;
   }
 
   cargarEntradas(id: any) {

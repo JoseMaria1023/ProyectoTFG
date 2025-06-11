@@ -26,6 +26,7 @@ h2 {
   box-shadow: 0 0 15px rgba(0, 128, 255, 0.3);
 }
 
+
 .artista-img {
   width: 120px;
   height: 120px;
@@ -40,6 +41,33 @@ h2 {
   color: #03dac6;
 }
 
+.artista-info button {
+  margin-top: 12px;
+  padding: 10px 18px;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  color: #fff;
+  background: linear-gradient(to right, #ff4081, #ff80ab);
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 0 10px rgba(255, 64, 129, 0.5);
+}
+
+.artista-info button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(255, 64, 129, 0.7);
+}
+
+.artista-info button.favorito {
+  background: linear-gradient(to right, #03dac6, #00bfa5);
+  box-shadow: 0 0 10px rgba(3, 218, 198, 0.5);
+}
+
+.artista-info button.favorito:hover {
+  box-shadow: 0 0 15px rgba(3, 218, 198, 0.8);
+}
 .artista-info p {
   margin-top: 8px;
 }

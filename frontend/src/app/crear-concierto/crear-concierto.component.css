@@ -7,7 +7,6 @@
   margin: 50px auto;
   box-shadow: 0 0 25px rgba(255, 0, 128, 0.4), 0 0 35px rgba(0, 128, 255, 0.3);
   color: #fff;
-  animation: fadeIn 1s ease-in-out;
 }
 
 .formulario-concierto h2 {
@@ -38,7 +37,6 @@
   background: rgba(255, 255, 255, 0.2);
   color: #fff;
   font-size: 16px;
-  transition: background 0.3s, box-shadow 0.3s;
 }
 
 .formulario-concierto input:focus,
@@ -52,7 +50,6 @@
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  transition: background 0.3s, color 0.3s;
 }
 
 .formulario-concierto select:focus {
@@ -84,7 +81,6 @@
 
 .formulario-concierto .btn-crear:hover {
   background: linear-gradient(45deg, #7c4dff, #ff4081);
-  transform: scale(1.05);
 }
 
 @keyframes fadeIn {

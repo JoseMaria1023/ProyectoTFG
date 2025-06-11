@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ArtistaService } from '../artista.service';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-lista-artista',
@@ -11,18 +12,26 @@ import { CommonModule } from '@angular/common';
 })
 export class ListaArtistaComponent implements OnInit {
   artistas: any[] = [];
+  favoritos: number[] = [];
 
-  constructor(private artistaService: ArtistaService) {}
+  constructor(
+    private artistaService: ArtistaService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.artistaService.TraerArtistas().subscribe({
       next: (data) => {
-        console.log('Artistas lista:', data);
-        this.artistas = data.map((artista: any) => ({ ...artista,
-          fotoUrl: `http://localhost:9000${artista.foto}`
+        this.artistas = data.map((artista: any) => ({
+          ...artista,
+          fotoUrl: `http://localhost:9000${artista.foto}`,
+          favorito: false
         }));
       },
-      error: (err) => console.error('Error al cargar artistas:', err)
     });
+  }
+
+  ArtistaFavorito(artista: any): void {
+    artista.favorito = !artista.favorito;
   }
 }

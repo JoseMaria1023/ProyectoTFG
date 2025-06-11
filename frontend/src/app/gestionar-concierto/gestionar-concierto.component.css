@@ -14,7 +14,6 @@ body {
   margin: 50px auto;
   box-shadow: 0 0 25px rgba(255, 0, 128, 0.4), 0 0 35px rgba(0, 128, 255, 0.3);
   color: #fff;
-  animation: fadeIn 1s ease-in-out;
 }
 
 h2 {
@@ -61,12 +60,10 @@ button {
   font-size: 15px;
   font-weight: bold;
   cursor: pointer;
-  transition: background 0.4s, transform 0.3s;
 }
 
 button:hover {
   background: linear-gradient(45deg, #7c4dff, #ff4081);
-  transform: scale(1.05);
 }
 
 button[type="button"] {

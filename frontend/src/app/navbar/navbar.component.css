@@ -50,7 +50,6 @@
   align-items: center;
   padding: 10px;
   border-radius: 6px;
-  transition: background 0.3s ease, transform 0.2s ease;
 }
 
 .nav-links a i {
@@ -61,7 +60,6 @@
 .nav-links a:hover {
   background: #e50914;
   color: white;
-  transform: translateX(5px);
 }
 .sidebar {
   width: 250px;

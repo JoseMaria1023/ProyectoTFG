@@ -42,7 +42,6 @@
   color: #eee;
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.3s;
 }
 
 .footer-links a:hover {
@@ -64,7 +63,6 @@
   margin: 0 10px;
   font-size: 20px;
   color: #fff;
-  transition: transform 0.3s, color 0.3s;
 }
 
 .icons a:hover {

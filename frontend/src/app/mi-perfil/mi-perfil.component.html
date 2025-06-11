@@ -46,7 +46,6 @@
     <div *ngIf="mensaje" class="mensaje-exito">{{ mensaje }}</div>
   </div>
 
-  <!-- Mis Entradas (sin cambios) -->
   <ng-container *ngIf="!editando">
     <h3>Mis Entradas</h3>
     <div *ngIf="entradasPagina.length > 0; else noEntradas">
@@ -90,7 +89,7 @@
 </div>
 
 <!-- Modal QR -->
-<div class="modal-overlay" *ngIf="showQrModal">
+<div class="modal-overlay" *ngIf="mostrarQrModal">
   <div class="modal-content">
     <h3>Mi Código QR</h3>
     <img [src]="qrSeleccionado" alt="Código QR">

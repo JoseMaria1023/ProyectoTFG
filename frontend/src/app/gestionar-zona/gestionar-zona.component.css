@@ -9,7 +9,6 @@
     0 0 25px rgba(255, 0, 128, 0.4),
     0 0 35px rgba(0, 128, 255, 0.3);
   color: #fff;
-  animation: fadeIn 0.8s ease-in-out;
 }
 
 .gestionar-zona h2 {
@@ -42,12 +41,10 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  transition: background 0.3s, transform 0.2s;
 }
 
 .gestionar-zona li:hover {
   background: rgba(255, 255, 255, 0.1);
-  transform: translateY(-2px);
 }
 
 .gestionar-zona li strong {
@@ -71,7 +68,6 @@
   font-size: 15px; 
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.4s, transform 0.2s;
   margin-top: 10px;
 }
 
@@ -81,7 +77,6 @@
 
 .gestionar-zona button:hover {
   background: linear-gradient(45deg, #7c4dff, #ff4081);
-  transform: scale(1.05);
 }
 
 .gestionar-zona > div {
@@ -89,7 +84,6 @@
   padding: 20px;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 15px;
-  animation: fadeIn 0.8s ease-in-out;
 }
 
 .gestionar-zona > div button {

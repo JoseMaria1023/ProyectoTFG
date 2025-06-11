@@ -7,7 +7,6 @@
   font-family: 'Orbitron', sans-serif;
   border-radius: 20px;
   box-shadow: 0 0 25px rgba(255, 0, 128, 0.3);
-  animation: fadeIn 1s ease-in-out;
 }
 
 .gestionar-asientos h2 {
@@ -33,7 +32,6 @@
   margin-bottom: 15px;
   padding: 20px;
   border-radius: 12px;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 0 10px rgba(255, 64, 129, 0.1);
 }
 

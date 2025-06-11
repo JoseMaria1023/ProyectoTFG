@@ -68,15 +68,13 @@ public class PagoService {
 
 
     public PagoDTO TraerPagoPorId(Long id) {
-        Pago pago = pagoRepository.findById(id).orElseThrow(() -> 
-                new PagoNoEncontradoException());
+        Pago pago = pagoRepository.findById(id).orElseThrow(() -> new PagoNoEncontradoException());
         return pagoConverter.toDto(pago); 
     }
 
     public List<PagoDTO> TraerTodosLosPagos() {
-        return pagoRepository.findAll().stream()
-                .map(pago -> pagoConverter.toDto(pago)) 
-                .collect(Collectors.toList());
+        return pagoRepository.findAll().stream().map(pago -> pagoConverter.toDto(pago)) 
+        .collect(Collectors.toList());
     }
 
     public PagoDTO actualizarPago(Long id, PagoDTO pagoDTO) {
@@ -88,8 +86,7 @@ public class PagoService {
     }
 
     public void eliminarPago(Long id) {
-        Pago pago = pagoRepository.findById(id).orElseThrow(() -> 
-                new PagoNoEncontradoException());
+        Pago pago = pagoRepository.findById(id).orElseThrow(() -> new PagoNoEncontradoException());
         pagoRepository.delete(pago);
     }
 }

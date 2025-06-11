@@ -3,13 +3,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { ConciertoService } from '../concierto.service';
+import { ChatAsistenteComponent } from '../chat-asistente/chat-asistente.component';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule,ChatAsistenteComponent],
 })
 export class HomeComponent implements OnInit {
   conciertos: any[] = [];

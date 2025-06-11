@@ -79,8 +79,7 @@ public class ArtistaService {
     }
 
  public ArtistaDTO actualizarArtista(Long id, ArtistaDTO artistaDTO) {
-    Artista artistaExistente = artistaRepository.findById(id)
-        .orElseThrow(() -> new ArtistaNoEncontradoException());
+    Artista artistaExistente = artistaRepository.findById(id).orElseThrow(() -> new ArtistaNoEncontradoException());
 
     Artista artistaParaActualizar = artistaConverter.toEntity(artistaDTO);
     artistaParaActualizar.setIdArtista(id);
@@ -102,8 +101,7 @@ public class ArtistaService {
 }
 
     public Optional<Long> findArtistaIdByUsername(String username) {
-        return artistaRepository.findByUsername(username)
-                                 .map(Artista::getIdArtista);
+        return artistaRepository.findByUsername(username).map(Artista::getIdArtista);
     }
 
     public void eliminarArtista(Long id) {

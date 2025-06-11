@@ -109,7 +109,7 @@ export class ComprarEntradaComponent implements OnInit {
         this.asientos = data;
         this.mostrarModalAsientos = true;
       },
-      error: (err: any) => console.error('Error al obtener asientos:', err)
+      error: (err: any) => console.error('Error al traer asientos:', err)
     });
   }
 

@@ -3,7 +3,6 @@ body {
   padding: 0;
   font-family: 'Montserrat', sans-serif;
   background: radial-gradient(circle at 20% 30%, #1a0023, #0d0010 80%);
-  background-attachment: fixed;
   color: #fff;
   min-height: 100vh;
   display: flex;
@@ -29,7 +28,6 @@ body {
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
   font-family: 'Montserrat', sans-serif;
   color: #fff;
-  animation: fadeIn 1s ease-out;
 }
 
 .register-container h2 {
@@ -63,7 +61,6 @@ input[type="password"] {
   color: #fff;
   font-size: 16px;            
   outline: none;
-  transition: box-shadow 0.3s, background-color 0.3s;
 }
 
 input:focus {
@@ -81,11 +78,9 @@ input:focus {
   border: none;
   border-radius: 30px;
   cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .btn:hover {
-  transform: scale(1.03);
   box-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
 }
 

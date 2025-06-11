@@ -71,7 +71,6 @@ input[type="date"] {
   padding: 11px 19px; 
   border-radius: 8px;
   cursor: pointer;
-  transition: 0.3s ease;
 }
 
 .btn-filtrar:hover,
@@ -93,7 +92,6 @@ input[type="date"] {
   display: flex;
   flex-direction: column;
   gap: 13px; 
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .concierto-card:hover {
@@ -129,7 +127,6 @@ input[type="date"] {
   font-weight: bold;
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.3s ease;
 }
 
 .btn-comprar:hover {

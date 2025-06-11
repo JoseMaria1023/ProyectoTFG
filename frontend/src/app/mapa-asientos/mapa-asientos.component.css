@@ -71,16 +71,11 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: transform 0.2s;
 }
 
 .modal-content.many-rows {
   max-height: 70vh;
   overflow-y: auto;
-}
-
-.asiento:hover:not(.ocupado) {
-  transform: scale(1.1);
 }
 
 .asiento.ocupado {
@@ -105,7 +100,6 @@
   color: #fff;
   cursor: pointer;
   font-weight: bold;
-  transition: background 0.3s;
 }
 
 .close-btn:hover {

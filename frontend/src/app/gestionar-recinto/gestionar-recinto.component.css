@@ -9,7 +9,6 @@
     0 0 25px rgba(255, 0, 128, 0.4),
     0 0 35px rgba(0, 128, 255, 0.3);
   color: #fff;
-  animation: fadeIn 0.8s ease-in-out;
 }
 
 .form-container h2 {
@@ -42,7 +41,6 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  transition: background 0.3s, transform 0.2s;
 }
 
 .form-container li:hover {
@@ -72,7 +70,6 @@
   font-size: 15px; 
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.4s, transform 0.2s;
   margin-top: 10px;
 }
 
@@ -82,7 +79,6 @@
 
 .form-container button:hover {
   background: linear-gradient(45deg, #7c4dff, #ff4081);
-  transform: scale(1.05);
 }
 
 .editor-recinto {
@@ -90,7 +86,6 @@
   padding: 20px;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 15px;
-  animation: fadeIn 0.8s ease-in-out;
 }
 
 .cancel-btn {
@@ -104,13 +99,11 @@
   font-size: 15px; 
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s, color 0.3s, transform 0.2s;
 }
 
 .cancel-btn:hover {
   background: #ff4081;
   color: #fff;
-  transform: scale(1.05);
 }
 
 @keyframes fadeIn {

@@ -30,7 +30,6 @@ body {
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
   font-family: 'Montserrat', sans-serif;
   color: #ffffff;
-  animation: fadeIn 1s ease-out;
 }
 
 .login-container h2 {
@@ -63,7 +62,6 @@ input[type="password"] {
   color: #ffffff;
   font-size: 16px; 
   outline: none;
-  transition: box-shadow 0.3s, background-color 0.3s;
 }
 
 .error {
@@ -87,7 +85,6 @@ input:focus {
   border: none;
   border-radius: 30px;
   cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .registro-mensaje {

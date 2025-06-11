@@ -1,0 +1,15 @@
+<div class="chat-container">
+  <div class="mensajes">
+    <div *ngFor="let m of mensajes" [ngClass]="{ 'usuario': m.esUsuario, 'asistente': !m.esUsuario }" class="mensaje">
+      {{ m.texto }}
+    </div>
+  </div>
+
+  <div class="input-area">
+    <input type="text"
+           placeholder="Escribe tu pregunta..."
+           [(ngModel)]="entrada"
+           (keyup.enter)="enviar()" />
+    <button (click)="enviar()">Enviar</button>
+  </div>
+</div>

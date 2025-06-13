@@ -141,9 +141,82 @@ select:focus {
   margin-top: auto;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .conciertos-container {
-    padding: 24px;
+    padding: 20px;
+    gap: 24px;
+  }
+
+  h2 {
+    font-size: 32px;
+  }
+
+  .filtros-wrapper {
+    padding: 20px;
+    gap: 20px;
+  }
+
+  .filtro-artista {
+    max-width: 100%;
+  }
+
+  .btn-filtrar,
+  .btn-comprar {
+    width: 100%;
+  }
+
+  .concierto-card {
+    padding: 20px;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 600px) {
+  .conciertos-container {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  h2 {
+    font-size: 26px;
+  }
+
+  .filtros-wrapper {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  label {
+    font-size: 14px;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  input[type="email"],
+  input[type="month"],
+  select {
+    font-size: 14px;
+    padding: 6px;
+  }
+
+  .btn-filtrar,
+  .btn-comprar {
+    font-size: 14px;
+    padding: 10px;
+    width: 100%;
+  }
+
+  .asientos-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .chip {
+    font-size: 14px;
+  }
+
+  .concierto-card {
+    padding: 16px;
+    gap: 10px;
   }
 }

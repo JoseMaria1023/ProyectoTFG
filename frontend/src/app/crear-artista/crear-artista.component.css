@@ -86,3 +86,50 @@ button[disabled] {
   cursor: not-allowed;
   opacity: 0.6;
 }
+@media (max-width: 768px) {
+  .crear-artista-container {
+    padding: 30px 20px;
+    margin: 40px 15px;
+  }
+
+  .crear-artista-container h2 {
+    font-size: 28px;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    font-size: 15px;
+  }
+
+  button[type="submit"] {
+    font-size: 15px;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .crear-artista-container {
+    padding: 25px 15px;
+    margin: 30px 10px;
+    border-radius: 10px;
+  }
+
+  .crear-artista-container h2 {
+    font-size: 24px;
+  }
+
+  .form-group label {
+    font-size: 14px;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  button[type="submit"] {
+    font-size: 14px;
+    padding: 10px;
+  }
+}

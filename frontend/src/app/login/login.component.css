@@ -103,28 +103,66 @@ input:focus {
 }
 
 .btn:hover {
-  transform: scale(1.03);
   box-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .login-container {
-    margin: 32px 16px; 
-    padding: 32px 24px; 
+    max-width: 90%;
+    margin: 32px 16px;
+    padding: 32px 24px;
+  }
+
+  .login-container h2 {
+    font-size: 28px;
+  }
+
+  input[type="text"],
+  input[type="password"] {
+    font-size: 15px;
+    padding: 12px 14px;
   }
 
   .btn {
     font-size: 15px;
+    padding: 13px;
+  }
+
+  .registro-mensaje {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
+    align-items: flex-start; 
+  }
+
+  .login-container {
+    max-width: 100%;
+    margin: 20px 10px;
+    padding: 24px 16px;
+    border-radius: 15px;
+  }
+
+  .login-container h2 {
+    font-size: 24px;
+  }
+
+  input[type="text"],
+  input[type="password"] {
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+
+  .btn {
+    font-size: 14px;
+    padding: 12px;
+    border-radius: 25px;
+  }
+
+  .registro-mensaje {
+    font-size: 13px;
   }
 }

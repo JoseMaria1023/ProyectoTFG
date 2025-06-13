@@ -54,3 +54,43 @@ button.cancelar {
   margin-top: 16px;     
   font-weight: bold;
 }
+@media (max-width: 768px) {
+  .modal-content {
+    max-width: 350px;
+    padding: 28px 24px;
+  }
+
+  input {
+    font-size: 15px;
+    padding: 7px 10px;
+  }
+
+  button {
+    font-size: 15px;
+    padding: 7px 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-content {
+    max-width: 100%;
+    padding: 20px 16px;
+    border-radius: 8px;
+  }
+
+  input {
+    font-size: 14px;
+    padding: 6px 8px;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 6px 12px;
+    margin: 6px 4px;
+  }
+
+  .modal {
+    align-items: flex-start;
+    padding-top: 40px;
+  }
+}

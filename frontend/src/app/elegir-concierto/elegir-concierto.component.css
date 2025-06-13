@@ -132,3 +132,103 @@ input[type="date"] {
 .btn-comprar:hover {
   background-color: #ffc400;
 }
+@media (max-width: 768px) {
+  .conciertos-container {
+    padding: 24px 16px;
+  }
+
+  .filtros-wrapper {
+    flex-direction: column;
+    padding: 16px;
+  }
+
+  .filtro-artista,
+  .filtro-fechas {
+    min-width: auto;
+    width: 100%;
+  }
+
+  .filtro-buttons {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .btn-filtrar,
+  .btn-reset {
+    width: 100%;
+    padding: 14px 0;
+  }
+
+  .conciertos-grid {
+    gap: 24px;
+  }
+
+  .concierto-card {
+    padding: 20px;
+  }
+
+  .concierto-nombre {
+    font-size: 19px;
+  }
+}
+
+@media (max-width: 480px) {
+  .conciertos-container {
+    padding: 16px 12px;
+  }
+
+  h2 {
+    font-size: 22px;
+    margin-bottom: 16px;
+  }
+
+  .filtros-wrapper {
+    padding: 12px 8px;
+  }
+
+  .filtro-artista,
+  .filtro-fechas {
+    width: 100%;
+  }
+
+  select,
+  input[type="date"] {
+    font-size: 14px;
+    padding: 10px 8px;
+  }
+
+  .filtro-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn-filtrar,
+  .btn-reset {
+    width: 100%;
+    padding: 12px 0;
+    font-size: 16px;
+  }
+
+  .conciertos-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .concierto-card {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .concierto-nombre {
+    font-size: 18px;
+  }
+
+  .concierto-recinto {
+    font-size: 14px;
+  }
+
+  .btn-comprar {
+    font-size: 15px;
+    padding: 12px;
+  }
+}

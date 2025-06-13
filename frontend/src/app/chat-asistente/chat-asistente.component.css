@@ -62,3 +62,80 @@
   cursor: pointer;
   border-bottom-right-radius: 10px;
 }
+@media screen and (max-width: 768px) {
+  .chat-container {
+    width: 90%;
+    right: 5%;
+    bottom: 10px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .chat-container {
+    width: 100%;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    border-radius: 0;
+    max-height: 60vh;
+  }
+
+  .input-area input,
+  .input-area button {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .mensaje {
+    font-size: 14px;
+  }
+}
+
+.mensajes {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.mensaje {
+  margin: 8px 0;
+  padding: 10px;
+  border-radius: 15px;
+  max-width: 80%;
+  word-wrap: break-word;
+}
+
+.mensaje.usuario {
+  background: #03dac6;
+  align-self: flex-end;
+  color: #000;
+}
+
+.mensaje.asistente {
+  background: #3a3a5a;
+  align-self: flex-start;
+}
+
+.input-area {
+  display: flex;
+  border-top: 1px solid #444;
+}
+
+.input-area input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  outline: none;
+  background: #2c2c3e;
+  color: #fff;
+  border-bottom-left-radius: 10px;
+}
+
+.input-area button {
+  padding: 0 20px;
+  border: none;
+  background: #ff4081;
+  color: #fff;
+  cursor: pointer;
+  border-bottom-right-radius: 10px;
+}

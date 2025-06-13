@@ -74,7 +74,6 @@
   font-size: 18px;
   font-weight: bold;
   cursor: pointer;
-  transition: background 0.4s, transform 0.3s;
   margin-top: 20px;
   width: 100%;
 }
@@ -83,20 +82,57 @@
   background: linear-gradient(45deg, #7c4dff, #ff4081);
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+@media (max-width: 768px) {
+  .formulario-concierto {
+    padding: 30px;
+    margin: 30px 20px;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  .formulario-concierto h2 {
+    font-size: 28px;
+  }
+
+  .formulario-concierto label {
+    font-size: 16px;
+  }
+
+  .formulario-concierto input,
+  .formulario-concierto select {
+    font-size: 15px;
+    padding: 10px;
+  }
+
+  .formulario-concierto .btn-crear {
+    font-size: 16px;
+    padding: 10px 20px;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 576px) {
   .formulario-concierto {
-    margin: 20px;
-    padding: 30px;
+    padding: 20px;
+    margin: 20px 10px;
+    border-radius: 15px;
+  }
+
+  .formulario-concierto h2 {
+    font-size: 24px;
+    margin-bottom: 25px;
+  }
+
+  .formulario-concierto label {
+    font-size: 14px;
+  }
+
+  .formulario-concierto input,
+  .formulario-concierto select {
+    font-size: 14px;
+    padding: 8px;
+    border-radius: 8px;
+  }
+
+  .formulario-concierto .btn-crear {
+    font-size: 15px;
+    padding: 10px;
   }
 }

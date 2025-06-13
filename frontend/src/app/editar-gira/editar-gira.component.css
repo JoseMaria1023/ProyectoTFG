@@ -97,20 +97,52 @@
   background: #cfcfcf;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 @media (max-width: 768px) {
   .container {
     margin: 20px;
     padding: 30px;
+  }
+  .container h2 {
+    font-size: 28px;
+  }
+  .container label {
+    font-size: 16px;
+  }
+  .container input,
+  .container textarea,
+  .container select {
+    font-size: 15px;
+    padding: 10px;
+  }
+  .container button,
+  .container button[type="button"] {
+    font-size: 16px;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    margin: 15px;
+    padding: 20px;
+    border-radius: 15px;
+  }
+  .container h2 {
+    font-size: 24px;
+    margin-bottom: 25px;
+  }
+  .container label {
+    font-size: 14px;
+  }
+  .container input,
+  .container textarea,
+  .container select {
+    font-size: 14px;
+    padding: 8px;
+  }
+  .container button,
+  .container button[type="button"] {
+    font-size: 14px;
+    padding: 10px;
   }
 }

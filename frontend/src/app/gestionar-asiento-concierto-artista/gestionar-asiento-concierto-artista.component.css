@@ -44,15 +44,50 @@
 .btn-gestionar:hover {
   background-color: #e03570;
   box-shadow: 0 0 10px rgba(255, 64, 129, 0.4);
+
+}
+@media (max-width: 768px) {
+  .mis-conciertos-container {
+    padding: 25px 20px;
+    margin: 30px auto;
+  }
+
+  .mis-conciertos-container h2 {
+    font-size: 32px;
+    margin-bottom: 25px;
+  }
+
+  .concierto-card {
+    padding: 15px;
+  }
+
+  .btn-gestionar {
+    font-size: 15px;
+    padding: 9px 18px;
+  }
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
+@media (max-width: 480px) {
+  .mis-conciertos-container {
+    padding: 20px 15px;
+    margin: 20px 10px;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  .mis-conciertos-container h2 {
+    font-size: 26px;
+    margin-bottom: 20px;
+  }
+
+  .concierto-card {
+    padding: 12px;
+  }
+
+  .btn-gestionar {
+    font-size: 14px;
+    padding: 8px 16px;
+    width: 100%;
+    text-align: center;
+    margin-top: 15px;
+    align-self: stretch;
   }
 }

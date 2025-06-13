@@ -84,20 +84,61 @@
   background: linear-gradient(45deg, #7c4dff, #ff4081);
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
 @media (max-width: 768px) {
   .container {
-    margin: 20px;
+    margin: 30px 20px;
     padding: 30px;
+  }
+
+  .container h2 {
+    font-size: 28px;
+    margin-bottom: 30px;
+  }
+
+  .container label {
+    font-size: 16px;
+  }
+
+  .container input,
+  .container textarea,
+  .container select {
+    font-size: 15px;
+    padding: 10px;
+  }
+
+  .container button {
+    font-size: 16px;
+    padding: 10px 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    margin: 20px 10px;
+    padding: 20px;
+    border-radius: 15px;
+  }
+
+  .container h2 {
+    font-size: 24px;
+    margin-bottom: 25px;
+  }
+
+  .container label {
+    font-size: 14px;
+  }
+
+  .container input,
+  .container textarea,
+  .container select {
+    font-size: 14px;
+    padding: 8px;
+    border-radius: 8px;
+  }
+
+  .container button {
+    font-size: 15px;
+    padding: 10px;
   }
 }

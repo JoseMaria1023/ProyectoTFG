@@ -105,3 +105,69 @@
 .close-btn:hover {
   background: linear-gradient(90deg, #0072ff, #004bb5);
 }
+@media (max-width: 768px) {
+  .modal-content {
+    max-width: 95%;
+    padding: 12px;
+    width: 95%;
+    max-height: 80vh;
+  }
+
+  .asiento {
+    width: 40px;
+    height: 40px;
+    font-size: 12px;
+    margin: 3px;
+  }
+
+  .modal-content.many-rows .asiento {
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
+  }
+
+  .close-btn {
+    padding: 7px 20px;
+    font-size: 14px;
+  }
+
+  .escenario {
+    font-size: 14px;
+    padding: 6px;
+    margin-bottom: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-content {
+    max-width: 98%;
+    padding: 10px;
+    width: 98%;
+    max-height: 75vh;
+  }
+
+  .asiento {
+    width: 32px;
+    height: 32px;
+    font-size: 10px;
+    margin: 2px;
+  }
+
+  .modal-content.many-rows .asiento {
+    width: 24px;
+    height: 24px;
+    font-size: 9px;
+  }
+
+  .close-btn {
+    padding: 6px 16px;
+    font-size: 13px;
+    border-radius: 15px;
+  }
+
+  .escenario {
+    font-size: 12px;
+    padding: 5px;
+    margin-bottom: 5px;
+  }
+}

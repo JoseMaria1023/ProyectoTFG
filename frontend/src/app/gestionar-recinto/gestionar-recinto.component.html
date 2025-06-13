@@ -14,7 +14,6 @@
 
   <hr />
 
-  <!-- Editor de recinto: sin @Input() ni @Output() -->
   <div *ngIf="editarVisible" class="editor-recinto">
     <app-editar-recinto (actualizado)="refrescarYCancelar()"></app-editar-recinto>
     <button type="button" class="cancel-btn" (click)="cancelarEdicion()">

@@ -59,13 +59,51 @@
   box-shadow: 0 0 10px rgba(255, 64, 129, 0.4);
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
+@media (max-width: 768px) {
+  .crear-asientos {
+    padding: 25px 20px;
+    margin: 30px 15px;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  .crear-asientos h2 {
+    font-size: 32px;
+  }
+
+  .SeleccionConcierto select,
+  .SeleccionConcierto input {
+    font-size: 15px;
+    padding: 9px;
+  }
+
+  .btn-finalizar {
+    font-size: 16px;
+    padding: 10px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .crear-asientos {
+    padding: 20px 15px;
+    margin: 20px 10px;
+    border-radius: 15px;
+  }
+
+  .crear-asientos h2 {
+    font-size: 26px;
+  }
+
+  .SeleccionConcierto label {
+    font-size: 14px;
+  }
+
+  .SeleccionConcierto select,
+  .SeleccionConcierto input {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .btn-finalizar {
+    font-size: 14px;
+    padding: 9px 18px;
   }
 }

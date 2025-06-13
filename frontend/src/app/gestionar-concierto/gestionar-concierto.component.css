@@ -1,3 +1,4 @@
+
 body {
   background: linear-gradient(to right, #1e1e2f, #3a3a5a);
   font-family: 'Poppins', sans-serif;
@@ -21,7 +22,6 @@ h2 {
   margin-bottom: 30px;
   font-weight: bold;
   color: #ff4081;
-
 }
 
 ul.gira-lista {
@@ -43,7 +43,7 @@ ul.gira-lista li {
 
 strong {
   color: #03dac6;
-  font-size: 19px; 
+  font-size: 19px;
 }
 
 .botones-acciones {
@@ -80,15 +80,37 @@ hr {
   border-top: 2px solid rgba(255, 255, 255, 0.2);
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.filtros {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.filtros label {
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.select-estado {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 25px;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 255, 200, 0.2);
+  transition: box-shadow 0.3s ease;
+}
+
+.select-estado option {
+  background-color: #000;
+  color: #fff ;
+}
+
+.select-estado:hover {
+  box-shadow: 0 0 15px rgba(0, 255, 200, 0.4);
 }
 
 @media (max-width: 768px) {

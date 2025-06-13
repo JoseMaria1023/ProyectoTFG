@@ -1,9 +1,9 @@
 .chat-container {
-  position: fixed;      /* Fija el contenedor */
-  bottom: 20px;         /* 20px desde abajo */
-  right: 20px;          /* 20px desde la derecha */
-  width: 320px;         /* Ancho fijo */
-  max-height: 400px;    /* Altura máxima */
+  position: fixed;      
+  bottom: 20px;         
+  right: 20px;         
+  width: 320px;        
+  max-height: 400px;    
   display: flex;
   flex-direction: column;
   background: #1e1e2f;
@@ -11,10 +11,10 @@
   border-radius: 10px;
   box-shadow: 0 0 15px rgba(255, 64, 129, 0.6);
   color: #fff;
-  z-index: 1000;        /* Encima de todo */
+  z-index: 1000;       
 }
 
-/* Dentro no hace falta cambiar nada más */
+
 .mensajes {
   flex: 1;
   padding: 10px;

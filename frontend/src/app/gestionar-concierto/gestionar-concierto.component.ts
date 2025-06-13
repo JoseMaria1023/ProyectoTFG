@@ -16,6 +16,9 @@ export class GestionarConciertosComponent implements OnInit {
   conciertos: any[] = [];
   conciertoSeleccionado: boolean = false;
 
+  estados: string[] = ['ACTIVO', 'CANCELADO', 'POSPUESTO'];
+  estadoFiltro: string = '';
+
   constructor(private conciertoService: ConciertoService) {}
 
   ngOnInit(): void {
@@ -23,30 +26,40 @@ export class GestionarConciertosComponent implements OnInit {
   }
 
   cargarConciertos(): void {
-    this.conciertoService.TraerConciertos().subscribe(data => {
-      this.conciertos = data;
-    });
+    if (!this.estadoFiltro) {
+      this.conciertoService.TraerConciertos().subscribe(data => {
+        this.conciertos = data;
+      });
+    } else {
+      this.conciertoService.filtrarConciertos({ estado: this.estadoFiltro })
+        .subscribe(data => this.conciertos = data);
+    }
+  }
+
+  onEstadoChange(): void {
+    this.cargarConciertos();
   }
 
   seleccionarConcierto(concierto: any): void {
-  sessionStorage.setItem('conciertoAEditar', concierto.idConcierto.toString());
-  this.conciertoSeleccionado = true; 
-}
+    sessionStorage.setItem('conciertoAEditar', concierto.idConcierto.toString());
+    this.conciertoSeleccionado = true; 
+  }
 
   onConciertoCreado(): void {
+    this.estadoFiltro = '';        
     this.cargarConciertos();
   }
 
   onConciertoActualizado(): void {
+    this.estadoFiltro = ''; 
     this.cargarConciertos();
     this.conciertoSeleccionado = false;
   }
 
   eliminarConcierto(id: number): void {
     if (confirm('¿Estás seguro de eliminar este concierto?')) {
-      this.conciertoService.eliminarConcierto(id).subscribe(() => {
-        this.cargarConciertos();
-      });
+      this.conciertoService.eliminarConcierto(id)
+        .subscribe(() => this.cargarConciertos());
     }
   }
 }

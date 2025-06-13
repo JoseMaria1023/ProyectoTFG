@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ConciertoService {
   private apiUrl = 'http://localhost:9000/api/conciertos'; // URL del backend
+  private notificationSubject = new Subject<string>();
+  notifications$: any;
+
 
   constructor(private http: HttpClient) {}
 
@@ -23,6 +26,9 @@ export class ConciertoService {
     return this.http.post(this.apiUrl, concierto, { headers });
   }
 
+   emitNotification(mensaje: string) {
+    this.notificationSubject.next(mensaje);
+  }
   TraerConciertos(): Observable<any[]> {
     const headers = this.getAuthHeaders();
     return this.http.get<any[]>(this.apiUrl, { headers });
@@ -43,6 +49,7 @@ export class ConciertoService {
     return this.http.get<any[]>(`${this.apiUrl}/artista/${artistaId}`, { headers });
   }
 
+  
   filtrarConciertos(params: any): Observable<any[]> {
     const headers = this.getAuthHeaders();
     let httpParams = new HttpParams();

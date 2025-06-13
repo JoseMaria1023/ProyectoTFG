@@ -1,17 +1,32 @@
+<!-- gestionar-concierto.component.html -->
 <div class="form-container">
   <h2>Gestión de Conciertos</h2>
 
+  <!-- FILTRO POR ESTADO -->
+  <div class="filtros">
+    <label for="estadoFiltro">Filtrar por estado:</label>
+    <select id="estadoFiltro"
+            [(ngModel)]="estadoFiltro"
+            (ngModelChange)="onEstadoChange()"
+            class="select-estado">
+      <option value="">Todos</option>
+      <option *ngFor="let est of estados" [value]="est">{{ est }}</option>
+    </select>
+  </div>
+
   <ul class="gira-lista">
     <li *ngFor="let concierto of conciertos">
-      <strong>{{ concierto.nombre }}</strong> - 
-      Fecha: {{ concierto.fecha }} - 
-      Zona: {{ concierto.zonaId }} - 
-      Gira: {{ concierto.giraId }} - 
+      <strong>{{ concierto.nombre }}</strong> –
+      Fecha: {{ concierto.fecha | date:'shortDate' }} –
+      Zona: {{ concierto.zonaId }} –
+      Gira: {{ concierto.giraId }} –
       Estado: {{ concierto.estado }}
-      
+
       <div class="botones-acciones">
         <button (click)="seleccionarConcierto(concierto)">Editar</button>
-        <button type="button" (click)="eliminarConcierto(concierto.idConcierto)">Eliminar</button>
+        <button type="button" (click)="eliminarConcierto(concierto.idConcierto)">
+          Eliminar
+        </button>
       </div>
     </li>
   </ul>
@@ -19,7 +34,7 @@
   <hr />
 
   <div *ngIf="conciertoSeleccionado; else crear">
-    <app-editar-concierto></app-editar-concierto>
+    <app-editar-concierto (actualizado)="onConciertoActualizado()"></app-editar-concierto>
   </div>
 
   <ng-template #crear>

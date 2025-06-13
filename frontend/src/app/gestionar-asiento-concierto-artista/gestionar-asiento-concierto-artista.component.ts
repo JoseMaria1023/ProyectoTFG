@@ -27,8 +27,21 @@ export class GestionarAsientoConciertoArtistaComponent implements OnInit {
   ngOnInit(): void {
     const artistaId = this.authService.getUserId();
     if (!artistaId) return;
+
     this.conciertoService.TraerConciertosPorArtista(artistaId)
-      .subscribe(data => this.conciertos = data, console.error);
+      .subscribe(data => {
+        this.conciertos = data.filter(c => !this.esConciertoPasado(c));
+      }, console.error);
+  }
+
+  esConciertoPasado(concierto: any): boolean {
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+
+    const fechaConcierto = new Date(concierto.fecha);
+    fechaConcierto.setHours(0, 0, 0, 0);
+
+    return fechaConcierto < hoy;
   }
 
   isArtista(): boolean {
@@ -44,7 +57,6 @@ export class GestionarAsientoConciertoArtistaComponent implements OnInit {
 
   onAsientoSeleccionado(asiento: any): void {
     if (this.isArtista()) {
-
       this.asientoService.actualizarAsiento(asiento.idAsiento, asiento)
         .subscribe(updated => {
           this.asientos = this.asientos.map(a =>

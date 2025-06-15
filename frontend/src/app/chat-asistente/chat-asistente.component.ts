@@ -32,7 +32,7 @@ export class ChatAsistenteComponent {
       } else if (pregunta.includes('ventas')) {
         respuesta = 'Las ventas de las entradas de los conciertos las encontrarás en la sección "Comprar entradas".';
       } else if (pregunta.includes('hola') || pregunta.includes('buenas')) {
-        respuesta = '¡Hola de nuevo! ¿Quieres saber algo de tu recaudación o ventas?';
+        respuesta = '¡Hola de nuevo! en que te puedo ayudar hoy?';
       } else if (pregunta.includes('aconsejar')) {
         respuesta = 'Soy tu asistente, puedo ayudarte con información de la propia web o con problemas que puedas tener. ¿Con qué quieres que te ayude?';
       }

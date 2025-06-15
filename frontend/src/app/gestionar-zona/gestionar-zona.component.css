@@ -86,12 +86,36 @@
   border-radius: 15px;
 }
 
+.gestionar-zona .btn-eliminar {
+  background: linear-gradient(45deg, #ff5252, #d50000);
+}
+
+.gestionar-zona .btn-eliminar:hover {
+  background: linear-gradient(45deg, #d50000, #ff5252);
+}
+
+.gestionar-zona .btn-cancelar {
+  background: linear-gradient(45deg, #ff5252, #d50000);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 30px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.gestionar-zona .btn-cancelar:hover {
+  background: linear-gradient(45deg, #d50000, #ff5252);
+}
+
 .gestionar-zona > div button {
   width: auto;
   margin: 20px 0 0;
 }
 
-
+/* Responsive */
 @media (max-width: 768px) {
   .gestionar-zona {
     margin: 20px;

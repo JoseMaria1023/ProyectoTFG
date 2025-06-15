@@ -134,8 +134,8 @@ revenderEntrada(entrada: any) {
       const id = this.authService.getUserId();
       if (id) this.cargarEntradas(id);
     },
-    error: err => {
-      alert('Error: ' + (err.error?.message || err.message));
+    error: () => {
+      alert('Error al poner en reventa.');
     }
   });
 }

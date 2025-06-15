@@ -21,9 +21,12 @@ import com.jve.proyecto.entity.Concierto;
 import com.jve.proyecto.entity.Entrada;
 import com.jve.proyecto.entity.Usuario;
 import com.jve.proyecto.entity.Zona;
+import com.jve.proyecto.exceptions.AsientoNoEncontradoException;
+import com.jve.proyecto.exceptions.ConciertoNoEncontradoException;
 import com.jve.proyecto.exceptions.EntradaNoEncontradaException;
 import com.jve.proyecto.exceptions.EntradasDisponiblesException;
 import com.jve.proyecto.exceptions.PrecioEntradaException;
+import com.jve.proyecto.exceptions.UsuarioNoEncontradoException;
 import com.jve.proyecto.entity.Entrada.EstadoEntrada;
 import com.jve.proyecto.repository.AsientoRepository;
 import com.jve.proyecto.repository.ConciertoRepository;
@@ -64,11 +67,11 @@ public class EntradaService {
     @Transactional
     public EntradaDTO crearEntrada(EntradaDTO dto) {
         Usuario usuario = usuarioRepository.findById(dto.getUsuarioId())
-            .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + dto.getUsuarioId()));
+            .orElseThrow(() -> new UsuarioNoEncontradoException());
         Asiento asiento = asientoRepository.findById(dto.getAsientoId())
-            .orElseThrow(() -> new RuntimeException("Asiento no encontrado con ID: " + dto.getAsientoId()));
+            .orElseThrow(() -> new AsientoNoEncontradoException());
         Concierto concierto = conciertoRepository.findById(dto.getConciertoId())
-            .orElseThrow(() -> new RuntimeException("Concierto no encontrado con ID: " + dto.getConciertoId()));
+            .orElseThrow(() -> new ConciertoNoEncontradoException());
     
         Zona zona = concierto.getZona();
         if (zona == null) {

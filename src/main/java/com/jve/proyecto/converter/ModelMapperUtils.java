@@ -9,12 +9,10 @@ public class ModelMapperUtils {
     private static final ModelMapper modelMapper = new ModelMapper();
 
     static {
-        // Configuración global del ModelMapper
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
     }
 
     private ModelMapperUtils() {
-        // Constructor privado para evitar instanciación
     }
 
     public static ModelMapper getMapper() {

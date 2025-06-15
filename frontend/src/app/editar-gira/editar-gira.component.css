@@ -88,13 +88,13 @@
 }
 
 .container button[type="button"] {
-  background: #e0e0e0;
-  color: #333;
+  background: #ff0000;
+  color: white;
   margin-top: 10px;
 }
 
 .container button[type="button"]:hover {
-  background: #cfcfcf;
+  background: #ff0000;
 }
 
 @media (max-width: 768px) {

@@ -1,18 +1,20 @@
 .gestionar-artista {
   max-width: 900px;
-  margin: 40px auto;
-  padding: 30px;
-  background: linear-gradient(to right, #1e1e2f, #2c2c54);
-  color: #f0f0f0;
-  font-family: 'Orbitron', sans-serif;
+  margin: 50px auto;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
   border-radius: 20px;
-  box-shadow: 0 0 25px rgba(255, 0, 128, 0.3);
+  box-shadow: 0 0 25px rgba(255, 0, 128, 0.4), 0 0 35px rgba(0, 128, 255, 0.3);
+  font-family: 'Poppins', sans-serif;
+  color: #fff;
 }
 
 .gestionar-artista h2 {
   text-align: center;
-  font-size: 40px; 
+  font-size: 38px;
   margin-bottom: 30px;
+  font-weight: bold;
   color: #ff4081;
   letter-spacing: 1px;
 }
@@ -28,15 +30,16 @@
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  background-color: #2f2f46;
-  margin-bottom: 15px;
+  background: rgba(255, 255, 255, 0.07);
   padding: 20px;
+  margin-bottom: 15px;
   border-radius: 12px;
-  box-shadow: 0 0 10px rgba(255, 64, 129, 0.1);
+  box-shadow: 0 0 10px rgba(255, 64, 129, 0.2);
+  transition: all 0.3s ease;
 }
 
 .artista-item:hover {
-  background-color: #3b3b5e;
+  background-color: rgba(255, 255, 255, 0.1);
   box-shadow: 0 0 15px rgba(255, 64, 129, 0.4);
 }
 
@@ -47,7 +50,7 @@
 
 .nombre-artista {
   font-weight: bold;
-  font-size: 18px; 
+  font-size: 19px;
   color: #fff;
   word-wrap: break-word;
 }
@@ -62,50 +65,62 @@
 }
 
 .botones-artista button {
-  padding: 10px 18px;
+  padding: 10px 20px;
   border: none;
+  border-radius: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  color: #fff;
+}
+
+.btn-editar {
+  background: linear-gradient(45deg, #ff4081, #7c4dff);
+  color: white;
+  border: none;
+  padding: 10px 18px;
   border-radius: 25px;
   font-weight: bold;
   cursor: pointer;
   letter-spacing: 0.5px;
   transition: all 0.3s ease;
-  font-size: 15px; 
-}
-
-.btn-editar {
-  background-color: #00c9ff;
-  color: white;
+  font-size: 15px;
+  box-shadow: 0 0 10px rgba(255, 64, 129, 0.3);
 }
 
 .btn-editar:hover {
-  background-color: #00b4e6;
-  box-shadow: 0 0 10px #00c9ff;
+  background: linear-gradient(45deg, #7c4dff, #ff4081);
+  box-shadow: 0 0 12px rgba(255, 64, 129, 0.5);
 }
 
 .btn-eliminar {
-  background-color: #ff1744;
-  color: white;
+  background: #ff1744;
 }
 
 .btn-eliminar:hover {
-  background-color: #d50000;
+  background: #d50000;
   box-shadow: 0 0 10px #ff1744;
 }
 
 .divisor {
   border: none;
   height: 2px;
-  background: #ff4081;
+  background: rgba(255, 255, 255, 0.2);
   margin: 40px 0;
-
 }
+
+/* RESPONSIVE */
+
 @media (max-width: 768px) {
   .gestionar-artista {
-    padding: 25px 20px;
+    padding: 30px 25px;
+    margin: 30px 20px;
   }
 
   .gestionar-artista h2 {
-    font-size: 32px;
+    font-size: 28px;
     margin-bottom: 25px;
   }
 
@@ -115,36 +130,31 @@
     padding: 15px;
   }
 
-  .info-artista {
-    flex: 1 1 100%;
-    margin-bottom: 15px;
-  }
-
   .nombre-artista {
-    font-size: 16px;
+    font-size: 17px;
   }
 
   .botones-artista {
     flex: 1 1 100%;
     justify-content: flex-start;
-    gap: 12px;
-    margin-top: 0;
+    gap: 8px;
+    margin-top: 10px;
   }
 
   .botones-artista button {
     font-size: 14px;
-    padding: 8px 16px;
+    padding: 9px 18px;
   }
 }
 
 @media (max-width: 480px) {
   .gestionar-artista {
+    padding: 25px 15px;
     margin: 20px 10px;
-    padding: 20px 15px;
   }
 
   .gestionar-artista h2 {
-    font-size: 26px;
+    font-size: 24px;
     margin-bottom: 20px;
   }
 
@@ -153,17 +163,18 @@
   }
 
   .nombre-artista {
-    font-size: 14px;
-  }
-
-  .botones-artista button {
-    font-size: 13px;
-    padding: 7px 14px;
-    flex: 1 1 45%; 
+    font-size: 16px;
   }
 
   .botones-artista {
-    gap: 8px;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .botones-artista button {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 14px;
   }
 
   .divisor {

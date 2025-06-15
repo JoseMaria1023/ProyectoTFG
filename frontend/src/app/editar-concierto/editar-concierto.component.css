@@ -71,7 +71,8 @@
   color: #fff;
 }
 
-.form-container button {
+/* Aquí la corrección para que el botón de guardar no afecte al cancelar */
+.form-container button:not(.btn-cancelar) {
   background: linear-gradient(45deg, #ff4081, #7c4dff);
   padding: 12px 25px;
   border-radius: 30px;
@@ -83,8 +84,24 @@
   width: 100%;
 }
 
-.form-container button:hover {
+.form-container button:not(.btn-cancelar):hover {
   background: linear-gradient(45deg, #7c4dff, #ff4081);
+}
+
+.btn-cancelar {
+  background-color: #ff0000; /* fondo rojo */
+  color: #ffffff;            /* texto blanco */
+  cursor: pointer;
+  padding: 12px 25px;
+  border-radius: 30px;
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.btn-cancelar:hover {
+  background-color: #cc0000; /* rojo más oscuro al pasar el ratón */
 }
 
 @media (max-width: 768px) {

@@ -10,7 +10,7 @@
       – Precio Base: {{ zona.precioBase }}
       – Precio VIP: {{ zona.precioVIP }}
       <button (click)="seleccionarZona(zona.idZona)">Editar</button>
-      <button (click)="eliminarZona(zona.idZona)">Eliminar</button>
+      <button (click)="eliminarZona(zona.idZona)" class="btn-eliminar">Eliminar</button>
     </li>
   </ul>
 
@@ -18,7 +18,7 @@
 
   <div *ngIf="editarVisible">
     <app-editar-zona></app-editar-zona>
-    <button type="button" (click)="cancelarEdicion()">
+    <button type="button" class="btn-cancelar"(click)="cancelarEdicion()">
       Cancelar edición
     </button>
   </div>

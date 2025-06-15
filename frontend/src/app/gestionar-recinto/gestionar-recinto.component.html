@@ -8,7 +8,9 @@
        {{ recinto.ubicacion }}
        - Capacidad: {{ recinto.capacidadTotal }}
       <button (click)="seleccionarRecinto(recinto.idRecinto)">Editar</button>
-      <button type="button" (click)="eliminarRecinto(recinto.idRecinto)">Eliminar</button>
+      <button type="button" class="delete-btn" (click)="eliminarRecinto(recinto.idRecinto)">
+  Eliminar
+</button>
     </li>
   </ul>
 
@@ -16,8 +18,6 @@
 
   <div *ngIf="editarVisible" class="editor-recinto">
     <app-editar-recinto (actualizado)="refrescarYCancelar()"></app-editar-recinto>
-    <button type="button" class="cancel-btn" (click)="cancelarEdicion()">
-      Cancelar edición
-    </button>
+
   </div>
 </div>

@@ -70,7 +70,7 @@ public class GiraService {
 
     if (giraDTO.getArtistaId() != null) {
         Artista artista = artistaRepository.findById(giraDTO.getArtistaId())
-                .orElseThrow(() -> new RuntimeException("Artista no encontrado con ID: " + giraDTO.getArtistaId()));
+                .orElseThrow(() -> new ArtistaNoEncontradoException());
         giraExistente.setArtista(artista);
     }
 
